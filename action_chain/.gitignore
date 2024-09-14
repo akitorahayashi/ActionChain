@@ -1,0 +1,51 @@
+# Flutterの依存ファイル
+.dart_tool/
+.packages
+.pub/
+build/
+
+# 環境変数ファイル
+*.env
+
+# Android
+android/.gradle/
+android/app/build/
+android/app/google-services.json
+android/local.properties
+
+# iOS
+ios/Runner.xcodeproj/
+ios/Runner.xcworkspace/
+ios/Runner/GoogleService-Info.plist
+ios/Flutter/Flutter.framework/
+ios/Flutter/Flutter.podspec
+
+Pods/
+DerivedData/
+flutter_export_environment.sh
+flutter_export_environment.xcconfig
+
+lib/firebase_options.dart
+
+# Pubによって作成されたファイルとディレクトリ
+.dart_tool/
+.packages
+build/
+
+# ドキュメント生成用ディレクトリ
+doc/api/
+
+# dotenv環境変数ファイル
+.env*
+
+# JavaScript生成ファイル（必要な場合のみ）
+*.dart.js
+*.info.json      # --dump-infoフラグによって生成される
+*.js             # dart2jsによって生成された場合
+*.js_
+*.js.deps
+*.js.map
+
+# プラグイン関連ファイル
+.flutter-plugins
+.flutter-plugins-dependencies
