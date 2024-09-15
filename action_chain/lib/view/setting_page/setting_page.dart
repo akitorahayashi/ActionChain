@@ -1,5 +1,5 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_appearance_page.dart';
 import 'package:action_chain/view/setting_page/aki_page/aki_page.dart';
@@ -42,8 +42,8 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
-    if (!admob.ticketIsActive) {
-      admob.loadBanner();
+    if (!acads.ticketIsActive) {
+      acads.loadBanner();
     }
   }
 
@@ -120,10 +120,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
             // bottom navbar
             Positioned(
-              bottom: admob.ticketIsActive ? 0 : 50,
+              bottom: acads.ticketIsActive ? 0 : 50,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: admob.ticketIsActive
+                height: acads.ticketIsActive
                     ? (100 * MediaQuery.of(context).size.height / 896)
                     : 80,
                 decoration: const BoxDecoration(
@@ -265,7 +265,7 @@ class _SettingPageState extends State<SettingPage> {
                     ]),
               ),
             ),
-            Positioned(bottom: 0, child: admob.getBannerAds(context: context)),
+            Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
           ],
         ),
       ),

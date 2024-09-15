@@ -1,7 +1,7 @@
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class _IconCardState extends State<IconCard> {
             ? null
             : !widget.isEarned
                 // アイコンを獲得するページに遷移するか確認する
-                ? () => admob.confirmToGoToProPageToShowAd(
+                ? () => acads.confirmToGoToProPageToShowAd(
                     context: context,
                     superKey: settingPageKey,
                     isBannerService: false,

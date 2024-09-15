@@ -1,4 +1,4 @@
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:flutter/material.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
@@ -15,7 +15,7 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: (admob.ticketIsActive ? 0 : 50),
+      bottom: (acads.ticketIsActive ? 0 : 50),
       child: DecoratedBox(
         decoration: BoxDecoration(
           boxShadow: [
@@ -25,7 +25,7 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: (admob.ticketIsActive ? 75 : 60) *
+          height: (acads.ticketIsActive ? 75 : 60) *
               MediaQuery.of(context).size.height /
               896,
           child: const BottomAppBar(

@@ -1,6 +1,7 @@
+import 'package:action_chain/model/external/ac_ads.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/external/admob.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
 import 'package:action_chain/constants/global_keys.dart';
@@ -22,13 +23,12 @@ class _ActionChainAppState extends State<ActionChainApp> {
   @override
   void initState() {
     super.initState();
-    admob.readAdsData();
+    ACAds.initializeACAds();
     settingData.readSettings();
-    purchase.initPlatformState();
     ACCategory.readWorkspaceCategories();
     ACWorkspace.readWorkspaces();
     // バイブレーションの準備
-    settingData.initVibrate();
+    ACVibration.initVibrate();
   }
 
   @override

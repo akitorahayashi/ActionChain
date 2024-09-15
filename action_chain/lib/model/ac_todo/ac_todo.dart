@@ -29,29 +29,25 @@ class ACToDo {
 
 // --- json convert ---
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       "title": title,
       "isChecked": isChecked,
-      "steps": ACStep.stepsToString(steps: steps),
+      "steps": ACStep.stepsToJson(acsteps: steps),
     };
   }
 
   ACToDo.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
         isChecked = jsonData["isChecked"] ?? false,
-        steps = ACStep.stringToSteps(jsonStepsData: jsonData["steps"]);
+        steps = ACStep.jsonToACStep(jsonStepsData: jsonData["steps"]);
 
   // カスタムクラスの配列をStringにする関数
   // [instance] → [String] → String
-  static String methodsToString({required List<ACToDo> methods}) {
-    final stringArrayOfMethods = methods.map((method) {
-      return json.encode(method.toMap());
+  static List<dynamic> actodoArrayToJson({required List<ACToDo> actodoArray}) {
+    return actodoArray.map((method) {
+      return method.toJson();
     }).toList();
-
-    final String shouldSavedData = json.encode(stringArrayOfMethods);
-
-    return shouldSavedData;
   }
 
   // Stringからカスタムクラスに変換する関数

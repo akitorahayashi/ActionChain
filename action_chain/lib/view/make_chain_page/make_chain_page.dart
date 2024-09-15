@@ -6,7 +6,7 @@ import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/model/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
@@ -47,7 +47,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
   int? _indexOfEditedActionInActions;
 
   void _addOrEditMethodAction() {
-    if (admob.bannerAdsIsEnabled || admob.ticketIsActive) {
+    if (acads.bannerAdsIsEnabled || acads.ticketIsActive) {
       if (_indexOfEditedActionInActions == null) {
         _addedActionMethods.add(ACToDo(
             title: _actionTitleInputController.text, steps: _addedSteps));
@@ -66,7 +66,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
       _stepTitleInputController.clear();
       setState(() {});
     } else {
-      admob.confirmToGoToProPageToShowAd(
+      acads.confirmToGoToProPageToShowAd(
           context: context,
           superKey: makeActionChainPageKey,
           isBannerService: true);
@@ -97,8 +97,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
   @override
   void initState() {
     super.initState();
-    if (!admob.ticketIsActive) {
-      admob.loadBanner();
+    if (!acads.ticketIsActive) {
+      acads.loadBanner();
     }
     if (ACWorkspace.currentChain != null) {
       // 編集モードの処理
@@ -176,7 +176,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
               SliverList(
                   delegate: SliverChildListDelegate([
                 const SizedBox(height: 10),
-                admob.getBannerAds(context: context),
+                acads.getBannerAds(context: context),
                 // action chainの体裁を整える
                 GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
@@ -650,8 +650,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             _addedActionMethods.isEmpty)
                                         ? null
                                         : () {
-                                            if (admob.bannerAdsIsEnabled ||
-                                                admob.ticketIsActive) {
+                                            if (acads.bannerAdsIsEnabled ||
+                                                acads.ticketIsActive) {
                                               if (widget.oldCategoryId ==
                                                   null) {
                                                 // 新しく作成する
@@ -711,7 +711,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                     });
                                               }
                                             } else {
-                                              admob.confirmToGoToProPageToShowAd(
+                                              acads.confirmToGoToProPageToShowAd(
                                                   context: context,
                                                   superKey:
                                                       makeActionChainPageKey,
@@ -732,8 +732,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             _addedActionMethods.isEmpty)
                                         ? null
                                         : () {
-                                            if (admob.bannerAdsIsEnabled ||
-                                                admob.ticketIsActive) {
+                                            if (acads.bannerAdsIsEnabled ||
+                                                acads.ticketIsActive) {
                                               ACChain.askToSaveChain(
                                                   context: context,
                                                   wantToKeep: true,
@@ -752,7 +752,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                         .indexOfChainInSavedChains;
                                                   });
                                             } else {
-                                              admob.confirmToGoToProPageToShowAd(
+                                              acads.confirmToGoToProPageToShowAd(
                                                   context: context,
                                                   superKey:
                                                       makeActionChainPageKey,
@@ -766,8 +766,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                     onPressed: _addedActionMethods.isEmpty
                                         ? null
                                         : () {
-                                            if (admob.bannerAdsIsEnabled ||
-                                                admob.ticketIsActive) {
+                                            if (acads.bannerAdsIsEnabled ||
+                                                acads.ticketIsActive) {
                                               ACWorkspace.currentChain = ACChain(
                                                   title:
                                                       _chainTitleInputController
@@ -784,7 +784,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                         .indexOfChainInSavedChains
                                               });
                                             } else {
-                                              admob.confirmToGoToProPageToShowAd(
+                                              acads.confirmToGoToProPageToShowAd(
                                                   context: context,
                                                   superKey:
                                                       makeActionChainPageKey,

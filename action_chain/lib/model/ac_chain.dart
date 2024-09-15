@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class ACChain {
-  static int numberOfComplitedActionMethods = 0;
   String title;
   List<ACToDo> methods;
 
@@ -19,7 +18,7 @@ class ACChain {
   Map<String, dynamic> toJson() {
     return {
       "title": title,
-      "methods": ACToDo.methodsToString(methods: methods),
+      "methods": ACToDo.actodoArrayToJson(actodoArray: methods),
     };
   }
 
