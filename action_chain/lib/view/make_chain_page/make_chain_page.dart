@@ -3,13 +3,13 @@ import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/components/action_method_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/view/pro_page/pro_page.dart';
 import 'package:action_chain/constants/global_keys.dart';
@@ -655,13 +655,13 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                               if (widget.oldCategoryId ==
                                                   null) {
                                                 // 新しく作成する
-                                                ACChain.askToSaveChain(
+                                                ActionChain.askToSaveChain(
                                                     context: context,
                                                     wantToKeep: false,
                                                     categoryId:
                                                         _selectedChainCategoryId ??
                                                             noneId,
-                                                    selectedChain: ACChain(
+                                                    selectedChain: ActionChain(
                                                       title:
                                                           _chainTitleInputController
                                                               .text,
@@ -684,7 +684,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                     yesAction: () {
                                                       Navigator.pop(context);
                                                       // 上書きする
-                                                      final ACChain
+                                                      final ActionChain
                                                           overwrittenChain =
                                                           currentWorkspace
                                                                   .savedChains[
@@ -707,7 +707,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                           message: null,
                                                           buttonText:
                                                               "thank you!");
-                                                      ACChain.saveSavedChains();
+                                                      ActionChain
+                                                          .saveSavedChains();
                                                     });
                                               }
                                             } else {
@@ -734,13 +735,13 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                         : () {
                                             if (acads.bannerAdsIsEnabled ||
                                                 acads.ticketIsActive) {
-                                              ACChain.askToSaveChain(
+                                              ActionChain.askToSaveChain(
                                                   context: context,
                                                   wantToKeep: true,
                                                   categoryId:
                                                       _selectedChainCategoryId ??
                                                           noneId,
-                                                  selectedChain: ACChain(
+                                                  selectedChain: ActionChain(
                                                       title:
                                                           _chainTitleInputController
                                                               .text,
@@ -768,11 +769,13 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                         : () {
                                             if (acads.bannerAdsIsEnabled ||
                                                 acads.ticketIsActive) {
-                                              ACWorkspace.currentChain = ACChain(
-                                                  title:
-                                                      _chainTitleInputController
-                                                          .text,
-                                                  actodos: _addedActionMethods);
+                                              ACWorkspace.currentChain =
+                                                  ActionChain(
+                                                      title:
+                                                          _chainTitleInputController
+                                                              .text,
+                                                      actodos:
+                                                          _addedActionMethods);
                                               ACWorkspace.saveCurrentChain();
                                               Navigator.pop(context, {
                                                 "selectedCategoryId":

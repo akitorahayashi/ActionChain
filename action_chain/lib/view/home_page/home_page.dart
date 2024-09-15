@@ -12,12 +12,12 @@ import 'package:action_chain/view/pro_page/pro_page.dart';
 import 'package:action_chain/view/show_tutorial_page.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/theme.dart';
@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
           // 足す
           currentWorkspace.numberOfCompletedTasksInThisWorkspace +=
               nummberOfActionMethods;
-          ACChain.numberOfComplitedActionMethods += nummberOfActionMethods;
+          ActionChain.numberOfComplitedActionMethods += nummberOfActionMethods;
 
           // アラート
           settingData.showLevelAlert(context: context);
@@ -206,10 +206,10 @@ class _HomePageState extends State<HomePage> {
                   ACWorkspace.currentWorkspaceCategoryId,
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
               selectedWorkspace: currentWorkspace);
-          ACChain.saveSavedChains();
+          ActionChain.saveSavedChains();
           SharedPreferences.getInstance().then((value) => value.setInt(
               "numberOfComplitedActionMethods",
-              ACChain.numberOfComplitedActionMethods));
+              ActionChain.numberOfComplitedActionMethods));
         });
   }
 
@@ -512,7 +512,7 @@ class _HomePageState extends State<HomePage> {
                                               title: "キープすることに\n成功しました！",
                                               message: null,
                                               buttonText: "thank you!");
-                                          ACChain.saveKeepedChains();
+                                          ActionChain.saveKeepedChains();
                                         }),
                                 iconData: Icons.label_important,
                                 textContent: "キープ"),

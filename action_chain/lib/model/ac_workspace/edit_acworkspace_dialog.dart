@@ -177,9 +177,9 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                                 json.encode(editedWorkspace.toJson()));
                         simpleAlert(
                             context: context,
-                            title: "変更することに\n成功しました!!",
+                            title: "変更することに\n成功しました",
                             message: null,
-                            buttonText: "thank you!");
+                            buttonText: "OK");
                       }
                       drawerForWorkspaceKey.currentState?.setState(() {});
                       manageWorkspacePageKey.currentState?.setState(() {});

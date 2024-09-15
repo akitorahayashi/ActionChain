@@ -1,5 +1,6 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_category.dart';
@@ -116,7 +117,7 @@ class WorkspaceCategoryBlock extends StatelessWidget {
                           indexInStringWorkspaces: indexInStringWorkspaces)
                   ],
                   onReorder: (oldIndex, newIndex) {
-                    final List<String> stringWorkspaceList =
+                    final List<dynamic> stringWorkspaceList =
                         acWorkspaces[workspaceCategory.id]!;
                     final String reorderedWorkspace =
                         stringWorkspaceList.removeAt(oldIndex);

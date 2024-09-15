@@ -1,7 +1,7 @@
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 
 Map<String, List<dynamic>> acWorkspaces = {
@@ -10,7 +10,7 @@ Map<String, List<dynamic>> acWorkspaces = {
       ACCategory(id: noneId, title: "なし")
     ], savedChains: {
       noneId: [
-        ACChain(title: "帰ってからやること", actodos: [
+        ActionChain(title: "帰ってからやること", actodos: [
           ACToDo(title: "ご飯を炊く", steps: []),
           ACToDo(title: "運動する", steps: [
             ACStep(title: "水筒"),
@@ -27,7 +27,7 @@ Map<String, List<dynamic>> acWorkspaces = {
       ]
     }, keepedChains: {
       noneId: [
-        ACChain(title: "明日の持ち物", actodos: [
+        ActionChain(title: "明日の持ち物", actodos: [
           ACToDo(
               title: "筆記用具",
               steps: [ACStep(title: "メモ帳"), ACStep(title: "ペン")]),

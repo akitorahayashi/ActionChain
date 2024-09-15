@@ -2,8 +2,10 @@ import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -103,8 +105,9 @@ class ACCategory {
                               // 保存
                               ACCategory
                                   .saveChainCategoriesInCurrentWorkspace();
-                              ACChain.saveKeepedChains();
-                              ACChain.saveSavedChains();
+                              ActionChain.saveActionChains(isSavedChains: true);
+                              ActionChain.saveActionChains(
+                                  isSavedChains: false);
                             } else {
                               // workspace category
                               workspaceCategories.add(ACCategory(
@@ -119,7 +122,7 @@ class ACCategory {
                               ACCategory.saveWorkspaceCategories();
                               ACWorkspace.saveStringWorkspaces();
                             }
-                            settingData.vibrate();
+                            ACVibration.vibrate();
                             returnedCategoryId = newCategoryId;
                             Navigator.pop(context);
                             ACCategory.notifyCategoryIsAdded(
@@ -164,7 +167,7 @@ class ACCategory {
                     ),
                   ),
                   Text(
-                    "を追加しました!",
+                    "を追加しました",
                     style: TextStyle(
                         color: Colors.black.withOpacity(0.7),
                         fontWeight: FontWeight.w600),
@@ -176,7 +179,7 @@ class ACCategory {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text("thank you!"))
+                      child: const Text("OK"))
                 ],
               ),
             ),
@@ -294,14 +297,14 @@ class ACCategory {
                                 manageWorkspacePageKey.currentState
                                     ?.setState(() {});
                               }
-                              settingData.vibrate();
+                              ACVibration.vibrate();
                               Navigator.pop(context);
                               // thank you アラート
                               simpleAlert(
                                   context: context,
-                                  title: "変更することに\n成功しました!",
+                                  title: "変更することに\n成功しました",
                                   message: null,
-                                  buttonText: "thank you!");
+                                  buttonText: "OK");
                             }
                           },
                           child: Text(
@@ -400,8 +403,9 @@ class ACCategory {
                               // セーブする
                               ACCategory
                                   .saveChainCategoriesInCurrentWorkspace();
-                              ACChain.saveSavedChains();
-                              ACChain.saveKeepedChains();
+                              ActionChain.saveActionChains(isSavedChains: true);
+                              ActionChain.saveActionChains(
+                                  isSavedChains: false);
                             } else {
                               // workspace category
                               // 削除
@@ -415,12 +419,12 @@ class ACCategory {
                               ACWorkspace.saveStringWorkspaces();
                               ACCategory.saveWorkspaceCategories();
                             }
-                            settingData.vibrate();
+                            ACVibration.vibrate();
                             simpleAlert(
                                 context: context,
-                                title: "削除することに\n成功しました!",
+                                title: "削除することに\n成功しました",
                                 message: null,
-                                buttonText: "thank you!");
+                                buttonText: "OK");
                           },
                           child: const Text("削除"))
                     ],
@@ -435,28 +439,36 @@ class ACCategory {
   // --- save ---
 
   static void saveChainCategoriesInCurrentWorkspace() {
-    final decodedWorkspaceData = json.decode(acWorkspaces[ACWorkspace
+    final currenWorkspaceData = json.decode(acWorkspaces[ACWorkspace
         .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
-    decodedWorkspaceData["chainCategories"] = ACCategory.categoriesToString(
-        categories: currentWorkspace.chainCategories);
+    currenWorkspaceData["chainCategories"] = ACCategory.categoriesToJson(
+        categoryArray: currentWorkspace.chainCategories);
     acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
+        ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
     SharedPreferences.getInstance().then((pref) {
       pref.setString("stringWorkspaces", json.encode(acWorkspaces));
     });
   }
 
   static void saveWorkspaceCategories() {
-    SharedPreferences.getInstance().then((pref) => pref.setString(
+    SharedPreferences.getInstance().then(
+      (pref) => pref.setString(
         "workspaceCategories",
-        ACCategory.categoriesToString(categories: workspaceCategories)));
+        json.encode(
+          ACCategory.categoriesToJson(categoryArray: workspaceCategories),
+        ),
+      ),
+    );
   }
 
   static void readWorkspaceCategories() {
     SharedPreferences.getInstance().then((pref) {
       if (pref.getString("workspaceCategories") != null) {
-        workspaceCategories = ACCategory.stringToCategories(
-            stringCategoriesData: pref.getString("workspaceCategories")!);
+        workspaceCategories = ACCategory.jsonToCategories(
+          jsonCategoriesData: json.decode(
+            pref.getString("workspaceCategories")!,
+          ),
+        );
       }
     });
   }
@@ -466,26 +478,19 @@ class ACCategory {
   // --- json convert ---
 
   // List<Category> → String
-  static String categoriesToString({required List<ACCategory> categories}) {
-    final List<String> jsonCategoriesData = categories.map((category) {
-      final Map<String, dynamic> willEncodedData = category.toJson();
-      return json.encode(willEncodedData);
+  static List<dynamic> categoriesToJson(
+      {required List<ACCategory> categoryArray}) {
+    return categoryArray.map((accategory) {
+      return accategory.toJson();
     }).toList();
-
-    return json.encode(jsonCategoriesData);
   }
 
   // String → List<Category>
-  static List<ACCategory> stringToCategories(
-      {required String stringCategoriesData}) {
-    final mapInstanceList = json.decode(stringCategoriesData).toList();
-
-    var instanceList = mapInstanceList.map((stringCategoryData) {
-      final decodedCategoryData = json.decode(stringCategoryData);
-      return ACCategory.fromJson(decodedCategoryData);
+  static List<ACCategory> jsonToCategories(
+      {required List<dynamic> jsonCategoriesData}) {
+    return jsonCategoriesData.map((jsonCategoryData) {
+      return ACCategory.fromJson(jsonCategoryData);
     }).toList();
-
-    return instanceList.cast<ACCategory>() as List<ACCategory>;
   }
 
   // --- json convert ---

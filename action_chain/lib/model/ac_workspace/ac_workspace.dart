@@ -1,8 +1,9 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
+import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_workspace/edit_acworkspace_dialog.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
@@ -21,12 +22,12 @@ class ACWorkspace {
   // workspace
   static String currentWorkspaceCategoryId = noneId;
   static int currentWorkspaceIndex = 0;
-  static ACChain? currentChain;
+  static ActionChain? currentChain;
 
   String name;
   List<ACCategory> chainCategories;
-  Map<String, List<ACChain>> savedChains;
-  Map<String, List<ACChain>> keepedChains;
+  Map<String, List<ActionChain>> savedChains;
+  Map<String, List<ActionChain>> keepedChains;
 
   ACWorkspace(
       {required this.name,
@@ -38,20 +39,36 @@ class ACWorkspace {
     return {
       "name": name,
       "chainCategories":
-          ACCategory.categoriesToString(categories: chainCategories),
-      "savedChains": ACChain.chainsToString(chains: savedChains),
-      "keepedChains": ACChain.chainsToString(chains: keepedChains),
+          ACCategory.categoriesToJson(categoryArray: chainCategories),
+      "savedChains": savedChains.map((chainName, actodos) {
+        final mappedACToDos =
+            actodos.map((actodoData) => actodoData.toJson()).toList();
+        return MapEntry(chainName, mappedACToDos);
+      }),
+      "keepedChains": keepedChains.map((chainName, actodos) {
+        final mappedACToDos =
+            actodos.map((actodoData) => actodoData.toJson()).toList();
+        return MapEntry(chainName, mappedACToDos);
+      }),
     };
   }
 
   ACWorkspace.fromJson(Map<String, dynamic> jsonData)
       : name = jsonData["name"],
-        chainCategories = ACCategory.stringToCategories(
-            stringCategoriesData: jsonData["chainCategories"]),
-        savedChains =
-            ACChain.stringToChains(stringChainsData: jsonData["savedChains"]),
-        keepedChains =
-            ACChain.stringToChains(stringChainsData: jsonData["keepedChains"]);
+        chainCategories = ACCategory.jsonToCategories(
+            jsonCategoriesData: jsonData["chainCategories"]),
+        savedChains = jsonData["savedChains"].map((chainName, actodos) {
+          final createdACToDos = actodos
+              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
+              .toList();
+          return MapEntry(chainName, createdACToDos);
+        }),
+        keepedChains = jsonData["keepedChains"].map((chainName, actodos) {
+          final createdACToDos = actodos
+              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
+              .toList();
+          return MapEntry(chainName, createdACToDos);
+        });
 
   static void addWorkspaceAlert({required BuildContext context}) {
     showDialog(
@@ -255,13 +272,12 @@ class ACWorkspace {
           pref.getString("currentWorkspaceCategoryId") ?? noneId;
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;
-      if (pref.getString("stringWorkspaces") != null) {
-        acWorkspaces = ACWorkspace.stringToStringWorkspaces(
-            stringWorkspacesData: pref.getString("stringWorkspaces")!);
+      if (pref.getString("acWorkspaces") != null) {
+        acWorkspaces = json.decode(pref.getString("acWorkspaces")!);
       }
       if (pref.getString("currentChain") != null) {
         ACWorkspace.currentChain =
-            ACChain.fromJson(json.decode(pref.getString("currentChain")!));
+            ActionChain.fromJson(json.decode(pref.getString("currentChain")!));
       }
     });
   }
@@ -271,9 +287,8 @@ class ACWorkspace {
           "currentChain", json.encode(ACWorkspace.currentChain)));
 
   static void saveStringWorkspaces() async {
-    SharedPreferences.getInstance().then((pref) => pref.setString(
-        "stringWorkspaces",
-        ACWorkspace.stringWorkspacesToString(stringWorkspaces: acWorkspaces)));
+    SharedPreferences.getInstance().then(
+        (pref) => pref.setString("acWorkspaces", json.encode(acWorkspaces)));
   }
 
   static void saveCurrentWorkspace(
@@ -285,44 +300,4 @@ class ACWorkspace {
     ACWorkspace.saveStringWorkspaces();
   }
   // --- save ---
-
-  // --- json convert ---
-
-  static String stringWorkspacesToString(
-      {required Map<String, List<dynamic>> stringWorkspaces}) {
-    final workspaceCategoryIds = stringWorkspaces.keys.toList();
-    Map<String, String> willEncodedMap = {};
-
-    for (String workspaceCategoryId in workspaceCategoryIds) {
-      final String encodedList =
-          json.encode(stringWorkspaces[workspaceCategoryId]!);
-
-      willEncodedMap[workspaceCategoryId] = encodedList;
-    }
-
-    return json.encode(willEncodedMap);
-  }
-
-  static Map<String, List<String>> stringToStringWorkspaces(
-      {required String stringWorkspacesData}) {
-    Map<String, List<String>> shouldBeReturnedMap = {};
-    Map<String, String> shouldDecodedToDosMap = json
-        .decode(stringWorkspacesData)
-        .cast<String, String>() as Map<String, String>;
-    final workspaceCategoryIds = shouldDecodedToDosMap.keys;
-
-    for (String workspaceCategoryId in workspaceCategoryIds) {
-      try {
-        shouldBeReturnedMap[workspaceCategoryId] = json
-            .decode(shouldDecodedToDosMap[workspaceCategoryId]!)
-            .cast<String>() as List<String>;
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-
-    return shouldBeReturnedMap;
-  }
-
-  // --- json convert ---
 }
