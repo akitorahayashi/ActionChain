@@ -1,11 +1,11 @@
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
 import 'package:action_chain/view/drawer_for_workspace/content_views/manage_workspace/workspace_category_block.dart';
 import 'package:action_chain/view/drawer_for_workspace/drawer_for_workspace.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -20,13 +20,13 @@ class ManageWorkspacePage extends StatefulWidget {
 }
 
 class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
-  @override
-  void initState() {
-    super.initState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (!ACAds.isPassActive) {
+  //     ACAds.loadBanner();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
                         ),
                         ChangeWorkspaceCard(
                             isInList: false,
-                            stringWorkspace: stringWorkspaces[
+                            stringWorkspace: acWorkspaces[
                                     ACWorkspace.currentWorkspaceCategoryId]![
                                 ACWorkspace.currentWorkspaceIndex],
                             workspaceCategoryId:
@@ -156,7 +156,6 @@ class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
             ])),
           ],
         ),
-        Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
       ]),
     );
   }

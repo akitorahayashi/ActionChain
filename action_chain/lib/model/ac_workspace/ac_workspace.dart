@@ -1,10 +1,11 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/model/workspace/edit_workspace_dialog.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/ac_todo/ac_step.dart';
+import 'package:action_chain/model/ac_workspace/edit_acworkspace_dialog.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -12,60 +13,21 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-ACWorkspace currentWorkspace = ACWorkspace.fromJson(json.decode(
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex]));
+ACWorkspace currentWorkspace = ACWorkspace.fromJson(acWorkspaces[ACWorkspace
+    .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
 
 List<ACCategory> workspaceCategories = [ACCategory(id: noneId, title: "なし")];
-
-Map<String, List<String>> stringWorkspaces = {
-  noneId: [
-    json.encode(ACWorkspace(name: "デフォルト", chainCategories: [
-      ACCategory(id: noneId, title: "なし")
-    ], savedChains: {
-      noneId: [
-        ACChain(title: "帰ってからやること", methods: [
-          ACToDo(title: "ご飯を炊く", steps: []),
-          ACToDo(title: "運動する", steps: [
-            ACStep(title: "水筒"),
-            ACStep(title: "スマホ"),
-            ACStep(title: "カギ"),
-          ]),
-          ACToDo(title: "お風呂に入る", steps: [
-            ACStep(title: "タオルを忘れるな！"),
-          ]),
-          ACToDo(title: "夕食", steps: []),
-          ACToDo(title: "~について勉強する", steps: []),
-          ACToDo(title: "明日の計画を立てる", steps: []),
-        ]),
-      ]
-    }, keepedChains: {
-      noneId: [
-        ACChain(title: "明日の持ち物", methods: [
-          ACToDo(
-              title: "筆記用具",
-              steps: [ACStep(title: "メモ帳"), ACStep(title: "ペン")]),
-          ACToDo(title: "水筒", steps: []),
-          ACToDo(title: "お弁当", steps: []),
-        ]),
-      ]
-    }).toJson())
-  ]
-};
 
 class ACWorkspace {
   // workspace
   static String currentWorkspaceCategoryId = noneId;
   static int currentWorkspaceIndex = 0;
-  static ACChain? currentChain;
+  static ActionChain? currentChain;
 
   String name;
-  // effort
-  int numberOfCompletedTasksInThisWorkspace = 0;
-  int numberOfCompletionPerThirty = 0;
   List<ACCategory> chainCategories;
-  Map<String, List<ACChain>> savedChains;
-  Map<String, List<ACChain>> keepedChains;
+  Map<String, List<ActionChain>> savedChains;
+  Map<String, List<ActionChain>> keepedChains;
 
   ACWorkspace(
       {required this.name,
@@ -76,34 +38,44 @@ class ACWorkspace {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "numberOfCompletedTasksInThisWorkspace":
-          numberOfCompletedTasksInThisWorkspace,
       "chainCategories":
-          ACCategory.categoriesToString(categories: chainCategories),
-      "savedChains": ACChain.chainsToString(chains: savedChains),
-      "keepedChains": ACChain.chainsToString(chains: keepedChains),
+          ACCategory.categoriesToJson(categoryArray: chainCategories),
+      "savedChains": savedChains.map((chainName, actodos) {
+        final mappedACToDos =
+            actodos.map((actodoData) => actodoData.toJson()).toList();
+        return MapEntry(chainName, mappedACToDos);
+      }),
+      "keepedChains": keepedChains.map((chainName, actodos) {
+        final mappedACToDos =
+            actodos.map((actodoData) => actodoData.toJson()).toList();
+        return MapEntry(chainName, mappedACToDos);
+      }),
     };
   }
 
   ACWorkspace.fromJson(Map<String, dynamic> jsonData)
       : name = jsonData["name"],
-        numberOfCompletedTasksInThisWorkspace =
-            jsonData["numberOfCompletedTasksInThisWorkspace"] ??
-                jsonData["numberOfCompletedChainInThisWorkspace"] ??
-                0,
-        chainCategories = ACCategory.stringToCategories(
-            stringCategoriesData: jsonData["chainCategories"]),
-        savedChains =
-            ACChain.stringToChains(stringChainsData: jsonData["savedChains"]),
-        keepedChains =
-            ACChain.stringToChains(stringChainsData: jsonData["keepedChains"]);
+        chainCategories = ACCategory.jsonToCategories(
+            jsonCategoriesData: jsonData["chainCategories"]),
+        savedChains = jsonData["savedChains"].map((chainName, actodos) {
+          final createdACToDos = actodos
+              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
+              .toList();
+          return MapEntry(chainName, createdACToDos);
+        }),
+        keepedChains = jsonData["keepedChains"].map((chainName, actodos) {
+          final createdACToDos = actodos
+              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
+              .toList();
+          return MapEntry(chainName, createdACToDos);
+        });
 
   static void addWorkspaceAlert({required BuildContext context}) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const EditWorkspaceDialog(
+          return const EditACWorkspaceDialog(
               oldWorkspaceCategoryId: null, oldWorkspaceIndex: null);
         });
   }
@@ -122,39 +94,45 @@ class ACWorkspace {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0, bottom: 10),
-                    child: Text(
-                      "workspaceに",
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
                       style: TextStyle(
-                          color: Colors.black.withOpacity(0.5),
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      newWorkspaceName,
-                      style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                  ),
-                  Text(
-                    "を追加しました!",
-                    style: TextStyle(
                         color: Colors.black.withOpacity(0.5),
-                        fontWeight: FontWeight.w600),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "workspaceに\n",
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.5),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        TextSpan(
+                          text: newWorkspaceName,
+                          style: TextStyle(
+                            color:
+                                theme[settingData.selectedTheme]!.accentColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        TextSpan(
+                          text: "\nを追加しました!",
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.5),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15),
                   TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("thank you!"))
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text("OK"),
+                  ),
                 ],
               ),
             ),
@@ -170,7 +148,7 @@ class ACWorkspace {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return EditWorkspaceDialog(
+          return EditACWorkspaceDialog(
               oldWorkspaceCategoryId: selectedWorkspaceCategoryId,
               oldWorkspaceIndex: selectedWorkspaceIndex);
         });
@@ -182,8 +160,7 @@ class ACWorkspace {
     required int indexInStringWorkspaces,
   }) {
     final ACWorkspace willDeletedWorkspace = ACWorkspace.fromJson(json.decode(
-        stringWorkspaces[selectedWorkspaceCategoryId]![
-            indexInStringWorkspaces]));
+        acWorkspaces[selectedWorkspaceCategoryId]![indexInStringWorkspaces]));
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -246,7 +223,7 @@ class ACWorkspace {
                                 pref.setInt("currentWorkspaceIndex",
                                     ACWorkspace.currentWorkspaceIndex);
                               }
-                              stringWorkspaces[selectedWorkspaceCategoryId]!
+                              acWorkspaces[selectedWorkspaceCategoryId]!
                                   .removeAt(indexInStringWorkspaces);
                               drawerForWorkspaceKey.currentState
                                   ?.setState(() {});
@@ -254,7 +231,7 @@ class ACWorkspace {
                                   ?.setState(() {});
                               // このアラートを消して thank you アラートを表示する
                               Navigator.pop(context);
-                              settingData.vibrate();
+                              ACVibration.vibrate();
                               simpleAlert(
                                   context: context,
                                   title: "削除することに\n成功しました!",
@@ -279,8 +256,8 @@ class ACWorkspace {
       required int newWorkspaceIndex}) {
     ACWorkspace.currentWorkspaceCategoryId = selectedWorkspaceCategoryId;
     ACWorkspace.currentWorkspaceIndex = newWorkspaceIndex;
-    currentWorkspace = ACWorkspace.fromJson(json.decode(
-        stringWorkspaces[selectedWorkspaceCategoryId]![newWorkspaceIndex]));
+    currentWorkspace = ACWorkspace.fromJson(json
+        .decode(acWorkspaces[selectedWorkspaceCategoryId]![newWorkspaceIndex]));
     SharedPreferences.getInstance().then((pref) {
       pref.setString(
           "currentWorkspaceCategoryId", ACWorkspace.currentWorkspaceCategoryId);
@@ -291,21 +268,16 @@ class ACWorkspace {
   // --- save ---
   static void readWorkspaces() async {
     SharedPreferences.getInstance().then((pref) {
-      ACChain.numberOfComplitedActionMethods =
-          pref.getInt("numberOfExecutions") ??
-              pref.getInt("numberOfComplitedActionMethods") ??
-              0;
       ACWorkspace.currentWorkspaceCategoryId =
           pref.getString("currentWorkspaceCategoryId") ?? noneId;
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;
-      if (pref.getString("stringWorkspaces") != null) {
-        stringWorkspaces = ACWorkspace.stringToStringWorkspaces(
-            stringWorkspacesData: pref.getString("stringWorkspaces")!);
+      if (pref.getString("acWorkspaces") != null) {
+        acWorkspaces = json.decode(pref.getString("acWorkspaces")!);
       }
       if (pref.getString("currentChain") != null) {
         ACWorkspace.currentChain =
-            ACChain.fromJson(json.decode(pref.getString("currentChain")!));
+            ActionChain.fromJson(json.decode(pref.getString("currentChain")!));
       }
     });
   }
@@ -315,59 +287,17 @@ class ACWorkspace {
           "currentChain", json.encode(ACWorkspace.currentChain)));
 
   static void saveStringWorkspaces() async {
-    SharedPreferences.getInstance().then((pref) => pref.setString(
-        "stringWorkspaces",
-        ACWorkspace.stringWorkspacesToString(
-            stringWorkspaces: stringWorkspaces)));
+    SharedPreferences.getInstance().then(
+        (pref) => pref.setString("acWorkspaces", json.encode(acWorkspaces)));
   }
 
   static void saveCurrentWorkspace(
       {required String selectedWorkspaceCategoryId,
       required int selectedWorkspaceIndex,
       required ACWorkspace selectedWorkspace}) {
-    stringWorkspaces[selectedWorkspaceCategoryId]![selectedWorkspaceIndex] =
+    acWorkspaces[selectedWorkspaceCategoryId]![selectedWorkspaceIndex] =
         json.encode(currentWorkspace.toJson());
     ACWorkspace.saveStringWorkspaces();
   }
   // --- save ---
-
-  // --- json convert ---
-
-  static String stringWorkspacesToString(
-      {required Map<String, List<dynamic>> stringWorkspaces}) {
-    final workspaceCategoryIds = stringWorkspaces.keys.toList();
-    Map<String, String> willEncodedMap = {};
-
-    for (String workspaceCategoryId in workspaceCategoryIds) {
-      final String encodedList =
-          json.encode(stringWorkspaces[workspaceCategoryId]!);
-
-      willEncodedMap[workspaceCategoryId] = encodedList;
-    }
-
-    return json.encode(willEncodedMap);
-  }
-
-  static Map<String, List<String>> stringToStringWorkspaces(
-      {required String stringWorkspacesData}) {
-    Map<String, List<String>> shouldBeReturnedMap = {};
-    Map<String, String> shouldDecodedToDosMap = json
-        .decode(stringWorkspacesData)
-        .cast<String, String>() as Map<String, String>;
-    final workspaceCategoryIds = shouldDecodedToDosMap.keys;
-
-    for (String workspaceCategoryId in workspaceCategoryIds) {
-      try {
-        shouldBeReturnedMap[workspaceCategoryId] = json
-            .decode(shouldDecodedToDosMap[workspaceCategoryId]!)
-            .cast<String>() as List<String>;
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-
-    return shouldBeReturnedMap;
-  }
-
-  // --- json convert ---
 }

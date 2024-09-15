@@ -41,27 +41,4 @@ class ACToDo {
       : title = jsonData["title"],
         isChecked = jsonData["isChecked"] ?? false,
         steps = ACStep.jsonToACStep(jsonStepsData: jsonData["steps"]);
-
-  // カスタムクラスの配列をStringにする関数
-  // [instance] → [String] → String
-  static List<dynamic> actodoArrayToJson({required List<ACToDo> actodoArray}) {
-    return actodoArray.map((method) {
-      return method.toJson();
-    }).toList();
-  }
-
-  // Stringからカスタムクラスに変換する関数
-  // String → [String] → [instance]
-  static List<ACToDo> stringToMethods({required String jsonMethodsData}) {
-    final stringInstanceList = json.decode(jsonMethodsData);
-
-    var instanceList = stringInstanceList.map((methodData) {
-      final decodedMethodData = json.decode(methodData);
-      return ACToDo.fromJson(decodedMethodData);
-    }).toList();
-
-    return instanceList.cast<ACToDo>() as List<ACToDo>;
-  }
-
-  // --- json convert ---
 }

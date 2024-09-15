@@ -1,18 +1,12 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_appearance_page.dart';
-import 'package:action_chain/view/setting_page/aki_page/aki_page.dart';
 import 'package:action_chain/view/setting_page/my_page/my_page.dart';
-import 'package:action_chain/view/pro_page/pro_page.dart';
-import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/main.dart';
 import 'package:flutter/material.dart';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -39,13 +33,6 @@ class _SettingPageState extends State<SettingPage> {
     // [Icons.construction, "Aki Page"],
   ];
 // --- ページ遷移系のメンバー
-  @override
-  void initState() {
-    super.initState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,36 +64,8 @@ class _SettingPageState extends State<SettingPage> {
                         Icons.arrow_back_ios,
                         color: Colors.white,
                       ),
-                      trailingButtonOnPressed: adIsClosed
-                          ? null
-                          : () async {
-                              await Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return ProPage(
-                                  key: proPageKey,
-                                );
-                              }));
-                              homePageKey.currentState?.setState(() {});
-                            },
-                      trailingIcon: adIsClosed
-                          ? null
-                          : isDevelopperMode
-                              ? const Icon(
-                                  Icons.construction,
-                                  color: Colors.white,
-                                )
-                              : purchase.havePurchased
-                                  ? const Icon(
-                                      FontAwesomeIcons.crown,
-                                      color: Colors.white,
-                                      size: 17,
-                                    )
-                                  : Transform.rotate(
-                                      angle: 3.14,
-                                      child: const Icon(
-                                        Icons.auto_awesome,
-                                        color: Colors.white,
-                                      ))),
+                      trailingButtonOnPressed: null,
+                      trailingIcon: null),
                 ];
               },
               body: PageView.builder(
@@ -120,12 +79,10 @@ class _SettingPageState extends State<SettingPage> {
             ),
             // bottom navbar
             Positioned(
-              bottom: acads.ticketIsActive ? 0 : 50,
+              bottom: 0,
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                height: acads.ticketIsActive
-                    ? (100 * MediaQuery.of(context).size.height / 896)
-                    : 80,
+                height: (100 * MediaQuery.of(context).size.height / 896),
                 decoration: const BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -265,7 +222,6 @@ class _SettingPageState extends State<SettingPage> {
                     ]),
               ),
             ),
-            Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
           ],
         ),
       ),

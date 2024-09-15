@@ -2,10 +2,11 @@ import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -290,9 +291,6 @@ class ACUser {
                                 "note": _noteInputController.text.trim().isEmpty
                                     ? null
                                     : _noteInputController.text,
-                                // action chainに関する情報
-                                "numberOfComplitedActionMethods":
-                                    ACChain.numberOfComplitedActionMethods,
                                 "settingData": settingData.toJson(),
                                 // workspace
                                 "currentWorkspaceCategoryId":
@@ -302,11 +300,9 @@ class ACUser {
                                 "currentChain":
                                     ACWorkspace.currentChain?.toJson(),
                                 "workspaceCategories":
-                                    ACCategory.categoriesToString(
-                                        categories: workspaceCategories),
-                                "stringWorkspaces":
-                                    ACWorkspace.stringWorkspacesToString(
-                                        stringWorkspaces: stringWorkspaces),
+                                    ACCategory.categoriesToJson(
+                                        categoryArray: workspaceCategories),
+                                "stringWorkspaces": json.encode(acWorkspaces),
                               });
 
                               // --- will be saved content ---
@@ -446,9 +442,6 @@ class ACUser {
     void readUserData({required String stringUserData}) {
       final mapUserData = json.decode(stringUserData);
 
-      // number of complited todos
-      ACChain.numberOfComplitedActionMethods =
-          mapUserData["numberOfComplitedActionMethods"] ?? 0;
       settingData =
           SettingData.fromJson(json.decode(mapUserData["settingData"]!));
       // workspace
@@ -458,24 +451,23 @@ class ACUser {
           mapUserData["currentWorkspaceIndex"] ?? 0;
       ACWorkspace.currentChain = mapUserData["currentChain"] == null
           ? null
-          : ACChain.fromJson(json.decode(mapUserData["currentChain"]));
+          : ActionChain.fromJson(json.decode(mapUserData["currentChain"]));
       // migrate
       if (json.decode(mapUserData["stringWorkspaces"]).runtimeType ==
           List<dynamic>) {
         // migrate
-        stringWorkspaces = {
+        acWorkspaces = {
           noneId: json.decode(mapUserData["stringWorkspaces"]).cast<String>(),
         };
         workspaceCategories = [ACCategory(id: noneId, title: "なし")];
       } else {
-        stringWorkspaces = ACWorkspace.stringToStringWorkspaces(
-            stringWorkspacesData: mapUserData["stringWorkspaces"]);
-        workspaceCategories = ACCategory.stringToCategories(
-            stringCategoriesData: mapUserData["workspaceCategories"]);
+        acWorkspaces = json.decode(mapUserData["stringWorkspaces"]);
+        workspaceCategories = ACCategory.jsonToCategories(
+            jsonCategoriesData: mapUserData["workspaceCategories"]);
       }
       // current workspace
       currentWorkspace = ACWorkspace.fromJson(json.decode(
-          stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+          acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
               ACWorkspace.currentWorkspaceIndex]));
       ACVibration.initVibrate();
       // 保存
@@ -486,8 +478,7 @@ class ACUser {
         pref.setString("currentWorkspaceCategoryId",
             ACWorkspace.currentWorkspaceCategoryId);
         pref.setInt("currentWorkspaceIndex", ACWorkspace.currentWorkspaceIndex);
-        pref.setInt("numberOfComplitedActionMethods",
-            ACChain.numberOfComplitedActionMethods);
+        ;
       });
     }
 

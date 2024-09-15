@@ -4,12 +4,12 @@ import 'package:action_chain/components/action_method_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
 
@@ -33,15 +33,15 @@ class ChainDetailPage extends StatefulWidget {
 }
 
 class _ChainDetailPageState extends State<ChainDetailPage> {
-  ACChain get chainOfThisPage =>
+  ActionChain get chainOfThisPage =>
       (widget.isSavedChain
               ? currentWorkspace.savedChains
               : currentWorkspace.keepedChains)[widget.categoryOfThisChain.id]
           ?[widget.indexOfThisChainInChains] ??
-      ACChain(title: "", methods: []);
+      ActionChain(title: "", actodos: []);
 
   bool get isComplited => (() {
-        for (ACToDo method in chainOfThisPage.methods) {
+        for (ACToDo method in chainOfThisPage.actodos) {
           if (!method.isChecked) {
             return false;
           }
@@ -107,7 +107,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                             children: [
                               // 削除
                               ControllIconButton(
-                                  onPressed: () => ACChain.askToDeleteThisChain(
+                                  onPressed: () =>
+                                      ActionChain.askToDeleteThisChain(
                                         context: context,
                                         categoryId:
                                             widget.categoryOfThisChain.id,
@@ -123,30 +124,34 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                   onPressed: () {
                                     if (acads.bannerAdsIsEnabled ||
                                         acads.ticketIsActive) {
-                                      ACChain.askTojumpToHomePageToUseThisChain(
-                                          context: context,
-                                          chainName: chainOfThisPage.title,
-                                          actionMethods:
-                                              chainOfThisPage.methods,
-                                          indexOfChain:
-                                              widget.indexOfThisChainInChains,
-                                          selectedCategoryId:
-                                              widget.categoryOfThisChain.id,
-                                          oldCategoryId: widget.isSavedChain
-                                              ? widget.categoryOfThisChain.id
-                                              : null,
-                                          wantToConduct: false,
-                                          // keepedなら削除
-                                          removeKeepedChainAction: () {
-                                            if (!widget.isSavedChain) {
-                                              currentWorkspace.keepedChains[
-                                                      widget.categoryOfThisChain
+                                      ActionChain
+                                          .askTojumpToHomePageToUseThisChain(
+                                              context: context,
+                                              chainName: chainOfThisPage.title,
+                                              actionMethods:
+                                                  chainOfThisPage.actodos,
+                                              indexOfChain: widget
+                                                  .indexOfThisChainInChains,
+                                              selectedCategoryId:
+                                                  widget.categoryOfThisChain.id,
+                                              oldCategoryId: widget.isSavedChain
+                                                  ? widget
+                                                      .categoryOfThisChain.id
+                                                  : null,
+                                              wantToConduct: false,
+                                              // keepedなら削除
+                                              removeKeepedChainAction: () {
+                                                if (!widget.isSavedChain) {
+                                                  currentWorkspace
+                                                      .keepedChains[widget
+                                                          .categoryOfThisChain
                                                           .id]!
-                                                  .removeAt(widget
-                                                      .indexOfThisChainInChains);
-                                              ACChain.saveKeepedChains();
-                                            }
-                                          });
+                                                      .removeAt(widget
+                                                          .indexOfThisChainInChains);
+                                                  ActionChain
+                                                      .saveKeepedChains();
+                                                }
+                                              });
                                     } else {
                                       acads.confirmToGoToProPageToShowAd(
                                           context: context,
@@ -168,13 +173,13 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                     onPressed: () {
                                       if (acads.bannerAdsIsEnabled ||
                                           acads.ticketIsActive) {
-                                        ACChain
+                                        ActionChain
                                             .askTojumpToHomePageToUseThisChain(
                                                 context: context,
                                                 chainName:
                                                     chainOfThisPage.title,
                                                 actionMethods:
-                                                    chainOfThisPage.methods,
+                                                    chainOfThisPage.actodos,
                                                 selectedCategoryId: widget
                                                     .categoryOfThisChain.id,
                                                 oldCategoryId:
@@ -195,7 +200,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                                             .id]!
                                                         .removeAt(widget
                                                             .indexOfThisChainInChains);
-                                                    ACChain.saveKeepedChains();
+                                                    ActionChain
+                                                        .saveKeepedChains();
                                                   }
                                                 });
                                       } else {
@@ -220,7 +226,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         final int nummberOfActionMethods = (() {
                                           int counter = 0;
                                           for (ACToDo method
-                                              in chainOfThisPage.methods) {
+                                              in chainOfThisPage.actodos) {
                                             if (method.steps.isEmpty) {
                                               counter++;
                                             } else {
@@ -233,7 +239,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         currentWorkspace
                                                 .numberOfCompletedTasksInThisWorkspace +=
                                             nummberOfActionMethods;
-                                        ACChain.numberOfComplitedActionMethods +=
+                                        ActionChain
+                                                .numberOfComplitedActionMethods +=
                                             nummberOfActionMethods;
                                         // 更新して消す
                                         Navigator.pop(context);
@@ -250,7 +257,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         // アラート
                                         settingData.vibrate();
                                         // 保存
-                                        ACChain.saveKeepedChains();
+                                        ActionChain.saveKeepedChains();
                                         ACWorkspace.saveCurrentWorkspace(
                                             selectedWorkspaceCategoryId:
                                                 ACWorkspace
@@ -259,11 +266,11 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                                 .currentWorkspaceIndex,
                                             selectedWorkspace:
                                                 currentWorkspace);
-                                        ACChain.saveSavedChains();
+                                        ActionChain.saveSavedChains();
                                         SharedPreferences.getInstance().then(
                                             (value) => value.setInt(
                                                 "numberOfComplitedActionMethods",
-                                                ACChain
+                                                ActionChain
                                                     .numberOfComplitedActionMethods));
                                       }),
                                   iconData: Icons.done,
@@ -282,7 +289,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                               children: [
                                 for (int indexOfThisActionMethod = 0;
                                     indexOfThisActionMethod <
-                                        chainOfThisPage.methods.length;
+                                        chainOfThisPage.actodos.length;
                                     indexOfThisActionMethod++)
                                   ActionMethodCard(
                                       key: Key(UniqueKey().toString()),
@@ -291,23 +298,23 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                       isInKeepedChain: !widget.isSavedChain,
                                       disableSliderable: true,
                                       disableTapGesture: widget.isSavedChain,
-                                      actionMethods: chainOfThisPage.methods,
+                                      actionMethods: chainOfThisPage.actodos,
                                       indexOfThisActionMethod:
                                           indexOfThisActionMethod,
                                       actionMethodData: chainOfThisPage
-                                          .methods[indexOfThisActionMethod],
+                                          .actodos[indexOfThisActionMethod],
                                       editAction: null)
                               ],
                               onReorder: (oldIndex, newIndex) {
                                 final ACToDo reorderedActionMethod =
-                                    chainOfThisPage.methods.removeAt(oldIndex);
-                                chainOfThisPage.methods
+                                    chainOfThisPage.actodos.removeAt(oldIndex);
+                                chainOfThisPage.actodos
                                     .insert(newIndex, reorderedActionMethod);
                                 setState(() {});
                                 if (widget.isSavedChain) {
-                                  ACChain.saveSavedChains();
+                                  ActionChain.saveSavedChains();
                                 } else {
-                                  ACChain.saveKeepedChains();
+                                  ActionChain.saveKeepedChains();
                                 }
                               },
                             ),

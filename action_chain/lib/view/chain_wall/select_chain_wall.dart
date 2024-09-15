@@ -3,7 +3,7 @@ import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/view/chain_wall/chain_category_panel/chain_category_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

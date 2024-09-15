@@ -1,11 +1,12 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/functions/notify_method_or_step_is_edited.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
 
 import 'package:reorderables/reorderables.dart';
@@ -59,12 +60,12 @@ class _ActionMethodCardState extends State<ActionMethodCard> {
         context: context,
         title: widget.actionMethodData.title,
         isChecked: widget.actionMethodData.isChecked);
-    settingData.vibrate();
+    ACVibration.vibrate();
     widget.superKey.currentState?.setState(() {});
     if (widget.isCurrentChain) {
       ACWorkspace.saveCurrentChain();
     } else if (widget.isInKeepedChain) {
-      ACChain.saveKeepedChains();
+      ActionChain.saveActionChains(isSavedChains: false);
     }
   }
 
@@ -96,12 +97,12 @@ class _ActionMethodCardState extends State<ActionMethodCard> {
       isChecked: stepData.isChecked,
     );
     // バイブレーション
-    settingData.vibrate();
+    ACVibration.vibrate();
     widget.superKey.currentState?.setState(() {});
     if (widget.isCurrentChain) {
       ACWorkspace.saveCurrentChain();
     } else if (widget.isInKeepedChain) {
-      ACChain.saveKeepedChains();
+      ActionChain.saveActionChains(isSavedChains: false);
     }
   }
 
@@ -136,7 +137,7 @@ class _ActionMethodCardState extends State<ActionMethodCard> {
                           // タップしたらこれをremoveする
                           widget.actionMethods
                               .removeAt(widget.indexOfThisActionMethod);
-                          settingData.vibrate();
+                          ACVibration.vibrate();
                           widget.superKey.currentState?.setState(() {});
                         },
                         icon: Icons.remove,

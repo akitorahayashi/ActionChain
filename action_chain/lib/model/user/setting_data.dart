@@ -1,6 +1,6 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';

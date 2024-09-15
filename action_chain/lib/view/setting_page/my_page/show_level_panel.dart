@@ -1,4 +1,4 @@
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +85,7 @@ class _ShowLevelPanelState extends State<ShowLevelPanel> {
           Padding(
             padding: const EdgeInsets.only(top: 3.0, bottom: 16.0),
             child: Text(
-              ACChain.numberOfComplitedActionMethods.toString(),
+              ActionChain.numberOfComplitedActionMethods.toString(),
               style: TextStyle(
                   fontSize: 21,
                   fontWeight: FontWeight.w800,

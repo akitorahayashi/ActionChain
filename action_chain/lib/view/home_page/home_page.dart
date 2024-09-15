@@ -12,12 +12,12 @@ import 'package:action_chain/view/pro_page/pro_page.dart';
 import 'package:action_chain/view/show_tutorial_page.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/theme.dart';
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          for (ACToDo actionMethod in ACWorkspace.currentChain!.methods) {
+          for (ACToDo actionMethod in ACWorkspace.currentChain!.actodos) {
             actionMethod.isChecked = false;
             if (actionMethod.steps.isNotEmpty) {
               for (ACStep step in actionMethod.steps) {
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
   // チェック済みのmethodの数を数える関数
   int countCheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.methods) {
+    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
       if (methodInSelectedChain.steps.isEmpty) {
         if (methodInSelectedChain.isChecked) {
           counter++;
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
 
   int totalNumberOfUncheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.methods) {
+    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
       if (methodInSelectedChain.steps.isNotEmpty) {
         counter += methodInSelectedChain.steps.length;
       } else {
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
           // カウントする
           final int nummberOfActionMethods = (() {
             int counter = 0;
-            for (ACToDo method in ACWorkspace.currentChain!.methods) {
+            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
               if (method.steps.isEmpty) {
                 counter++;
               } else {
@@ -181,14 +181,14 @@ class _HomePageState extends State<HomePage> {
           // 足す
           currentWorkspace.numberOfCompletedTasksInThisWorkspace +=
               nummberOfActionMethods;
-          ACChain.numberOfComplitedActionMethods += nummberOfActionMethods;
+          ActionChain.numberOfComplitedActionMethods += nummberOfActionMethods;
 
           // アラート
           settingData.showLevelAlert(context: context);
           // 初期化
           if (isLoopMode) {
             // チェックマークを外す
-            for (ACToDo method in ACWorkspace.currentChain!.methods) {
+            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
               method.isChecked = false;
               for (ACStep step in method.steps) {
                 step.isChecked = false;
@@ -206,10 +206,10 @@ class _HomePageState extends State<HomePage> {
                   ACWorkspace.currentWorkspaceCategoryId,
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
               selectedWorkspace: currentWorkspace);
-          ACChain.saveSavedChains();
+          ActionChain.saveSavedChains();
           SharedPreferences.getInstance().then((value) => value.setInt(
               "numberOfComplitedActionMethods",
-              ACChain.numberOfComplitedActionMethods));
+              ActionChain.numberOfComplitedActionMethods));
         });
   }
 
@@ -404,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                                         for (int indexOfActionMethod = 0;
                                             indexOfActionMethod <
                                                 ACWorkspace.currentChain!
-                                                    .methods.length;
+                                                    .actodos.length;
                                             indexOfActionMethod++)
                                           ActionMethodCard(
                                               key: Key(UniqueKey().toString()),
@@ -415,20 +415,20 @@ class _HomePageState extends State<HomePage> {
                                               disableTapGesture: false,
                                               // action method
                                               actionMethods: ACWorkspace
-                                                  .currentChain!.methods,
+                                                  .currentChain!.actodos,
                                               indexOfThisActionMethod:
                                                   indexOfActionMethod,
                                               actionMethodData: ACWorkspace
                                                   .currentChain!
-                                                  .methods[indexOfActionMethod],
+                                                  .actodos[indexOfActionMethod],
                                               editAction: () =>
                                                   goToMakeChainPage()),
                                       ],
                                       onReorder: (oldIndex, newIndex) {
                                         final ACToDo reorderedMethod =
-                                            ACWorkspace.currentChain!.methods
+                                            ACWorkspace.currentChain!.actodos
                                                 .removeAt(oldIndex);
-                                        ACWorkspace.currentChain!.methods
+                                        ACWorkspace.currentChain!.actodos
                                             .insert(newIndex, reorderedMethod);
                                         setState(() {});
                                         ACWorkspace.saveCurrentChain();
@@ -512,7 +512,7 @@ class _HomePageState extends State<HomePage> {
                                               title: "キープすることに\n成功しました！",
                                               message: null,
                                               buttonText: "thank you!");
-                                          ACChain.saveKeepedChains();
+                                          ActionChain.saveKeepedChains();
                                         }),
                                 iconData: Icons.label_important,
                                 textContent: "キープ"),

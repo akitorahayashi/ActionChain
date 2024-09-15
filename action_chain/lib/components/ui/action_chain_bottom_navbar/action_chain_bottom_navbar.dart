@@ -15,7 +15,7 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: (acads.ticketIsActive ? 0 : 50),
+      bottom: (ACAds.isPassActive ? 0 : 50),
       child: DecoratedBox(
         decoration: BoxDecoration(
           boxShadow: [
@@ -25,7 +25,7 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: (acads.ticketIsActive ? 75 : 60) *
+          height: (ACAds.isPassActive ? 75 : 60) *
               MediaQuery.of(context).size.height /
               896,
           child: const BottomAppBar(

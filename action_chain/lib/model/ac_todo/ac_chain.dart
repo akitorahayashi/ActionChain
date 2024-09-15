@@ -2,33 +2,37 @@ import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
-import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
-class ACChain {
+class ActionChain {
   String title;
-  List<ACToDo> methods;
+  List<ACToDo> actodos;
 
   // コンストラクタ
-  ACChain({required this.title, required this.methods});
+  ActionChain({required this.title, required this.actodos});
 
   Map<String, dynamic> toJson() {
     return {
       "title": title,
-      "methods": ACToDo.actodoArrayToJson(actodoArray: methods),
+      "actodos": actodos.map((method) {
+        return method.toJson();
+      }).toList()
     };
   }
 
-  ACChain.fromJson(Map<String, dynamic> jsonData)
+  ActionChain.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
-        methods = ACToDo.stringToMethods(jsonMethodsData: jsonData["methods"]);
+        actodos = jsonData["actodos"].map((jsonAcToDoData) {
+          return ACToDo.fromJson(jsonAcToDoData);
+        }).toList();
 
   void uncheckAllActionMethods() {
     bool isConducted = false;
-    for (ACToDo actionMethod in methods) {
+    for (ACToDo actionMethod in actodos) {
       if (actionMethod.isChecked) {
         isConducted = true;
         actionMethod.isChecked = false;
@@ -41,7 +45,7 @@ class ACChain {
       }
     }
     if (isConducted) {
-      ACChain.saveSavedChains();
+      ActionChain.saveActionChains(isSavedChains: true);
     }
   }
 
@@ -63,11 +67,11 @@ class ACChain {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          settingData.vibrate();
+          ACVibration.vibrate();
           // detail -> collection -> home
           Navigator.pop(context);
           ACWorkspace.currentChain =
-              ACChain(title: chainName, methods: actionMethods);
+              ActionChain(title: chainName, actodos: actionMethods);
           removeKeepedChainAction();
           Future<void>.delayed(const Duration(milliseconds: 100))
               .then((value) => Navigator.pop(context, <String, dynamic>{
@@ -83,7 +87,7 @@ class ACChain {
     required BuildContext context,
     required bool wantToKeep,
     required String categoryId,
-    required ACChain selectedChain,
+    required ActionChain selectedChain,
     // キープでホームに戻った時に編集モードを解除する関数
     required Function()? releaseEditModeAction,
   }) {
@@ -94,7 +98,7 @@ class ACChain {
             "Action Chainを${wantToKeep ? "キープ" : "保存"}することで簡単に呼び出して使えるようになります",
         yesAction: () {
           Navigator.pop(context);
-          settingData.vibrate();
+          ACVibration.vibrate();
           if (wantToKeep) {
             currentWorkspace.keepedChains[categoryId]!.add(selectedChain);
             releaseEditModeAction!();
@@ -102,21 +106,21 @@ class ACChain {
             Navigator.pop(context);
             simpleAlert(
                 context: context,
-                title: "キープすることに\n成功しました！",
+                title: "キープすることに\n成功しました",
                 message: null,
-                buttonText: "thank you!");
-            ACChain.saveKeepedChains();
+                buttonText: "OK");
+            ActionChain.saveActionChains(isSavedChains: false);
           } else {
-            currentWorkspace.savedChains[categoryId]!.add(ACChain(
+            currentWorkspace.savedChains[categoryId]!.add(ActionChain(
                 title: selectedChain.title,
-                methods: ACToDo.getNewMethods(
-                    selectedMethods: selectedChain.methods)));
+                actodos: ACToDo.getNewMethods(
+                    selectedMethods: selectedChain.actodos)));
             simpleAlert(
                 context: context,
-                title: "保村することに\n成功しました！",
+                title: "保村することに\n成功しました",
                 message: null,
-                buttonText: "thank you!");
-            ACChain.saveSavedChains();
+                buttonText: "OK");
+            ActionChain.saveActionChains(isSavedChains: true);
           }
         });
   }
@@ -137,87 +141,36 @@ class ACChain {
           Navigator.pop(context);
           if (isSavedChain) {
             currentWorkspace.savedChains[categoryId]!.removeAt(indexOfOldChain);
-            ACChain.saveSavedChains();
+            ActionChain.saveActionChains(isSavedChains: true);
           } else {
             currentWorkspace.keepedChains[categoryId]!
                 .removeAt(indexOfOldChain);
-            ACChain.saveKeepedChains();
+            ActionChain.saveActionChains(isSavedChains: false);
           }
           selectChainWallKey.currentState?.setState(() {});
-          settingData.vibrate();
+          ACVibration.vibrate();
           simpleAlert(
               context: context,
-              title: "削除することに\n成功しました!",
+              title: "削除することに\n成功しました",
               message: null,
-              buttonText: "thank you!");
+              buttonText: "OK");
         });
   }
 
-  // --- save ---
-  static void saveSavedChains() {
-    final decodedWorkspaceData = json.decode(stringWorkspaces[ACWorkspace
-        .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
-    decodedWorkspaceData["savedChains"] =
-        ACChain.chainsToString(chains: currentWorkspace.savedChains);
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
+  static void saveActionChains({required bool isSavedChains}) {
+    final currentACWorkspaceData = acWorkspaces[ACWorkspace
+        .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex];
+    currentACWorkspaceData[isSavedChains ? "savedChains" : "keepedChains"] =
+        (isSavedChains
+                ? currentWorkspace.savedChains
+                : currentWorkspace.keepedChains)
+            .map((chainName, actodos) {
+      final mappedACToDos =
+          actodos.map((actodoData) => actodoData.toJson()).toList();
+      return MapEntry(chainName, mappedACToDos);
+    });
+    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+        ACWorkspace.currentWorkspaceIndex] = currentACWorkspaceData;
     ACWorkspace.saveStringWorkspaces();
   }
-
-  static void saveKeepedChains() {
-    final decodedWorkspaceData = json.decode(stringWorkspaces[ACWorkspace
-        .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
-    decodedWorkspaceData["keepedChains"] =
-        ACChain.chainsToString(chains: currentWorkspace.keepedChains);
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
-    ACWorkspace.saveStringWorkspaces();
-  }
-  // --- save ---
-
-  // --- json convert ---
-
-  static String chainsToString({required Map<String, List<ACChain>> chains}) {
-    final categoryNames = chains.keys;
-    Map<String, String> willEncodedMap = {};
-
-    for (String category in categoryNames) {
-      final List<String> jsonChainsListData = chains[category]!.map((chain) {
-        final Map<String, dynamic> willEncodedMapOfToDo = chain.toJson();
-        return json.encode(willEncodedMapOfToDo);
-      }).toList();
-
-      final String encodedList = json.encode(jsonChainsListData);
-
-      willEncodedMap[category] = encodedList;
-    }
-
-    return json.encode(willEncodedMap);
-  }
-
-  static Map<String, List<ACChain>> stringToChains(
-      {required String stringChainsData}) {
-    Map<String, List<ACChain>> shouldBeReturnedMap = {};
-    Map<String, String> shouldDecodedChainsMap = json
-        .decode(stringChainsData)
-        .cast<String, String>() as Map<String, String>;
-    final categories = shouldDecodedChainsMap.keys;
-
-    for (String category in categories) {
-      final stringArrayOfChains =
-          json.decode(shouldDecodedChainsMap[category]!).toList();
-
-      final chainArray = stringArrayOfChains.map((chain) {
-        final decodedChainData = json.decode(chain);
-        return ACChain.fromJson(decodedChainData);
-      }).toList();
-
-      shouldBeReturnedMap[category] =
-          chainArray.cast<ACChain>() as List<ACChain>;
-    }
-
-    return shouldBeReturnedMap;
-  }
-
-// --- json convert ---
 }
