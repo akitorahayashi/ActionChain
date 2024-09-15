@@ -1,5 +1,5 @@
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class _WorkspaceCategoryBlockInDrawerState
       children: [
         // header
         if (widget.workspaceCategory.id != noneId &&
-            stringWorkspaces[widget.workspaceCategory.id]!.isNotEmpty)
+            acWorkspaces[widget.workspaceCategory.id]!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Text(widget.workspaceCategory.title,
@@ -36,19 +36,19 @@ class _WorkspaceCategoryBlockInDrawerState
         ReorderableColumn(
             children: [
               for (int index = 0;
-                  index < stringWorkspaces[widget.workspaceCategory.id]!.length;
+                  index < acWorkspaces[widget.workspaceCategory.id]!.length;
                   index++)
                 ChangeWorkspaceCard(
                     key: Key(UniqueKey().toString()),
                     isInList: true,
                     stringWorkspace:
-                        stringWorkspaces[widget.workspaceCategory.id]![index],
+                        acWorkspaces[widget.workspaceCategory.id]![index],
                     workspaceCategoryId: widget.workspaceCategory.id,
                     indexInStringWorkspaces: index),
             ],
             onReorder: (oldIndex, newIndex) {
               final List<String> stringWorkspaceList =
-                  stringWorkspaces[widget.workspaceCategory.id]!;
+                  acWorkspaces[widget.workspaceCategory.id]!;
               final String reorderedWorkspace =
                   stringWorkspaceList.removeAt(oldIndex);
               stringWorkspaceList.insert(newIndex, reorderedWorkspace);

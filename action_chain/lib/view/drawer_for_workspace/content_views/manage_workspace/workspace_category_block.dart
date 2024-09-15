@@ -1,7 +1,7 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class WorkspaceCategoryBlock extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(
                       top: 12.0,
-                      bottom: stringWorkspaces[workspaceCategory.id]!.isNotEmpty
+                      bottom: acWorkspaces[workspaceCategory.id]!.isNotEmpty
                           ? 5.0
                           : 12),
                   child: Row(
@@ -105,19 +105,19 @@ class WorkspaceCategoryBlock extends StatelessWidget {
                     // body
                     for (int indexInStringWorkspaces = 0;
                         indexInStringWorkspaces <
-                            stringWorkspaces[workspaceCategory.id]!.length;
+                            acWorkspaces[workspaceCategory.id]!.length;
                         indexInStringWorkspaces++)
                       ChangeWorkspaceCard(
                           key: Key(UniqueKey().toString()),
                           isInList: true,
-                          stringWorkspace: stringWorkspaces[
-                              workspaceCategory.id]![indexInStringWorkspaces],
+                          stringWorkspace: acWorkspaces[workspaceCategory.id]![
+                              indexInStringWorkspaces],
                           workspaceCategoryId: workspaceCategory.id,
                           indexInStringWorkspaces: indexInStringWorkspaces)
                   ],
                   onReorder: (oldIndex, newIndex) {
                     final List<String> stringWorkspaceList =
-                        stringWorkspaces[workspaceCategory.id]!;
+                        acWorkspaces[workspaceCategory.id]!;
                     final String reorderedWorkspace =
                         stringWorkspaceList.removeAt(oldIndex);
                     stringWorkspaceList.insert(newIndex, reorderedWorkspace);

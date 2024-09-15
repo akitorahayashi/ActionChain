@@ -38,10 +38,10 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
               ? currentWorkspace.savedChains
               : currentWorkspace.keepedChains)[widget.categoryOfThisChain.id]
           ?[widget.indexOfThisChainInChains] ??
-      ACChain(title: "", methods: []);
+      ACChain(title: "", actodos: []);
 
   bool get isComplited => (() {
-        for (ACToDo method in chainOfThisPage.methods) {
+        for (ACToDo method in chainOfThisPage.actodos) {
           if (!method.isChecked) {
             return false;
           }
@@ -127,7 +127,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                           context: context,
                                           chainName: chainOfThisPage.title,
                                           actionMethods:
-                                              chainOfThisPage.methods,
+                                              chainOfThisPage.actodos,
                                           indexOfChain:
                                               widget.indexOfThisChainInChains,
                                           selectedCategoryId:
@@ -174,7 +174,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                                 chainName:
                                                     chainOfThisPage.title,
                                                 actionMethods:
-                                                    chainOfThisPage.methods,
+                                                    chainOfThisPage.actodos,
                                                 selectedCategoryId: widget
                                                     .categoryOfThisChain.id,
                                                 oldCategoryId:
@@ -220,7 +220,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         final int nummberOfActionMethods = (() {
                                           int counter = 0;
                                           for (ACToDo method
-                                              in chainOfThisPage.methods) {
+                                              in chainOfThisPage.actodos) {
                                             if (method.steps.isEmpty) {
                                               counter++;
                                             } else {
@@ -282,7 +282,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                               children: [
                                 for (int indexOfThisActionMethod = 0;
                                     indexOfThisActionMethod <
-                                        chainOfThisPage.methods.length;
+                                        chainOfThisPage.actodos.length;
                                     indexOfThisActionMethod++)
                                   ActionMethodCard(
                                       key: Key(UniqueKey().toString()),
@@ -291,17 +291,17 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                       isInKeepedChain: !widget.isSavedChain,
                                       disableSliderable: true,
                                       disableTapGesture: widget.isSavedChain,
-                                      actionMethods: chainOfThisPage.methods,
+                                      actionMethods: chainOfThisPage.actodos,
                                       indexOfThisActionMethod:
                                           indexOfThisActionMethod,
                                       actionMethodData: chainOfThisPage
-                                          .methods[indexOfThisActionMethod],
+                                          .actodos[indexOfThisActionMethod],
                                       editAction: null)
                               ],
                               onReorder: (oldIndex, newIndex) {
                                 final ACToDo reorderedActionMethod =
-                                    chainOfThisPage.methods.removeAt(oldIndex);
-                                chainOfThisPage.methods
+                                    chainOfThisPage.actodos.removeAt(oldIndex);
+                                chainOfThisPage.actodos
                                     .insert(newIndex, reorderedActionMethod);
                                 setState(() {});
                                 if (widget.isSavedChain) {

@@ -1,4 +1,6 @@
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/constants/global_keys.dart';
@@ -7,20 +9,20 @@ import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-class EditWorkspaceDialog extends StatefulWidget {
+class EditACWorkspaceDialog extends StatefulWidget {
   final String? oldWorkspaceCategoryId;
   final int? oldWorkspaceIndex;
-  const EditWorkspaceDialog(
+  const EditACWorkspaceDialog(
       {Key? key,
       required this.oldWorkspaceCategoryId,
       required this.oldWorkspaceIndex})
       : super(key: key);
 
   @override
-  State<EditWorkspaceDialog> createState() => _EditWorkspaceDialogState();
+  State<EditACWorkspaceDialog> createState() => _EditACWorkspaceDialogState();
 }
 
-class _EditWorkspaceDialogState extends State<EditWorkspaceDialog> {
+class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
   String? _selectedWorkspaceCategoryId;
   bool isInitialized = false;
   final TextEditingController _workspaceNameInputController =
@@ -30,7 +32,7 @@ class _EditWorkspaceDialogState extends State<EditWorkspaceDialog> {
     if (widget.oldWorkspaceCategoryId != null && !isInitialized) {
       isInitialized = true;
       _selectedWorkspaceCategoryId = widget.oldWorkspaceCategoryId;
-      _workspaceNameInputController.text = json.decode(stringWorkspaces[
+      _workspaceNameInputController.text = json.decode(acWorkspaces[
           widget.oldWorkspaceCategoryId]![widget.oldWorkspaceIndex!])["name"];
     }
     return Dialog(
@@ -145,8 +147,7 @@ class _EditWorkspaceDialogState extends State<EditWorkspaceDialog> {
                       // workspacesを更新
                       if (widget.oldWorkspaceCategoryId == null) {
                         // add action
-                        stringWorkspaces[
-                                _selectedWorkspaceCategoryId ?? noneId]!
+                        acWorkspaces[_selectedWorkspaceCategoryId ?? noneId]!
                             .add(json.encode(ACWorkspace(
                                 name: _enteredWorkspaceName,
                                 chainCategories: [
@@ -164,15 +165,14 @@ class _EditWorkspaceDialogState extends State<EditWorkspaceDialog> {
                       } else {
                         // edit action
                         final ACWorkspace editedWorkspace =
-                            ACWorkspace.fromJson(json.decode(stringWorkspaces[
-                                    widget.oldWorkspaceCategoryId!]![
-                                widget.oldWorkspaceIndex!]));
+                            ACWorkspace.fromJson(json.decode(
+                                acWorkspaces[widget.oldWorkspaceCategoryId!]![
+                                    widget.oldWorkspaceIndex!]));
                         editedWorkspace.name = _enteredWorkspaceName;
                         // 消していれる
-                        stringWorkspaces[widget.oldWorkspaceCategoryId]!
+                        acWorkspaces[widget.oldWorkspaceCategoryId]!
                             .removeAt(widget.oldWorkspaceIndex!);
-                        stringWorkspaces[
-                                _selectedWorkspaceCategoryId ?? noneId]!
+                        acWorkspaces[_selectedWorkspaceCategoryId ?? noneId]!
                             .insert(widget.oldWorkspaceIndex!,
                                 json.encode(editedWorkspace.toJson()));
                         simpleAlert(
@@ -184,7 +184,7 @@ class _EditWorkspaceDialogState extends State<EditWorkspaceDialog> {
                       drawerForWorkspaceKey.currentState?.setState(() {});
                       manageWorkspacePageKey.currentState?.setState(() {});
                       homePageKey.currentState?.setState(() {});
-                      settingData.vibrate();
+                      ACVibration.vibrate();
                       // workspacesをセーブする
                       ACWorkspace.saveStringWorkspaces();
                     } else {

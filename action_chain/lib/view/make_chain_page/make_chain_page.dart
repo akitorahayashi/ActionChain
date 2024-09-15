@@ -104,7 +104,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
       // 編集モードの処理
       _selectedChainCategoryId = widget.selectedCategoryId;
       _chainTitleInputController.text = ACWorkspace.currentChain!.title;
-      _addedActionMethods = ACWorkspace.currentChain!.methods;
+      _addedActionMethods = ACWorkspace.currentChain!.actodos;
     }
   }
 
@@ -665,7 +665,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                       title:
                                                           _chainTitleInputController
                                                               .text,
-                                                      methods:
+                                                      actodos:
                                                           _addedActionMethods,
                                                     ),
                                                     releaseEditModeAction: () {
@@ -695,7 +695,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                         ..title =
                                                             _chainTitleInputController
                                                                 .text
-                                                        ..methods = ACToDo
+                                                        ..actodos = ACToDo
                                                             .getNewMethods(
                                                                 selectedMethods:
                                                                     _addedActionMethods);
@@ -744,7 +744,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                       title:
                                                           _chainTitleInputController
                                                               .text,
-                                                      methods:
+                                                      actodos:
                                                           _addedActionMethods),
                                                   releaseEditModeAction: () {
                                                     widget.oldCategoryId = null;
@@ -772,7 +772,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                   title:
                                                       _chainTitleInputController
                                                           .text,
-                                                  methods: _addedActionMethods);
+                                                  actodos: _addedActionMethods);
                                               ACWorkspace.saveCurrentChain();
                                               Navigator.pop(context, {
                                                 "selectedCategoryId":

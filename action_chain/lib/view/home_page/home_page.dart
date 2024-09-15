@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          for (ACToDo actionMethod in ACWorkspace.currentChain!.methods) {
+          for (ACToDo actionMethod in ACWorkspace.currentChain!.actodos) {
             actionMethod.isChecked = false;
             if (actionMethod.steps.isNotEmpty) {
               for (ACStep step in actionMethod.steps) {
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
   // チェック済みのmethodの数を数える関数
   int countCheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.methods) {
+    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
       if (methodInSelectedChain.steps.isEmpty) {
         if (methodInSelectedChain.isChecked) {
           counter++;
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
 
   int totalNumberOfUncheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.methods) {
+    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
       if (methodInSelectedChain.steps.isNotEmpty) {
         counter += methodInSelectedChain.steps.length;
       } else {
@@ -168,7 +168,7 @@ class _HomePageState extends State<HomePage> {
           // カウントする
           final int nummberOfActionMethods = (() {
             int counter = 0;
-            for (ACToDo method in ACWorkspace.currentChain!.methods) {
+            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
               if (method.steps.isEmpty) {
                 counter++;
               } else {
@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
           // 初期化
           if (isLoopMode) {
             // チェックマークを外す
-            for (ACToDo method in ACWorkspace.currentChain!.methods) {
+            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
               method.isChecked = false;
               for (ACStep step in method.steps) {
                 step.isChecked = false;
@@ -404,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                                         for (int indexOfActionMethod = 0;
                                             indexOfActionMethod <
                                                 ACWorkspace.currentChain!
-                                                    .methods.length;
+                                                    .actodos.length;
                                             indexOfActionMethod++)
                                           ActionMethodCard(
                                               key: Key(UniqueKey().toString()),
@@ -415,20 +415,20 @@ class _HomePageState extends State<HomePage> {
                                               disableTapGesture: false,
                                               // action method
                                               actionMethods: ACWorkspace
-                                                  .currentChain!.methods,
+                                                  .currentChain!.actodos,
                                               indexOfThisActionMethod:
                                                   indexOfActionMethod,
                                               actionMethodData: ACWorkspace
                                                   .currentChain!
-                                                  .methods[indexOfActionMethod],
+                                                  .actodos[indexOfActionMethod],
                                               editAction: () =>
                                                   goToMakeChainPage()),
                                       ],
                                       onReorder: (oldIndex, newIndex) {
                                         final ACToDo reorderedMethod =
-                                            ACWorkspace.currentChain!.methods
+                                            ACWorkspace.currentChain!.actodos
                                                 .removeAt(oldIndex);
-                                        ACWorkspace.currentChain!.methods
+                                        ACWorkspace.currentChain!.actodos
                                             .insert(newIndex, reorderedMethod);
                                         setState(() {});
                                         ACWorkspace.saveCurrentChain();

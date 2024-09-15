@@ -1,7 +1,7 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_chain.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +111,7 @@ class ACCategory {
                                   id: newCategoryId,
                                   title: _enteredCategoryName!));
                               // workspacesを更新
-                              stringWorkspaces[newCategoryId] = [];
+                              acWorkspaces[newCategoryId] = [];
 
                               manageWorkspacePageKey.currentState
                                   ?.setState(() {});
@@ -408,7 +408,7 @@ class ACCategory {
                               final ACCategory removedCategory =
                                   workspaceCategories
                                       .removeAt(indexOfCategoryInCategories);
-                              stringWorkspaces.remove(removedCategory.id);
+                              acWorkspaces.remove(removedCategory.id);
                               manageWorkspacePageKey.currentState
                                   ?.setState(() {});
                               // 保存
@@ -435,14 +435,14 @@ class ACCategory {
   // --- save ---
 
   static void saveChainCategoriesInCurrentWorkspace() {
-    final decodedWorkspaceData = json.decode(stringWorkspaces[ACWorkspace
+    final decodedWorkspaceData = json.decode(acWorkspaces[ACWorkspace
         .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
     decodedWorkspaceData["chainCategories"] = ACCategory.categoriesToString(
         categories: currentWorkspace.chainCategories);
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
         ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
     SharedPreferences.getInstance().then((pref) {
-      pref.setString("stringWorkspaces", json.encode(stringWorkspaces));
+      pref.setString("stringWorkspaces", json.encode(acWorkspaces));
     });
   }
 

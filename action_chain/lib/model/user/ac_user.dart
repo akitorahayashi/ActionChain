@@ -5,7 +5,7 @@ import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_chain.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -306,7 +306,7 @@ class ACUser {
                                         categories: workspaceCategories),
                                 "stringWorkspaces":
                                     ACWorkspace.stringWorkspacesToString(
-                                        stringWorkspaces: stringWorkspaces),
+                                        stringWorkspaces: acWorkspaces),
                               });
 
                               // --- will be saved content ---
@@ -463,19 +463,19 @@ class ACUser {
       if (json.decode(mapUserData["stringWorkspaces"]).runtimeType ==
           List<dynamic>) {
         // migrate
-        stringWorkspaces = {
+        acWorkspaces = {
           noneId: json.decode(mapUserData["stringWorkspaces"]).cast<String>(),
         };
         workspaceCategories = [ACCategory(id: noneId, title: "なし")];
       } else {
-        stringWorkspaces = ACWorkspace.stringToStringWorkspaces(
+        acWorkspaces = ACWorkspace.stringToStringWorkspaces(
             stringWorkspacesData: mapUserData["stringWorkspaces"]);
         workspaceCategories = ACCategory.stringToCategories(
             stringCategoriesData: mapUserData["workspaceCategories"]);
       }
       // current workspace
       currentWorkspace = ACWorkspace.fromJson(json.decode(
-          stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+          acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
               ACWorkspace.currentWorkspaceIndex]));
       ACVibration.initVibrate();
       // 保存

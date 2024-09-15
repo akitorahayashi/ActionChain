@@ -2,33 +2,38 @@ import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/workspace/ac_workspace.dart';
+import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class ACChain {
   String title;
-  List<ACToDo> methods;
+  List<ACToDo> actodos;
 
   // コンストラクタ
-  ACChain({required this.title, required this.methods});
+  ACChain({required this.title, required this.actodos});
 
   Map<String, dynamic> toJson() {
     return {
       "title": title,
-      "methods": ACToDo.actodoArrayToJson(actodoArray: methods),
+      "actodos": actodos.map((method) {
+        return method.toJson();
+      }).toList()
     };
   }
 
   ACChain.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
-        methods = ACToDo.stringToMethods(jsonMethodsData: jsonData["methods"]);
+        actodos = jsonData["actodos"].map((jsonAcToDoData) {
+          return ACToDo.fromJson(jsonAcToDoData);
+        }).toList();
 
   void uncheckAllActionMethods() {
     bool isConducted = false;
-    for (ACToDo actionMethod in methods) {
+    for (ACToDo actionMethod in actodos) {
       if (actionMethod.isChecked) {
         isConducted = true;
         actionMethod.isChecked = false;
@@ -63,11 +68,11 @@ class ACChain {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          settingData.vibrate();
+          ACVibration.vibrate();
           // detail -> collection -> home
           Navigator.pop(context);
           ACWorkspace.currentChain =
-              ACChain(title: chainName, methods: actionMethods);
+              ACChain(title: chainName, actodos: actionMethods);
           removeKeepedChainAction();
           Future<void>.delayed(const Duration(milliseconds: 100))
               .then((value) => Navigator.pop(context, <String, dynamic>{
@@ -94,7 +99,7 @@ class ACChain {
             "Action Chainを${wantToKeep ? "キープ" : "保存"}することで簡単に呼び出して使えるようになります",
         yesAction: () {
           Navigator.pop(context);
-          settingData.vibrate();
+          ACVibration.vibrate();
           if (wantToKeep) {
             currentWorkspace.keepedChains[categoryId]!.add(selectedChain);
             releaseEditModeAction!();
@@ -102,20 +107,20 @@ class ACChain {
             Navigator.pop(context);
             simpleAlert(
                 context: context,
-                title: "キープすることに\n成功しました！",
+                title: "キープすることに\n成功しました",
                 message: null,
-                buttonText: "thank you!");
+                buttonText: "OK");
             ACChain.saveKeepedChains();
           } else {
             currentWorkspace.savedChains[categoryId]!.add(ACChain(
                 title: selectedChain.title,
-                methods: ACToDo.getNewMethods(
-                    selectedMethods: selectedChain.methods)));
+                actodos: ACToDo.getNewMethods(
+                    selectedMethods: selectedChain.actodos)));
             simpleAlert(
                 context: context,
-                title: "保村することに\n成功しました！",
+                title: "保村することに\n成功しました",
                 message: null,
-                buttonText: "thank you!");
+                buttonText: "OK");
             ACChain.saveSavedChains();
           }
         });
@@ -144,32 +149,32 @@ class ACChain {
             ACChain.saveKeepedChains();
           }
           selectChainWallKey.currentState?.setState(() {});
-          settingData.vibrate();
+          ACVibration.vibrate();
           simpleAlert(
               context: context,
-              title: "削除することに\n成功しました!",
+              title: "削除することに\n成功しました",
               message: null,
-              buttonText: "thank you!");
+              buttonText: "OK");
         });
   }
 
   // --- save ---
   static void saveSavedChains() {
-    final decodedWorkspaceData = json.decode(stringWorkspaces[ACWorkspace
+    final decodedWorkspaceData = json.decode(acWorkspaces[ACWorkspace
         .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
     decodedWorkspaceData["savedChains"] =
         ACChain.chainsToString(chains: currentWorkspace.savedChains);
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
         ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
     ACWorkspace.saveStringWorkspaces();
   }
 
   static void saveKeepedChains() {
-    final decodedWorkspaceData = json.decode(stringWorkspaces[ACWorkspace
+    final decodedWorkspaceData = json.decode(acWorkspaces[ACWorkspace
         .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
     decodedWorkspaceData["keepedChains"] =
         ACChain.chainsToString(chains: currentWorkspace.keepedChains);
-    stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
+    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
         ACWorkspace.currentWorkspaceIndex] = json.encode(decodedWorkspaceData);
     ACWorkspace.saveStringWorkspaces();
   }
