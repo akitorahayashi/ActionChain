@@ -5,7 +5,7 @@ import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +23,8 @@ class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
   @override
   void initState() {
     super.initState();
-    if (!admob.ticketIsActive) {
-      admob.loadBanner();
+    if (!acads.ticketIsActive) {
+      acads.loadBanner();
     }
   }
 
@@ -156,7 +156,7 @@ class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
             ])),
           ],
         ),
-        Positioned(bottom: 0, child: admob.getBannerAds(context: context)),
+        Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
       ]),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class ACStep {
@@ -11,7 +12,7 @@ class ACStep {
 
   // --- json convert ---
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       "title": title,
       "isChecked": isChecked,
@@ -22,31 +23,17 @@ class ACStep {
       : title = jsonData["title"],
         isChecked = jsonData["isChecked"];
 
-  // カスタムクラスの配列をStringにする関数
-  // [instance] → [String] → String
-  static String stepsToString({required List<ACStep> steps}) {
-    final List<String> jsonStepsData = steps.map((step) {
-      final Map<String, dynamic> willEncodedData = step.toMap();
-      return json.encode(willEncodedData);
+// --- json convert
+
+  static List<dynamic> stepsToJson({required List<ACStep> acsteps}) {
+    return acsteps.map((acstepData) {
+      return acstepData.toJson();
     }).toList();
-
-    final String shouldSavedData = json.encode(jsonStepsData);
-
-    return shouldSavedData;
   }
 
-  // Stringからカスタムクラスに変換する関数
-  // String → [String] → [instance]
-  static List<ACStep> stringToSteps({required String jsonStepsData}) {
-    final stringInstanceList = json.decode(jsonStepsData);
-
-    var instanceList = stringInstanceList.map((stepData) {
-      final decodedStepData = json.decode(stepData);
-      return ACStep.fromJson(decodedStepData);
+  static List<ACStep> jsonToACStep({required List<dynamic> jsonStepsData}) {
+    return jsonStepsData.map((jsonACStepData) {
+      return ACStep.fromJson(jsonACStepData);
     }).toList();
-
-    return instanceList.cast<ACStep>() as List<ACStep>;
   }
-
-  // --- json convert ---
 }

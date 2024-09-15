@@ -7,7 +7,7 @@ import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_chain.dart';
 import 'package:action_chain/constants/theme.dart';
@@ -52,8 +52,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
   @override
   void initState() {
     super.initState();
-    if (!admob.ticketIsActive) {
-      admob.loadBanner();
+    if (!acads.ticketIsActive) {
+      acads.loadBanner();
     }
   }
 
@@ -121,8 +121,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                               // 編集
                               ControllIconButton(
                                   onPressed: () {
-                                    if (admob.bannerAdsIsEnabled ||
-                                        admob.ticketIsActive) {
+                                    if (acads.bannerAdsIsEnabled ||
+                                        acads.ticketIsActive) {
                                       ACChain.askTojumpToHomePageToUseThisChain(
                                           context: context,
                                           chainName: chainOfThisPage.title,
@@ -148,7 +148,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                             }
                                           });
                                     } else {
-                                      admob.confirmToGoToProPageToShowAd(
+                                      acads.confirmToGoToProPageToShowAd(
                                           context: context,
                                           superKey: chainDetailPageKey,
                                           isBannerService: true);
@@ -166,8 +166,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                 // 実行ボタン
                                 firstChild: ControllIconButton(
                                     onPressed: () {
-                                      if (admob.bannerAdsIsEnabled ||
-                                          admob.ticketIsActive) {
+                                      if (acads.bannerAdsIsEnabled ||
+                                          acads.ticketIsActive) {
                                         ACChain
                                             .askTojumpToHomePageToUseThisChain(
                                                 context: context,
@@ -199,7 +199,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                                   }
                                                 });
                                       } else {
-                                        admob.confirmToGoToProPageToShowAd(
+                                        acads.confirmToGoToProPageToShowAd(
                                             context: context,
                                             superKey: chainDetailPageKey,
                                             isBannerService: true);
@@ -321,7 +321,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
               ]))
             ],
           ),
-          Positioned(bottom: 0, child: admob.getBannerAds(context: context)),
+          Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
         ],
       ),
     );

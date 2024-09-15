@@ -3,8 +3,8 @@ import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_chain.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/external/admob.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -86,7 +86,7 @@ class ACUser {
       } else {
         actionChainUser.accontSignedInWithGoogle = await googleSignIn.signIn();
         if (actionChainUser.accontSignedInWithGoogle != null) {
-          settingData.vibrate();
+          ACVibration.vibrate();
         }
       }
     } catch (e) {
@@ -293,16 +293,14 @@ class ACUser {
                                 // action chainに関する情報
                                 "numberOfComplitedActionMethods":
                                     ACChain.numberOfComplitedActionMethods,
-                                "settingData":
-                                    json.encode(settingData.toJson()),
-                                "admob": json.encode(admob.toJson()),
+                                "settingData": settingData.toJson(),
                                 // workspace
                                 "currentWorkspaceCategoryId":
                                     ACWorkspace.currentWorkspaceCategoryId,
                                 "currentWorkspaceIndex":
                                     ACWorkspace.currentWorkspaceIndex,
-                                "currentChain": json
-                                    .encode(ACWorkspace.currentChain?.toJson()),
+                                "currentChain":
+                                    ACWorkspace.currentChain?.toJson(),
                                 "workspaceCategories":
                                     ACCategory.categoriesToString(
                                         categories: workspaceCategories),
@@ -398,12 +396,12 @@ class ACUser {
                                 print("${iO + 1}番目のファイルを保存");
                               }
                               print("Google Driveに全ファイルのバックアップ完了");
-                              settingData.vibrate();
+                              ACVibration.vibrate();
                               simpleAlert(
                                   context: superContext,
-                                  title: "バックアップ成功！",
+                                  title: "バックアップ成功",
                                   message:
-                                      "現在サインインされているGoogleアカウントにバックアップを作成することに成功しました!!",
+                                      "現在サインインされているGoogleアカウントにバックアップを作成することに成功しました",
                                   buttonText: "OK");
                               settingPageKey.currentState?.setState(() {
                                 progress?.dismiss();
@@ -453,7 +451,6 @@ class ACUser {
           mapUserData["numberOfComplitedActionMethods"] ?? 0;
       settingData =
           SettingData.fromJson(json.decode(mapUserData["settingData"]!));
-      admob = Admob.fromJson(json.decode(mapUserData["admob"]!));
       // workspace
       ACWorkspace.currentWorkspaceCategoryId =
           mapUserData["currentWorkspaceCategoryId"] ?? noneId;
@@ -480,10 +477,9 @@ class ACUser {
       currentWorkspace = ACWorkspace.fromJson(json.decode(
           stringWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
               ACWorkspace.currentWorkspaceIndex]));
-      settingData.initVibrate();
+      ACVibration.initVibrate();
       // 保存
       settingData.saveSettings();
-      admob.saveAdsData();
       ACCategory.saveWorkspaceCategories();
       ACWorkspace.saveStringWorkspaces();
       SharedPreferences.getInstance().then((pref) {
@@ -550,7 +546,7 @@ class ACUser {
                 readUserData(stringUserData: retrievedStringUserData);
                 actionChainAppKey.currentState?.setState(() {});
                 myPageKey.currentState?.setState(() {});
-                settingData.vibrate();
+                ACVibration.vibrate();
                 simpleAlert(
                     context: context,
                     title: "復元が完了しました！",
@@ -621,7 +617,7 @@ class ACUser {
         for (var iO = 0; iO < savedFiles.files!.length; iO++) {
           await googleDriveApiO.files.delete(savedFiles.files![iO].id!);
         }
-        settingData.vibrate();
+        ACVibration.vibrate();
         simpleAlert(
             context: context,
             title: "削除することに\n成功しました!",

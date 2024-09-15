@@ -15,7 +15,7 @@ import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/workspace/ac_workspace.dart';
 import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/external/admob.dart';
+import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_chain.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
       totalNumberOfUncheckedMethods() == countCheckedMethods();
 
   void goToMakeChainPage() async {
-    if (admob.bannerAdsIsEnabled || admob.ticketIsActive) {
+    if (acads.bannerAdsIsEnabled || acads.ticketIsActive) {
       final Map<String, dynamic>? _chainData =
           await Navigator.push(context, MaterialPageRoute(builder: (context) {
         return MakeChainPage(
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
       ACWorkspace.saveCurrentChain();
       homePageKey.currentState?.setState(() {});
     } else {
-      admob.confirmToGoToProPageToShowAd(
+      acads.confirmToGoToProPageToShowAd(
           context: context, superKey: homePageKey, isBannerService: true);
     }
   }
@@ -217,8 +217,8 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     purchase.initPlatformState();
-    if (!admob.ticketIsActive) {
-      admob.loadBanner();
+    if (!acads.ticketIsActive) {
+      acads.loadBanner();
     }
     // 画面の描画が終わったタイミングで処理
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -319,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                             },
                             onDoubleTap: !enterSerialCodeMode
                                 ? null
-                                : () => admob.letUserEnterSerialCode(
+                                : () => acads.letUserEnterSerialCode(
                                     context: context),
                             child: (() {
                               return isDevelopperMode
@@ -540,11 +540,11 @@ class _HomePageState extends State<HomePage> {
           ActionChainBottomNavBar(),
           // buttons
           Positioned(
-            bottom: (admob.ticketIsActive ? 75 : 60) *
+            bottom: (acads.ticketIsActive ? 75 : 60) *
                     MediaQuery.of(context).size.height /
                     896 -
                 65 / 2 +
-                (admob.ticketIsActive ? 0 : 50),
+                (acads.ticketIsActive ? 0 : 50),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -629,7 +629,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Positioned(bottom: 0, child: admob.getBannerAds(context: context)),
+          Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
         ],
       ),
     );

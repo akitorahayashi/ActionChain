@@ -5,9 +5,7 @@ import 'app.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-bool isDevelopperMode = false;
-bool isAdDevelopperMode = false;
-bool adIsClosed = true;
+bool adTestMode = true;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
