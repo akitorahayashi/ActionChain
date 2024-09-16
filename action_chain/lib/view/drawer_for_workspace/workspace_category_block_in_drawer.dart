@@ -1,3 +1,4 @@
+import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_category.dart';
@@ -47,7 +48,7 @@ class _WorkspaceCategoryBlockInDrawerState
                     indexInStringWorkspaces: index),
             ],
             onReorder: (oldIndex, newIndex) {
-              final List<String> stringWorkspaceList =
+              final List<dynamic> stringWorkspaceList =
                   acWorkspaces[widget.workspaceCategory.id]!;
               final String reorderedWorkspace =
                   stringWorkspaceList.removeAt(oldIndex);

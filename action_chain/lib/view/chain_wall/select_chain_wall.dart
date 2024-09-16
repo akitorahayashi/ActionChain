@@ -1,6 +1,5 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/model/ac_category.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
@@ -20,14 +19,6 @@ class SelectChainWall extends StatefulWidget {
 }
 
 class _SelectChainWallState extends State<SelectChainWall> {
-  @override
-  void initState() {
-    super.initState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +98,6 @@ class _SelectChainWallState extends State<SelectChainWall> {
             ))
           ],
         ),
-        Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
       ]),
     );
   }

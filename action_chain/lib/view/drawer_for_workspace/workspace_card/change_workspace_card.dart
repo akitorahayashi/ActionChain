@@ -1,3 +1,4 @@
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/notify_current_workspace_is_changed.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
@@ -54,7 +55,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
                   currentWorkspace.changeCurrentWorkspace(
                       selectedWorkspaceCategoryId: workspaceCategoryId,
                       newWorkspaceIndex: indexInStringWorkspaces);
-                  settingData.vibrate();
+                  ACVibration.vibrate();
                   Navigator.pop(context);
                   notifyCurrentWorkspaceIsChanged(
                       context: context,
