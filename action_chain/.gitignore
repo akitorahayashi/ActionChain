@@ -32,6 +32,8 @@ flutter_export_environment.xcconfig
 
 lib/firebase_options.dart
 
+.DS_Store
+
 # Pubによって作成されたファイルとディレクトリ
 .dart_tool/
 .packages
