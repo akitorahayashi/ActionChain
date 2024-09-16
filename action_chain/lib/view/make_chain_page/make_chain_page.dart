@@ -6,15 +6,13 @@ import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
-import 'package:action_chain/model/tools/purchase.dart';
-import 'package:action_chain/view/pro_page/pro_page.dart';
+
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,31 +45,22 @@ class _MakeChainPageState extends State<MakeChainPage> {
   int? _indexOfEditedActionInActions;
 
   void _addOrEditMethodAction() {
-    if (acads.bannerAdsIsEnabled || acads.ticketIsActive) {
-      if (_indexOfEditedActionInActions == null) {
-        _addedActionMethods.add(ACToDo(
-            title: _actionTitleInputController.text, steps: _addedSteps));
-      } else {
-        _addedActionMethods.removeAt(_indexOfEditedActionInActions!);
-        _addedActionMethods.insert(
-            _indexOfEditedActionInActions!,
-            ACToDo(
-                title: _actionTitleInputController.text, steps: _addedSteps));
-      }
-      // 追加カードを初期化する
-      _actionTitleInputController.clear();
-      _indexOfEditedActionInActions = null;
-      // step
-      _addedSteps = [];
-      _stepTitleInputController.clear();
-      setState(() {});
+    if (_indexOfEditedActionInActions == null) {
+      _addedActionMethods.add(
+          ACToDo(title: _actionTitleInputController.text, steps: _addedSteps));
     } else {
-      acads.confirmToGoToProPageToShowAd(
-          context: context,
-          superKey: makeActionChainPageKey,
-          isBannerService: true);
+      _addedActionMethods.removeAt(_indexOfEditedActionInActions!);
+      _addedActionMethods.insert(_indexOfEditedActionInActions!,
+          ACToDo(title: _actionTitleInputController.text, steps: _addedSteps));
     }
-    settingData.vibrate();
+    // 追加カードを初期化する
+    _actionTitleInputController.clear();
+    _indexOfEditedActionInActions = null;
+    // step
+    _addedSteps = [];
+    _stepTitleInputController.clear();
+    setState(() {});
+    ACVibration.vibrate();
   }
 
   // step追加系の変数
@@ -91,15 +80,12 @@ class _MakeChainPageState extends State<MakeChainPage> {
     }
     _stepTitleInputController.clear();
     setState(() {});
-    settingData.vibrate();
+    ACVibration.vibrate();
   }
 
   @override
   void initState() {
     super.initState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
     if (ACWorkspace.currentChain != null) {
       // 編集モードの処理
       _selectedChainCategoryId = widget.selectedCategoryId;
@@ -126,57 +112,34 @@ class _MakeChainPageState extends State<MakeChainPage> {
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
-                  pageTitle: "Make Action Chain",
-                  titleFontSize: 16,
-                  leadingButtonOnPressed: () {
-                    // 実行したりしないで戻ってしまうのか確認する
-                    if (_addedActionMethods.isEmpty) {
-                      // 元のページに戻る
-                      Navigator.pop(context);
-                    } else {
-                      yesNoAlert(
-                          context: context,
-                          title: "本当に戻りますか?",
-                          message: "作成されたAction Chainが\n完全に削除されます",
-                          yesAction: () {
-                            Navigator.pop(context);
-                            Navigator.pop(context);
-                          });
-                    }
-                  },
-                  leadingIcon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                  trailingButtonOnPressed: () async {
-                    await Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return ProPage(
-                        key: proPageKey,
-                      );
-                    }));
-                  },
-                  trailingIcon: isDevelopperMode
-                      ? const Icon(
-                          Icons.construction,
-                          color: Colors.white,
-                        )
-                      : purchase.havePurchased
-                          ? const Icon(
-                              FontAwesomeIcons.crown,
-                              color: Colors.white,
-                              size: 17,
-                            )
-                          : Transform.rotate(
-                              angle: 3.14,
-                              child: const Icon(
-                                Icons.auto_awesome,
-                                color: Colors.white,
-                              ))),
+                pageTitle: "Make Action Chain",
+                titleFontSize: 16,
+                leadingButtonOnPressed: () {
+                  // 実行したりしないで戻ってしまうのか確認する
+                  if (_addedActionMethods.isEmpty) {
+                    // 元のページに戻る
+                    Navigator.pop(context);
+                  } else {
+                    yesNoAlert(
+                        context: context,
+                        title: "本当に戻りますか?",
+                        message: "作成されたAction Chainが\n完全に削除されます",
+                        yesAction: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        });
+                  }
+                },
+                leadingIcon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.white,
+                ),
+                trailingButtonOnPressed: null,
+                trailingIcon: null,
+              ),
               SliverList(
                   delegate: SliverChildListDelegate([
                 const SizedBox(height: 10),
-                acads.getBannerAds(context: context),
                 // action chainの体裁を整える
                 GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
@@ -451,7 +414,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                 _stepTitleInputController.text =
                                                     _addedSteps[index].title;
                                                 _indexOfEditedStep = index;
-                                                settingData.vibrate();
+                                                ACVibration.vibrate();
                                                 setState(() {});
                                               },
                                               child: Text(
@@ -650,73 +613,63 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             _addedActionMethods.isEmpty)
                                         ? null
                                         : () {
-                                            if (acads.bannerAdsIsEnabled ||
-                                                acads.ticketIsActive) {
-                                              if (widget.oldCategoryId ==
-                                                  null) {
-                                                // 新しく作成する
-                                                ActionChain.askToSaveChain(
-                                                    context: context,
-                                                    wantToKeep: false,
-                                                    categoryId:
-                                                        _selectedChainCategoryId ??
-                                                            noneId,
-                                                    selectedChain: ActionChain(
-                                                      title:
-                                                          _chainTitleInputController
-                                                              .text,
-                                                      actodos:
-                                                          _addedActionMethods,
-                                                    ),
-                                                    releaseEditModeAction: () {
-                                                      widget.oldCategoryId =
-                                                          null;
-                                                      widget.indexOfChainInSavedChains =
-                                                          null;
-                                                    });
-                                              } else {
-                                                // 上書きする
-                                                yesNoAlert(
-                                                    context: context,
-                                                    title: "上書きしますか？",
-                                                    message:
-                                                        "既存のSaved Chainを\n上書きすることができます",
-                                                    yesAction: () {
-                                                      Navigator.pop(context);
-                                                      // 上書きする
-                                                      final ActionChain
-                                                          overwrittenChain =
-                                                          currentWorkspace
-                                                                  .savedChains[
-                                                              widget
-                                                                  .oldCategoryId]![widget
-                                                              .indexOfChainInSavedChains!];
-                                                      overwrittenChain
-                                                        ..title =
-                                                            _chainTitleInputController
-                                                                .text
-                                                        ..actodos = ACToDo
-                                                            .getNewMethods(
-                                                                selectedMethods:
-                                                                    _addedActionMethods);
-
-                                                      simpleAlert(
-                                                          context: context,
-                                                          title:
-                                                              "上書きすることに\n成功しました！",
-                                                          message: null,
-                                                          buttonText:
-                                                              "thank you!");
-                                                      ActionChain
-                                                          .saveSavedChains();
-                                                    });
-                                              }
-                                            } else {
-                                              acads.confirmToGoToProPageToShowAd(
+                                            if (widget.oldCategoryId == null) {
+                                              // 新しく作成する
+                                              ActionChain.askToSaveChain(
                                                   context: context,
-                                                  superKey:
-                                                      makeActionChainPageKey,
-                                                  isBannerService: true);
+                                                  wantToKeep: false,
+                                                  categoryId:
+                                                      _selectedChainCategoryId ??
+                                                          noneId,
+                                                  selectedChain: ActionChain(
+                                                    title:
+                                                        _chainTitleInputController
+                                                            .text,
+                                                    actodos:
+                                                        _addedActionMethods,
+                                                  ),
+                                                  releaseEditModeAction: () {
+                                                    widget.oldCategoryId = null;
+                                                    widget.indexOfChainInSavedChains =
+                                                        null;
+                                                  });
+                                            } else {
+                                              // 上書きする
+                                              yesNoAlert(
+                                                  context: context,
+                                                  title: "上書きしますか？",
+                                                  message:
+                                                      "既存のSaved Chainを\n上書きすることができます",
+                                                  yesAction: () {
+                                                    Navigator.pop(context);
+                                                    // 上書きする
+                                                    final ActionChain
+                                                        overwrittenChain =
+                                                        currentWorkspace
+                                                                .savedChains[
+                                                            widget
+                                                                .oldCategoryId]![widget
+                                                            .indexOfChainInSavedChains!];
+                                                    overwrittenChain
+                                                      ..title =
+                                                          _chainTitleInputController
+                                                              .text
+                                                      ..actodos =
+                                                          ACToDo.getNewMethods(
+                                                              selectedMethods:
+                                                                  _addedActionMethods);
+
+                                                    simpleAlert(
+                                                        context: context,
+                                                        title:
+                                                            "上書きすることに\n成功しました",
+                                                        message: null,
+                                                        buttonText: "OK");
+                                                    ActionChain
+                                                        .saveActionChains(
+                                                            isSavedChains:
+                                                                true);
+                                                  });
                                             }
                                           },
                                     iconData: widget.oldCategoryId != null
@@ -733,32 +686,23 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             _addedActionMethods.isEmpty)
                                         ? null
                                         : () {
-                                            if (acads.bannerAdsIsEnabled ||
-                                                acads.ticketIsActive) {
-                                              ActionChain.askToSaveChain(
-                                                  context: context,
-                                                  wantToKeep: true,
-                                                  categoryId:
-                                                      _selectedChainCategoryId ??
-                                                          noneId,
-                                                  selectedChain: ActionChain(
-                                                      title:
-                                                          _chainTitleInputController
-                                                              .text,
-                                                      actodos:
-                                                          _addedActionMethods),
-                                                  releaseEditModeAction: () {
-                                                    widget.oldCategoryId = null;
-                                                    widget
-                                                        .indexOfChainInSavedChains;
-                                                  });
-                                            } else {
-                                              acads.confirmToGoToProPageToShowAd(
-                                                  context: context,
-                                                  superKey:
-                                                      makeActionChainPageKey,
-                                                  isBannerService: true);
-                                            }
+                                            ActionChain.askToSaveChain(
+                                                context: context,
+                                                wantToKeep: true,
+                                                categoryId:
+                                                    _selectedChainCategoryId ??
+                                                        noneId,
+                                                selectedChain: ActionChain(
+                                                    title:
+                                                        _chainTitleInputController
+                                                            .text,
+                                                    actodos:
+                                                        _addedActionMethods),
+                                                releaseEditModeAction: () {
+                                                  widget.oldCategoryId = null;
+                                                  widget
+                                                      .indexOfChainInSavedChains;
+                                                });
                                           },
                                     iconData: Icons.label_important,
                                     textContent: "キープ"),
@@ -767,32 +711,23 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                     onPressed: _addedActionMethods.isEmpty
                                         ? null
                                         : () {
-                                            if (acads.bannerAdsIsEnabled ||
-                                                acads.ticketIsActive) {
-                                              ACWorkspace.currentChain =
-                                                  ActionChain(
-                                                      title:
-                                                          _chainTitleInputController
-                                                              .text,
-                                                      actodos:
-                                                          _addedActionMethods);
-                                              ACWorkspace.saveCurrentChain();
-                                              Navigator.pop(context, {
-                                                "selectedCategoryId":
-                                                    _selectedChainCategoryId,
-                                                "oldCategoryId":
-                                                    widget.oldCategoryId,
-                                                "indexOfChainInSavedChains":
-                                                    widget
-                                                        .indexOfChainInSavedChains
-                                              });
-                                            } else {
-                                              acads.confirmToGoToProPageToShowAd(
-                                                  context: context,
-                                                  superKey:
-                                                      makeActionChainPageKey,
-                                                  isBannerService: true);
-                                            }
+                                            ACWorkspace.currentChain =
+                                                ActionChain(
+                                                    title:
+                                                        _chainTitleInputController
+                                                            .text,
+                                                    actodos:
+                                                        _addedActionMethods);
+                                            ACWorkspace.saveCurrentChain();
+                                            Navigator.pop(context, {
+                                              "selectedCategoryId":
+                                                  _selectedChainCategoryId,
+                                              "oldCategoryId":
+                                                  widget.oldCategoryId,
+                                              "indexOfChainInSavedChains":
+                                                  widget
+                                                      .indexOfChainInSavedChains
+                                            });
                                           },
                                     iconData: Icons.near_me,
                                     textContent: "実行"),

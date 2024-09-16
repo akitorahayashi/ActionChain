@@ -1,13 +1,12 @@
-import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/components/action_method_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/theme.dart';
@@ -48,14 +47,6 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
         }
         return true;
       }());
-
-  @override
-  void initState() {
-    super.initState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,42 +113,33 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                               // 編集
                               ControllIconButton(
                                   onPressed: () {
-                                    if (acads.bannerAdsIsEnabled ||
-                                        acads.ticketIsActive) {
-                                      ActionChain
-                                          .askTojumpToHomePageToUseThisChain(
-                                              context: context,
-                                              chainName: chainOfThisPage.title,
-                                              actionMethods:
-                                                  chainOfThisPage.actodos,
-                                              indexOfChain: widget
-                                                  .indexOfThisChainInChains,
-                                              selectedCategoryId:
-                                                  widget.categoryOfThisChain.id,
-                                              oldCategoryId: widget.isSavedChain
-                                                  ? widget
-                                                      .categoryOfThisChain.id
-                                                  : null,
-                                              wantToConduct: false,
-                                              // keepedなら削除
-                                              removeKeepedChainAction: () {
-                                                if (!widget.isSavedChain) {
-                                                  currentWorkspace
-                                                      .keepedChains[widget
-                                                          .categoryOfThisChain
-                                                          .id]!
-                                                      .removeAt(widget
-                                                          .indexOfThisChainInChains);
-                                                  ActionChain
-                                                      .saveKeepedChains();
-                                                }
-                                              });
-                                    } else {
-                                      acads.confirmToGoToProPageToShowAd(
-                                          context: context,
-                                          superKey: chainDetailPageKey,
-                                          isBannerService: true);
-                                    }
+                                    ActionChain
+                                        .askTojumpToHomePageToUseThisChain(
+                                            context: context,
+                                            chainName: chainOfThisPage.title,
+                                            actionMethods:
+                                                chainOfThisPage.actodos,
+                                            indexOfChain:
+                                                widget.indexOfThisChainInChains,
+                                            selectedCategoryId:
+                                                widget.categoryOfThisChain.id,
+                                            oldCategoryId: widget.isSavedChain
+                                                ? widget.categoryOfThisChain.id
+                                                : null,
+                                            wantToConduct: false,
+                                            // keepedなら削除
+                                            removeKeepedChainAction: () {
+                                              if (!widget.isSavedChain) {
+                                                currentWorkspace.keepedChains[
+                                                        widget
+                                                            .categoryOfThisChain
+                                                            .id]!
+                                                    .removeAt(widget
+                                                        .indexOfThisChainInChains);
+                                                ActionChain.saveActionChains(
+                                                    isSavedChains: false);
+                                              }
+                                            });
                                   },
                                   iconData: Icons.edit,
                                   textContent: "編集"),
@@ -171,45 +153,34 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                 // 実行ボタン
                                 firstChild: ControllIconButton(
                                     onPressed: () {
-                                      if (acads.bannerAdsIsEnabled ||
-                                          acads.ticketIsActive) {
-                                        ActionChain
-                                            .askTojumpToHomePageToUseThisChain(
-                                                context: context,
-                                                chainName:
-                                                    chainOfThisPage.title,
-                                                actionMethods:
-                                                    chainOfThisPage.actodos,
-                                                selectedCategoryId: widget
-                                                    .categoryOfThisChain.id,
-                                                oldCategoryId:
-                                                    widget.isSavedChain
-                                                        ? widget
-                                                            .categoryOfThisChain
-                                                            .id
-                                                        : null,
-                                                indexOfChain: widget
-                                                    .indexOfThisChainInChains,
-                                                wantToConduct: true,
-                                                // keepedなら削除
-                                                removeKeepedChainAction: () {
-                                                  if (!widget.isSavedChain) {
-                                                    currentWorkspace
-                                                        .keepedChains[widget
-                                                            .categoryOfThisChain
-                                                            .id]!
-                                                        .removeAt(widget
-                                                            .indexOfThisChainInChains);
-                                                    ActionChain
-                                                        .saveKeepedChains();
-                                                  }
-                                                });
-                                      } else {
-                                        acads.confirmToGoToProPageToShowAd(
-                                            context: context,
-                                            superKey: chainDetailPageKey,
-                                            isBannerService: true);
-                                      }
+                                      ActionChain
+                                          .askTojumpToHomePageToUseThisChain(
+                                              context: context,
+                                              chainName: chainOfThisPage.title,
+                                              actionMethods:
+                                                  chainOfThisPage.actodos,
+                                              selectedCategoryId:
+                                                  widget.categoryOfThisChain.id,
+                                              oldCategoryId: widget.isSavedChain
+                                                  ? widget
+                                                      .categoryOfThisChain.id
+                                                  : null,
+                                              indexOfChain: widget
+                                                  .indexOfThisChainInChains,
+                                              wantToConduct: true,
+                                              // keepedなら削除
+                                              removeKeepedChainAction: () {
+                                                if (!widget.isSavedChain) {
+                                                  currentWorkspace
+                                                      .keepedChains[widget
+                                                          .categoryOfThisChain
+                                                          .id]!
+                                                      .removeAt(widget
+                                                          .indexOfThisChainInChains);
+                                                  ActionChain.saveActionChains(
+                                                      isSavedChains: false);
+                                                }
+                                              });
                                     },
                                     iconData: Icons.near_me,
                                     iconSize: 26,
@@ -235,17 +206,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                           }
                                           return counter;
                                         }());
-                                        // 足す
-                                        currentWorkspace
-                                                .numberOfCompletedTasksInThisWorkspace +=
-                                            nummberOfActionMethods;
-                                        ActionChain
-                                                .numberOfComplitedActionMethods +=
-                                            nummberOfActionMethods;
                                         // 更新して消す
                                         Navigator.pop(context);
-                                        settingData.showLevelAlert(
-                                            context: context);
                                         currentWorkspace.keepedChains[
                                                 widget.categoryOfThisChain.id]!
                                             .removeAt(widget
@@ -255,9 +217,10 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         homePageKey.currentState
                                             ?.setState(() {});
                                         // アラート
-                                        settingData.vibrate();
+                                        ACVibration.vibrate();
                                         // 保存
-                                        ActionChain.saveKeepedChains();
+                                        ActionChain.saveActionChains(
+                                            isSavedChains: false);
                                         ACWorkspace.saveCurrentWorkspace(
                                             selectedWorkspaceCategoryId:
                                                 ACWorkspace
@@ -266,12 +229,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                                 .currentWorkspaceIndex,
                                             selectedWorkspace:
                                                 currentWorkspace);
-                                        ActionChain.saveSavedChains();
-                                        SharedPreferences.getInstance().then(
-                                            (value) => value.setInt(
-                                                "numberOfComplitedActionMethods",
-                                                ActionChain
-                                                    .numberOfComplitedActionMethods));
+                                        ActionChain.saveActionChains(
+                                            isSavedChains: true);
                                       }),
                                   iconData: Icons.done,
                                   textContent: "完了",
@@ -311,11 +270,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                 chainOfThisPage.actodos
                                     .insert(newIndex, reorderedActionMethod);
                                 setState(() {});
-                                if (widget.isSavedChain) {
-                                  ActionChain.saveSavedChains();
-                                } else {
-                                  ActionChain.saveKeepedChains();
-                                }
+                                ActionChain.saveActionChains(
+                                    isSavedChains: widget.isSavedChain);
                               },
                             ),
                           ),
@@ -328,7 +284,6 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
               ]))
             ],
           ),
-          Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
         ],
       ),
     );

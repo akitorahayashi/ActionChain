@@ -149,11 +149,8 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                         .keepedChains)[categoryOfThisCard.id]!
                                 .insert(newIndex, reorderedChain);
                             setState(() {});
-                            if (widget.isSavedChain) {
-                              ActionChain.saveSavedChains();
-                            } else {
-                              ActionChain.saveKeepedChains();
-                            }
+                            ActionChain.saveActionChains(
+                                isSavedChains: widget.isSavedChain);
                           }
                         }))
                   ],

@@ -23,12 +23,6 @@ class IconBlock extends StatelessWidget {
           children: iconsForCheckBox[categoryNameForIcons]![iconRarity]!
               .keys
               .map((iconName) => IconCard(
-                    isEarned: adIsClosed
-                        ? true
-                        : settingData.earnedIcons[categoryNameForIcons] !=
-                                null &&
-                            settingData.earnedIcons[categoryNameForIcons]!
-                                .contains(iconName),
                     iconCategoryName: categoryNameForIcons,
                     selectedIconRarity: iconRarity,
                     iconName: iconName,

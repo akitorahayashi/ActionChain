@@ -3,17 +3,16 @@ import 'package:action_chain/components/ui/action_chain_bottom_navbar/action_cha
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/components/action_method_card.dart';
+import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/drawer_for_workspace.dart';
-import 'package:action_chain/view/home_page/effort_card_of_workspace.dart';
+// import 'package:action_chain/view/home_page/effort_card_of_workspace.dart';
 import 'package:action_chain/view/make_chain_page/make_chain_page.dart';
 import 'package:action_chain/view/chain_wall/select_chain_wall.dart';
 import 'package:action_chain/view/setting_page/setting_page.dart';
-import 'package:action_chain/view/pro_page/pro_page.dart';
 import 'package:action_chain/view/show_tutorial_page.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
-import 'package:action_chain/model/tools/purchase.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
@@ -77,7 +76,7 @@ class _HomePageState extends State<HomePage> {
             }
           }
           homePageKey.currentState?.setState(() {});
-          settingData.vibrate();
+          ACVibration.vibrate();
           ACWorkspace.saveCurrentChain();
           yesNoAlert(
               context: context,
@@ -85,14 +84,14 @@ class _HomePageState extends State<HomePage> {
               message: null,
               yesAction: () {
                 Navigator.pop(context);
-                settingData.vibrate();
+                ACVibration.vibrate();
                 _initializeHomePageContent();
                 homePageKey.currentState?.setState(() {});
                 simpleAlert(
                     context: context,
-                    title: "初期化することに\n成功しました！",
+                    title: "初期化することに\n成功しました",
                     message: null,
-                    buttonText: "thank you!");
+                    buttonText: "OK");
               });
         });
   }
@@ -133,29 +132,24 @@ class _HomePageState extends State<HomePage> {
       totalNumberOfUncheckedMethods() == countCheckedMethods();
 
   void goToMakeChainPage() async {
-    if (acads.bannerAdsIsEnabled || acads.ticketIsActive) {
-      final Map<String, dynamic>? _chainData =
-          await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return MakeChainPage(
-          key: makeActionChainPageKey,
-          selectedCategoryId: _selectedCategoryId,
-          oldCategoryId: _oldCategoryId,
-          indexOfChainInSavedChains: _indexOfChain,
-        );
-      }));
-      if (_chainData != null) {
-        _selectedCategoryId = _chainData["selectedCategoryId"];
-        _oldCategoryId = _chainData["oldCategoryId"];
-        _indexOfChain = _chainData["indexOfChainInSavedChains"];
-      } else {
-        _initializeHomePageContent();
-      }
-      ACWorkspace.saveCurrentChain();
-      homePageKey.currentState?.setState(() {});
+    final Map<String, dynamic>? _chainData =
+        await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return MakeChainPage(
+        key: makeActionChainPageKey,
+        selectedCategoryId: _selectedCategoryId,
+        oldCategoryId: _oldCategoryId,
+        indexOfChainInSavedChains: _indexOfChain,
+      );
+    }));
+    if (_chainData != null) {
+      _selectedCategoryId = _chainData["selectedCategoryId"];
+      _oldCategoryId = _chainData["oldCategoryId"];
+      _indexOfChain = _chainData["indexOfChainInSavedChains"];
     } else {
-      acads.confirmToGoToProPageToShowAd(
-          context: context, superKey: homePageKey, isBannerService: true);
+      _initializeHomePageContent();
     }
+    ACWorkspace.saveCurrentChain();
+    homePageKey.currentState?.setState(() {});
   }
 
   Future<void> askToCompliteChain() {
@@ -177,14 +171,6 @@ class _HomePageState extends State<HomePage> {
             }
             return counter;
           }());
-          final int oldLevel = settingData.userLevel;
-          // 足す
-          currentWorkspace.numberOfCompletedTasksInThisWorkspace +=
-              nummberOfActionMethods;
-          ActionChain.numberOfComplitedActionMethods += nummberOfActionMethods;
-
-          // アラート
-          settingData.showLevelAlert(context: context);
           // 初期化
           if (isLoopMode) {
             // チェックマークを外す
@@ -199,27 +185,20 @@ class _HomePageState extends State<HomePage> {
             _initializeHomePageContent();
           }
           homePageKey.currentState?.setState(() {});
-          settingData.vibrate();
+          ACVibration.vibrate();
           // 保存
           ACWorkspace.saveCurrentWorkspace(
               selectedWorkspaceCategoryId:
                   ACWorkspace.currentWorkspaceCategoryId,
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
               selectedWorkspace: currentWorkspace);
-          ActionChain.saveSavedChains();
-          SharedPreferences.getInstance().then((value) => value.setInt(
-              "numberOfComplitedActionMethods",
-              ActionChain.numberOfComplitedActionMethods));
+          ActionChain.saveActionChains(isSavedChains: true);
         });
   }
 
   @override
   void initState() {
     super.initState();
-    purchase.initPlatformState();
-    if (!acads.ticketIsActive) {
-      acads.loadBanner();
-    }
     // 画面の描画が終わったタイミングで処理
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!accetColorIsChanged) {
@@ -273,94 +252,33 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.white,
                 ),
                 // pro pageへ遷移する、setting pageへ移動するボタン
-                trailingButtonOnPressed: !adIsClosed
-                    ? null
-                    : () async {
-                        await Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return SettingPage(key: settingPageKey);
-                        }));
-                        homePageKey.currentState?.setState(() {});
-                      },
-                trailingIcon: !adIsClosed
-                    ? null
-                    : const Icon(Icons.settings, color: Colors.white),
-                actions: adIsClosed
-                    ? null
-                    : [
-                        // pro pageへ遷移するボタン
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 5.0,
-                              bottom: 5.0,
-                              right: purchase.havePurchased ? 8.0 : 5.5),
-                          child: GestureDetector(
-                            onTap: () async {
-                              enterSerialCodeMode = false;
-                              await Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return ProPage(
-                                  key: proPageKey,
-                                );
-                              }));
-                              homePageKey.currentState?.setState(() {});
-                            },
-                            // シリアルコード用
-                            onLongPress: () {
-                              enterSerialCodeMode = true;
-                              simpleAlert(
-                                  context: context,
-                                  title:
-                                      "連続ログイン日数: ${settingData.consecutiveLoginDays}日",
-                                  message:
-                                      "- はじめ -\nCoinの欠片・・・1枚\n\n- 3日連続ログイン -\nCoinの欠片・・・2枚\n\n- 7日連続ログイン -\nCoinの欠片・・・3枚",
-                                  buttonText: "OK");
-                              setState(() {});
-                            },
-                            onDoubleTap: !enterSerialCodeMode
-                                ? null
-                                : () => acads.letUserEnterSerialCode(
-                                    context: context),
-                            child: (() {
-                              return isDevelopperMode
-                                  ? const Icon(
-                                      Icons.construction,
-                                      color: Colors.white,
-                                    )
-                                  : purchase.havePurchased
-                                      ? const Icon(
-                                          FontAwesomeIcons.crown,
-                                          color: Colors.white,
-                                          size: 17,
-                                        )
-                                      : Transform.rotate(
-                                          angle: 3.14,
-                                          child: const Icon(
-                                            Icons.auto_awesome,
-                                            color: Colors.white,
-                                          ));
-                            }()),
-                          ),
-                        ),
-                        // setting pageへ遷移する
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(bottom: 5.0, right: 16.5),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 5.0),
-                            child: GestureDetector(
-                                onTap: () async {
-                                  await Navigator.push(context,
-                                      MaterialPageRoute(builder: (context) {
-                                    return SettingPage(key: settingPageKey);
-                                  }));
-                                  homePageKey.currentState?.setState(() {});
-                                },
-                                child: const Icon(Icons.settings,
-                                    color: Colors.white)),
-                          ),
-                        ),
-                      ],
+                trailingButtonOnPressed: () async {
+                  await Navigator.push(context,
+                      MaterialPageRoute(builder: (context) {
+                    return SettingPage(key: settingPageKey);
+                  }));
+                  homePageKey.currentState?.setState(() {});
+                },
+                trailingIcon: const Icon(Icons.settings, color: Colors.white),
+                actions: [
+                  // setting pageへ遷移する
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0, right: 16.5),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 5.0),
+                      child: GestureDetector(
+                          onTap: () async {
+                            await Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return SettingPage(key: settingPageKey);
+                            }));
+                            homePageKey.currentState?.setState(() {});
+                          },
+                          child:
+                              const Icon(Icons.settings, color: Colors.white)),
+                    ),
+                  ),
+                ],
               ),
               SliverList(
                   delegate: SliverChildListDelegate([
@@ -373,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         // ignore: prefer_const_constructors
-                        EffortCardOfWorkspace(),
+                        // EffortCardOfWorkspace(),
 
                         // chainの内容を表示する
                         if (ACWorkspace.currentChain != null)
@@ -451,7 +369,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () {
                                     isLoopMode = !isLoopMode;
                                     setState(() {});
-                                    settingData.vibrate();
+                                    ACVibration.vibrate();
                                   },
                                   iconData: Icons.autorenew,
                                   buttonIsColored: isLoopMode,
@@ -497,7 +415,7 @@ class _HomePageState extends State<HomePage> {
                                             "Action Chainをキープすることで簡単に呼び出して使えるようになります",
                                         yesAction: () {
                                           Navigator.pop(context);
-                                          settingData.vibrate();
+                                          ACVibration.vibrate();
                                           currentWorkspace.keepedChains[
                                                   _selectedCategoryId ??
                                                       noneId]!
@@ -509,10 +427,11 @@ class _HomePageState extends State<HomePage> {
                                           // アラート
                                           simpleAlert(
                                               context: context,
-                                              title: "キープすることに\n成功しました！",
+                                              title: "キープすることに\n成功しました",
                                               message: null,
-                                              buttonText: "thank you!");
-                                          ActionChain.saveKeepedChains();
+                                              buttonText: "OK");
+                                          ActionChain.saveActionChains(
+                                              isSavedChains: false);
                                         }),
                                 iconData: Icons.label_important,
                                 textContent: "キープ"),
@@ -540,11 +459,7 @@ class _HomePageState extends State<HomePage> {
           ActionChainBottomNavBar(),
           // buttons
           Positioned(
-            bottom: (acads.ticketIsActive ? 75 : 60) *
-                    MediaQuery.of(context).size.height /
-                    896 -
-                65 / 2 +
-                (acads.ticketIsActive ? 0 : 50),
+            bottom: 75 * MediaQuery.of(context).size.height / 896 - 65 / 2 + 0,
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Row(
@@ -629,7 +544,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Positioned(bottom: 0, child: acads.getBannerAds(context: context)),
         ],
       ),
     );
