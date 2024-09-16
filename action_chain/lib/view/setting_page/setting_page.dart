@@ -1,5 +1,5 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/model/user/ac_user.dart';
+// import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_appearance_page.dart';
 import 'package:action_chain/view/setting_page/my_page/my_page.dart';
 import 'package:action_chain/model/user/setting_data.dart';
@@ -116,59 +116,58 @@ class _SettingPageState extends State<SettingPage> {
                               (() {
                                 switch (index) {
                                   case 0:
-                                    if (actionChainUser
-                                            .accontSignedInWithGoogle ==
-                                        null) {
-                                      return Icon(
-                                        _iconDataOfSettingPageContents[index]
-                                            [0],
-                                        color: index == _selectedPageIndex
-                                            ? theme[settingData.selectedTheme]!
-                                                .accentColor
-                                            : Colors.black45,
-                                      );
-                                    } else {
-                                      return CachedNetworkImage(
-                                        imageUrl: actionChainUser
-                                            .accontSignedInWithGoogle!
-                                            .photoUrl!,
-                                        imageBuilder: (context, imageProvider) {
-                                          return SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    width: 1.5,
-                                                    color: _selectedPageIndex ==
-                                                            0
-                                                        ? theme[settingData
-                                                                .selectedTheme]!
-                                                            .accentColor
-                                                            .withOpacity(1)
-                                                        : Colors.white
-                                                            .withOpacity(.8),
-                                                  ),
-                                                  image: DecorationImage(
-                                                      fit: BoxFit.contain,
-                                                      image: imageProvider)),
-                                            ),
-                                          );
-                                        },
-                                        placeholder: (context, url) =>
-                                            Container(),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(
-                                          Icons.account_circle_outlined,
-                                          color: index == _selectedPageIndex
-                                              ? theme[settingData
-                                                      .selectedTheme]!
-                                                  .accentColor
-                                              : Colors.black45,
-                                        ),
-                                      );
-                                    }
+                                    // if (actionChainUser
+                                    //         .accontSignedInWithGoogle ==
+                                    //     null) {
+                                    return Icon(
+                                      _iconDataOfSettingPageContents[index][0],
+                                      color: index == _selectedPageIndex
+                                          ? theme[settingData.selectedTheme]!
+                                              .accentColor
+                                          : Colors.black45,
+                                    );
+                                  // } else {
+                                  //   return CachedNetworkImage(
+                                  //     imageUrl: actionChainUser
+                                  //         .accontSignedInWithGoogle!
+                                  //         .photoUrl!,
+                                  //     imageBuilder: (context, imageProvider) {
+                                  //       return SizedBox(
+                                  //         width: 24,
+                                  //         height: 24,
+                                  //         child: DecoratedBox(
+                                  //           decoration: BoxDecoration(
+                                  //               shape: BoxShape.circle,
+                                  //               border: Border.all(
+                                  //                 width: 1.5,
+                                  //                 color: _selectedPageIndex ==
+                                  //                         0
+                                  //                     ? theme[settingData
+                                  //                             .selectedTheme]!
+                                  //                         .accentColor
+                                  //                         .withOpacity(1)
+                                  //                     : Colors.white
+                                  //                         .withOpacity(.8),
+                                  //               ),
+                                  //               image: DecorationImage(
+                                  //                   fit: BoxFit.contain,
+                                  //                   image: imageProvider)),
+                                  //         ),
+                                  //       );
+                                  //     },
+                                  //     placeholder: (context, url) =>
+                                  //         Container(),
+                                  //     errorWidget: (context, url, error) =>
+                                  //         Icon(
+                                  //       Icons.account_circle_outlined,
+                                  //       color: index == _selectedPageIndex
+                                  //           ? theme[settingData
+                                  //                   .selectedTheme]!
+                                  //               .accentColor
+                                  //           : Colors.black45,
+                                  //     ),
+                                  //   );
+                                  // }
                                   case 2:
                                     return SizedBox(
                                       width: 24,

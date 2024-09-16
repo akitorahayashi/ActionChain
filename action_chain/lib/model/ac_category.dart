@@ -461,8 +461,8 @@ class ACCategory {
     );
   }
 
-  static void readWorkspaceCategories() {
-    SharedPreferences.getInstance().then((pref) {
+  static Future<void> readWorkspaceCategories() async {
+    await SharedPreferences.getInstance().then((pref) {
       if (pref.getString("workspaceCategories") != null) {
         workspaceCategories = ACCategory.jsonToCategories(
           jsonCategoriesData: json.decode(

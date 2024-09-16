@@ -26,14 +26,17 @@ class _MyPageState extends State<MyPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: AnimatedCrossFade(
-              duration: const Duration(milliseconds: 600),
-              crossFadeState: actionChainUser.accontSignedInWithGoogle == null
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              // ignore: prefer_const_constructors
-              firstChild: SignInCard(),
-              // ignore: prefer_const_constructors
-              secondChild: UserIntroductionCard()),
+            duration: const Duration(milliseconds: 600),
+            crossFadeState: true
+                // actionChainUser.accontSignedInWithGoogle == null
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            // ignore: prefer_const_constructors
+            firstChild: SignInCard(),
+            // ignore: prefer_const_constructors
+            secondChild: Container(),
+            // UserIntroductionCard()
+          ),
         ),
         // ignore: prefer_const_constructors
         SelectTipsPanel(),

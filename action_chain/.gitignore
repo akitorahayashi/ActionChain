@@ -20,6 +20,11 @@ ios/Runner/GoogleService-Info.plist
 ios/Flutter/Flutter.framework/
 ios/Flutter/Flutter.podspec
 
+# macOS
+macOS/Runner.xcodeproj/
+macOS/Runner.xcworkspace/
+macOS/Runner/GoogleService-Info.plist
+
 Pods/
 DerivedData/
 flutter_export_environment.sh
