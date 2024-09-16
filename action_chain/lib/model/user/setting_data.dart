@@ -55,8 +55,8 @@ class SettingData {
         isFirstEntry = jsonData["isFirstEntry"];
 
   // 設定を読み込む関数
-  void readSettings() {
-    SharedPreferences.getInstance().then((pref) {
+  Future<void> readSettings() async {
+    await SharedPreferences.getInstance().then((pref) {
       if (pref.getString("settingData") != null) {
         settingData =
             SettingData.fromJson(json.decode(pref.getString("settingData")!));

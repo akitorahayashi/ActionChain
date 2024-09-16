@@ -266,8 +266,8 @@ class ACWorkspace {
   }
 
   // --- save ---
-  static void readWorkspaces() async {
-    SharedPreferences.getInstance().then((pref) {
+  static Future<void> readWorkspaces() async {
+    await SharedPreferences.getInstance().then((pref) {
       ACWorkspace.currentWorkspaceCategoryId =
           pref.getString("currentWorkspaceCategoryId") ?? noneId;
       ACWorkspace.currentWorkspaceIndex =
