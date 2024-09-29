@@ -245,7 +245,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                     ),
                   ),
                 ),
-                // 作成した内容を表示する、ボタン集
+                // 作成した内容を表示する、操作ボタン集
                 GestureDetector(
                   onTap: () => FocusScope.of(context).unfocus(),
                   child: Card(
@@ -258,6 +258,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(top: 24.0, bottom: 8),
+                            // タイトル
                             child: Text(
                               "Action Chain",
                               style: TextStyle(
@@ -269,58 +270,58 @@ class _MakeChainPageState extends State<MakeChainPage> {
                             ),
                           ),
                           // methodsを表示する
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: ReorderableColumn(
-                                children: [
-                                  for (int indexOfThisActionMethod = 0;
-                                      indexOfThisActionMethod <
-                                          _addedActionMethods.length;
-                                      indexOfThisActionMethod++)
-                                    ActionMethodCard(
-                                      key: Key(UniqueKey().toString()),
-                                      superKey: makeActionChainPageKey,
-                                      isCurrentChain: true,
-                                      isInKeepedChain: false,
-                                      disableSliderable: false,
-                                      disableTapGesture: true,
-                                      // action method
-                                      actionMethods: _addedActionMethods,
-                                      indexOfThisActionMethod:
-                                          indexOfThisActionMethod,
-                                      actionMethodData: _addedActionMethods[
-                                          indexOfThisActionMethod],
-                                      // スライドして編集した時の関数
-                                      editAction: () {
-                                        // action method
-                                        final ACToDo selectedActionMethod =
-                                            _addedActionMethods[
-                                                indexOfThisActionMethod];
-                                        _actionTitleInputController.text =
-                                            selectedActionMethod.title;
-                                        for (ACStep step
-                                            in selectedActionMethod.steps) {
-                                          _addedSteps.add(step);
-                                        }
-                                        _indexOfEditedActionInActions =
-                                            indexOfThisActionMethod;
-                                        setState(() {});
-                                      },
-                                    ),
-                                ],
-                                onReorder: (oldIndex, newIndex) {
-                                  final ACToDo reorderedMethod =
-                                      _addedActionMethods.removeAt(oldIndex);
-                                  _addedActionMethods.insert(
-                                      newIndex, reorderedMethod);
-                                  setState(() {});
-                                },
-                              ),
-                            ),
-                          ),
+                          // Padding(
+                          //   padding:
+                          //       const EdgeInsets.symmetric(horizontal: 10.0),
+                          //   child: Padding(
+                          //     padding: const EdgeInsets.only(top: 8.0),
+                          //     child: ReorderableColumn(
+                          //       children: [
+                          //         for (int indexOfThisActionMethod = 0;
+                          //             indexOfThisActionMethod <
+                          //                 _addedActionMethods.length;
+                          //             indexOfThisActionMethod++)
+                          //           ActionMethodCard(
+                          //             key: Key(UniqueKey().toString()),
+                          //             superKey: makeActionChainPageKey,
+                          //             isCurrentChain: true,
+                          //             isInKeepedChain: false,
+                          //             disableSliderable: false,
+                          //             disableTapGesture: true,
+                          //             // action method
+                          //             actionMethods: _addedActionMethods,
+                          //             indexOfThisActionMethod:
+                          //                 indexOfThisActionMethod,
+                          //             actionMethodData: _addedActionMethods[
+                          //                 indexOfThisActionMethod],
+                          //             // スライドして編集した時の関数
+                          //             editAction: () {
+                          //               // action method
+                          //               final ACToDo selectedActionMethod =
+                          //                   _addedActionMethods[
+                          //                       indexOfThisActionMethod];
+                          //               _actionTitleInputController.text =
+                          //                   selectedActionMethod.title;
+                          //               for (ACStep step
+                          //                   in selectedActionMethod.steps) {
+                          //                 _addedSteps.add(step);
+                          //               }
+                          //               _indexOfEditedActionInActions =
+                          //                   indexOfThisActionMethod;
+                          //               setState(() {});
+                          //             },
+                          //           ),
+                          //       ],
+                          //       onReorder: (oldIndex, newIndex) {
+                          //         final ACToDo reorderedMethod =
+                          //             _addedActionMethods.removeAt(oldIndex);
+                          //         _addedActionMethods.insert(
+                          //             newIndex, reorderedMethod);
+                          //         setState(() {});
+                          //       },
+                          //     ),
+                          //   ),
+                          // ),
 
                           // ActionMethodのタイトルを入力するTextFormField
                           Padding(

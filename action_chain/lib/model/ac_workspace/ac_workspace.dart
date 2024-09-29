@@ -54,21 +54,27 @@ class ACWorkspace {
   }
 
   ACWorkspace.fromJson(Map<String, dynamic> jsonData)
-      : name = jsonData["name"],
+      : name = jsonData["name"] as String,
         chainCategories = ACCategory.jsonToCategories(
-            jsonCategoriesData: jsonData["chainCategories"]),
-        savedChains = jsonData["savedChains"].map((chainName, actodos) {
-          final createdACToDos = actodos
-              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
-              .toList();
-          return MapEntry(chainName, createdACToDos);
-        }),
-        keepedChains = jsonData["keepedChains"].map((chainName, actodos) {
-          final createdACToDos = actodos
-              .map((jsonACToDoData) => ACToDo.fromJson(jsonACToDoData))
-              .toList();
-          return MapEntry(chainName, createdACToDos);
-        });
+            jsonCategoriesData: jsonData["chainCategories"] as List<dynamic>),
+        savedChains = (jsonData["savedChains"] as Map<String, dynamic>).map(
+          (chainName, actionChains) {
+            final createdActionChains = (actionChains as List<dynamic>)
+                .map((jsonActionChainData) =>
+                    ActionChain.fromJson(jsonActionChainData))
+                .toList();
+            return MapEntry(chainName, createdActionChains);
+          },
+        ),
+        keepedChains = (jsonData["keepedChains"] as Map<String, dynamic>).map(
+          (chainName, actionChains) {
+            final createdActionChains = (actionChains as List<dynamic>)
+                .map((jsonActionChainData) =>
+                    ActionChain.fromJson(jsonActionChainData))
+                .toList();
+            return MapEntry(chainName, createdActionChains);
+          },
+        );
 
   static void addWorkspaceAlert({required BuildContext context}) {
     showDialog(

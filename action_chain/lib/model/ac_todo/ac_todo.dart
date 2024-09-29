@@ -40,5 +40,7 @@ class ACToDo {
   ACToDo.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
         isChecked = jsonData["isChecked"] ?? false,
-        steps = ACStep.jsonToACStep(jsonStepsData: jsonData["steps"]);
+        steps = jsonData["steps"] != null
+            ? ACStep.jsonToACStep(jsonStepsData: jsonData["steps"])
+            : [];
 }

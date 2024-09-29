@@ -26,7 +26,7 @@ class ActionChain {
 
   ActionChain.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
-        actodos = jsonData["actodos"].map((jsonAcToDoData) {
+        actodos = (jsonData["actodos"] as List<dynamic>).map((jsonAcToDoData) {
           return ACToDo.fromJson(jsonAcToDoData);
         }).toList();
 
