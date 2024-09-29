@@ -1,6 +1,6 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/components/action_method_card.dart';
+import 'package:action_chain/components/actodo_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
@@ -253,139 +253,137 @@ class _MakeChainPageState extends State<MakeChainPage> {
                         borderRadius: BorderRadius.circular(10)),
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(top: 24.0, bottom: 8),
-                            // タイトル
-                            child: Text(
-                              "Action Chain",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 24,
-                                  letterSpacing: 0.8,
-                                  color: theme[settingData.selectedTheme]!
-                                      .backupButtonTextColor),
+                      child: Column(children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 24.0, bottom: 8),
+                          // タイトル
+                          child: Text(
+                            "Action Chain",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w800,
+                                fontSize: 24,
+                                letterSpacing: 0.8,
+                                color: theme[settingData.selectedTheme]!
+                                    .backupButtonTextColor),
+                          ),
+                        ),
+                        // methodsを表示する
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: PrimaryScrollController(
+                            controller: ScrollController(),
+                            child: ReorderableColumn(
+                              children: [
+                                for (int indexOfThisActionMethod = 0;
+                                    indexOfThisActionMethod <
+                                        _addedActionMethods.length;
+                                    indexOfThisActionMethod++)
+                                  ACToDoCard(
+                                    key: Key(UniqueKey().toString()),
+                                    superKey: makeActionChainPageKey,
+                                    isCurrentChain: true,
+                                    isInKeepedChain: false,
+                                    disableSliderable: false,
+                                    disableTapGesture: true,
+                                    // action method
+                                    actionMethods: _addedActionMethods,
+                                    indexOfThisActionMethod:
+                                        indexOfThisActionMethod,
+                                    actionMethodData: _addedActionMethods[
+                                        indexOfThisActionMethod],
+                                    // スライドして編集した時の関数
+                                    editAction: () {
+                                      // action method
+                                      final ACToDo selectedActionMethod =
+                                          _addedActionMethods[
+                                              indexOfThisActionMethod];
+                                      _actionTitleInputController.text =
+                                          selectedActionMethod.title;
+                                      for (ACStep step
+                                          in selectedActionMethod.steps) {
+                                        _addedSteps.add(step);
+                                      }
+                                      _indexOfEditedActionInActions =
+                                          indexOfThisActionMethod;
+                                      setState(() {});
+                                    },
+                                  ),
+                              ],
+                              onReorder: (oldIndex, newIndex) {
+                                final ACToDo reorderedMethod =
+                                    _addedActionMethods.removeAt(oldIndex);
+                                _addedActionMethods.insert(
+                                    newIndex, reorderedMethod);
+                                setState(() {});
+                              },
                             ),
                           ),
-                          // methodsを表示する
-                          // Padding(
-                          //   padding:
-                          //       const EdgeInsets.symmetric(horizontal: 10.0),
-                          //   child: Padding(
-                          //     padding: const EdgeInsets.only(top: 8.0),
-                          //     child: ReorderableColumn(
-                          //       children: [
-                          //         for (int indexOfThisActionMethod = 0;
-                          //             indexOfThisActionMethod <
-                          //                 _addedActionMethods.length;
-                          //             indexOfThisActionMethod++)
-                          //           ActionMethodCard(
-                          //             key: Key(UniqueKey().toString()),
-                          //             superKey: makeActionChainPageKey,
-                          //             isCurrentChain: true,
-                          //             isInKeepedChain: false,
-                          //             disableSliderable: false,
-                          //             disableTapGesture: true,
-                          //             // action method
-                          //             actionMethods: _addedActionMethods,
-                          //             indexOfThisActionMethod:
-                          //                 indexOfThisActionMethod,
-                          //             actionMethodData: _addedActionMethods[
-                          //                 indexOfThisActionMethod],
-                          //             // スライドして編集した時の関数
-                          //             editAction: () {
-                          //               // action method
-                          //               final ACToDo selectedActionMethod =
-                          //                   _addedActionMethods[
-                          //                       indexOfThisActionMethod];
-                          //               _actionTitleInputController.text =
-                          //                   selectedActionMethod.title;
-                          //               for (ACStep step
-                          //                   in selectedActionMethod.steps) {
-                          //                 _addedSteps.add(step);
-                          //               }
-                          //               _indexOfEditedActionInActions =
-                          //                   indexOfThisActionMethod;
-                          //               setState(() {});
-                          //             },
-                          //           ),
-                          //       ],
-                          //       onReorder: (oldIndex, newIndex) {
-                          //         final ACToDo reorderedMethod =
-                          //             _addedActionMethods.removeAt(oldIndex);
-                          //         _addedActionMethods.insert(
-                          //             newIndex, reorderedMethod);
-                          //         setState(() {});
-                          //       },
-                          //     ),
-                          //   ),
-                          // ),
+                        ),
 
-                          // ActionMethodのタイトルを入力するTextFormField
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 50,
-                              // ActionMethod追加ボタン
-                              child: TextField(
-                                controller: _actionTitleInputController,
-                                onChanged: (_) => setState(() {}),
-                                onSubmitted: _actionTitleInputController.text
-                                        .trim()
-                                        .isEmpty
-                                    ? null
-                                    : (_) => _addOrEditMethodAction(),
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black.withOpacity(0.6)),
-                                decoration: InputDecoration(
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.square,
-                                    color: Colors.black.withOpacity(0.35),
-                                  ),
-                                  label: const Text("Action"),
-                                  labelStyle: TextStyle(
-                                      color: Colors.black.withOpacity(0.45)),
-                                  // 完了ボタン
-                                  suffixIcon: AnimatedOpacity(
-                                    duration: const Duration(milliseconds: 300),
-                                    opacity: _actionTitleInputController.text
-                                            .trim()
-                                            .isNotEmpty
-                                        ? 1
-                                        : 0.5,
-                                    child: TextButton(
-                                      child: Icon(
-                                        _indexOfEditedActionInActions == null
-                                            ? Icons.add
-                                            : Icons.edit,
-                                        color: _actionTitleInputController.text
-                                                .trim()
-                                                .isEmpty
-                                            ? Colors.black45
-                                            : theme[settingData.selectedTheme]!
-                                                .accentColor,
-                                        size: 25,
-                                      ),
-                                      onPressed: _actionTitleInputController
-                                              .text
+                        // ActionMethodのタイトルを入力するTextFormField
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 50,
+                            // ActionMethod追加ボタン
+                            child: TextField(
+                              controller: _actionTitleInputController,
+                              onChanged: (_) => setState(() {}),
+                              onSubmitted: _actionTitleInputController.text
+                                      .trim()
+                                      .isEmpty
+                                  ? null
+                                  : (_) => _addOrEditMethodAction(),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black.withOpacity(0.6)),
+                              decoration: InputDecoration(
+                                icon: FaIcon(
+                                  FontAwesomeIcons.square,
+                                  color: Colors.black.withOpacity(0.35),
+                                ),
+                                label: const Text("Action"),
+                                labelStyle: TextStyle(
+                                    color: Colors.black.withOpacity(0.45)),
+                                // 完了ボタン
+                                suffixIcon: AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 300),
+                                  opacity: _actionTitleInputController.text
+                                          .trim()
+                                          .isNotEmpty
+                                      ? 1
+                                      : 0.5,
+                                  child: TextButton(
+                                    child: Icon(
+                                      _indexOfEditedActionInActions == null
+                                          ? Icons.add
+                                          : Icons.edit,
+                                      color: _actionTitleInputController.text
                                               .trim()
                                               .isEmpty
-                                          ? null
-                                          : () => _addOrEditMethodAction(),
+                                          ? Colors.black45
+                                          : theme[settingData.selectedTheme]!
+                                              .accentColor,
+                                      size: 25,
                                     ),
+                                    onPressed: _actionTitleInputController.text
+                                            .trim()
+                                            .isEmpty
+                                        ? null
+                                        : () => _addOrEditMethodAction(),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                        ),
 
-                          // 入力したstepsを表示
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
+                        // 入力したstepsを表示
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: PrimaryScrollController(
+                            controller: ScrollController(),
                             child: ReorderableColumn(
                               children: List<Widget>.generate(
                                   _addedSteps.length, (index) {
@@ -469,60 +467,57 @@ class _MakeChainPageState extends State<MakeChainPage> {
                               },
                             ),
                           ),
+                        ),
 
-                          // steps入力のtextFormField
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 50,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 16.0),
-                                child: TextField(
-                                  controller: _stepTitleInputController,
-                                  onChanged: (_) => setState(() {}),
-                                  onSubmitted: (_) => _addOrEditStepAction(),
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black.withOpacity(0.6)),
-                                  decoration: InputDecoration(
-                                    labelText: "Step",
-                                    labelStyle: TextStyle(
-                                        color: Colors.black.withOpacity(0.45)),
-                                    icon: FaIcon(
-                                      FontAwesomeIcons.square,
-                                      color: Colors.black.withOpacity(0.35),
-                                    ),
-                                    suffixIcon: AnimatedOpacity(
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                      opacity: _stepTitleInputController.text
+                        // steps入力のtextFormField
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 50,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: TextField(
+                                controller: _stepTitleInputController,
+                                onChanged: (_) => setState(() {}),
+                                onSubmitted: (_) => _addOrEditStepAction(),
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black.withOpacity(0.6)),
+                                decoration: InputDecoration(
+                                  labelText: "Step",
+                                  labelStyle: TextStyle(
+                                      color: Colors.black.withOpacity(0.45)),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.square,
+                                    color: Colors.black.withOpacity(0.35),
+                                  ),
+                                  suffixIcon: AnimatedOpacity(
+                                    duration: const Duration(milliseconds: 300),
+                                    opacity: _stepTitleInputController.text
+                                            .trim()
+                                            .isNotEmpty
+                                        ? 1
+                                        : 0.25,
+                                    child: TextButton(
+                                      onPressed: _stepTitleInputController.text
                                               .trim()
-                                              .isNotEmpty
-                                          ? 1
-                                          : 0.25,
-                                      child: TextButton(
-                                        onPressed: _stepTitleInputController
-                                                .text
+                                              .isEmpty
+                                          ? null
+                                          : () {
+                                              _addOrEditStepAction();
+                                            },
+                                      child: Icon(
+                                        _indexOfEditedStep != null
+                                            ? Icons.edit
+                                            : Icons.add,
+                                        color: _stepTitleInputController.text
                                                 .trim()
-                                                .isEmpty
-                                            ? null
-                                            : () {
-                                                _addOrEditStepAction();
-                                              },
-                                        child: Icon(
-                                          _indexOfEditedStep != null
-                                              ? Icons.edit
-                                              : Icons.add,
-                                          color: _stepTitleInputController.text
-                                                  .trim()
-                                                  .isNotEmpty
-                                              ? theme[settingData
-                                                      .selectedTheme]!
-                                                  .accentColor
-                                              : Colors.black,
-                                          size: 25,
-                                        ),
+                                                .isNotEmpty
+                                            ? theme[settingData.selectedTheme]!
+                                                .accentColor
+                                            : Colors.black,
+                                        size: 25,
                                       ),
                                     ),
                                   ),
@@ -530,213 +525,205 @@ class _MakeChainPageState extends State<MakeChainPage> {
                               ),
                             ),
                           ),
-                          // 初期化, 保存、キープ、実行
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: ButtonBar(
-                              alignment: MainAxisAlignment.center,
-                              children: [
-                                // 初期化
-                                ControllIconButton(
-                                    onPressed: () {
-                                      // make chain pageを初期化する関数
-                                      void initializeMakeChainPage() {
-                                        _selectedChainCategoryId = null;
-                                        _chainTitleInputController.clear();
-                                        // action method
-                                        ACWorkspace.currentChain = null;
-                                        _actionTitleInputController.clear();
-                                        _stepTitleInputController.clear();
-                                        _addedActionMethods = [];
-                                        _addedSteps = [];
-                                        _indexOfEditedActionInActions = null;
-                                        _indexOfEditedStep = null;
-                                        ACWorkspace.saveCurrentChain();
-                                      }
+                        ),
+                        // 初期化, 保存、キープ、実行
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: ButtonBar(
+                            alignment: MainAxisAlignment.center,
+                            children: [
+                              // 初期化
+                              ControllIconButton(
+                                  onPressed: () {
+                                    // make chain pageを初期化する関数
+                                    void initializeMakeChainPage() {
+                                      _selectedChainCategoryId = null;
+                                      _chainTitleInputController.clear();
+                                      // action method
+                                      ACWorkspace.currentChain = null;
+                                      _actionTitleInputController.clear();
+                                      _stepTitleInputController.clear();
+                                      _addedActionMethods = [];
+                                      _addedSteps = [];
+                                      _indexOfEditedActionInActions = null;
+                                      _indexOfEditedStep = null;
+                                      ACWorkspace.saveCurrentChain();
+                                    }
 
-                                      // 実際の処理
-                                      if (widget.oldCategoryId != null) {
-                                        yesNoAlert(
-                                            context: context,
-                                            title: "編集モードを解除しますか？",
-                                            message:
-                                                "解除することで新たなSaved Chainを作成することができます",
-                                            yesAction: () {
-                                              Navigator.pop(context);
-                                              widget.oldCategoryId = null;
-                                              widget.indexOfChainInSavedChains =
-                                                  null;
-                                              setState(() {});
-                                              // 作成した内容の削除
-                                              yesNoAlert(
-                                                  context: context,
-                                                  title:
-                                                      "このAction Chainを\n削除しますか？",
-                                                  message: null,
-                                                  yesAction: () {
-                                                    Navigator.pop(context);
-                                                    initializeMakeChainPage();
-                                                    simpleAlert(
-                                                        context: context,
-                                                        title:
-                                                            "初期化することに\n成功しました！",
-                                                        message: null,
-                                                        buttonText:
-                                                            "thank you!");
-                                                    setState(() {});
-                                                  });
-                                            });
-                                      } else {
-                                        // 作成した内容の削除
-                                        yesNoAlert(
-                                            context: context,
-                                            title: "このページを\n初期化しますか？",
-                                            message: null,
-                                            yesAction: () {
-                                              Navigator.pop(context);
-                                              initializeMakeChainPage();
-                                              simpleAlert(
-                                                  context: context,
-                                                  title: "初期化することに\n成功しました！",
-                                                  message: null,
-                                                  buttonText: "thank you!");
-                                              setState(() {});
-                                            });
-                                      }
-                                    },
-                                    iconData: Icons.clear,
-                                    textContent: "初期化"),
-                                // 保存
-                                ControllIconButton(
-                                    onPressed: (_chainTitleInputController.text
-                                                .trim()
-                                                .isEmpty ||
-                                            _addedActionMethods.isEmpty)
-                                        ? null
-                                        : () {
-                                            if (widget.oldCategoryId == null) {
-                                              // 新しく作成する
-                                              ActionChain.askToSaveChain(
-                                                  context: context,
-                                                  wantToKeep: false,
-                                                  categoryId:
-                                                      _selectedChainCategoryId ??
-                                                          noneId,
-                                                  selectedChain: ActionChain(
-                                                    title:
-                                                        _chainTitleInputController
-                                                            .text,
-                                                    actodos:
-                                                        _addedActionMethods,
-                                                  ),
-                                                  releaseEditModeAction: () {
-                                                    widget.oldCategoryId = null;
-                                                    widget.indexOfChainInSavedChains =
-                                                        null;
-                                                  });
-                                            } else {
-                                              // 上書きする
-                                              yesNoAlert(
-                                                  context: context,
-                                                  title: "上書きしますか？",
-                                                  message:
-                                                      "既存のSaved Chainを\n上書きすることができます",
-                                                  yesAction: () {
-                                                    Navigator.pop(context);
-                                                    // 上書きする
-                                                    final ActionChain
-                                                        overwrittenChain =
-                                                        currentWorkspace
-                                                                .savedChains[
-                                                            widget
-                                                                .oldCategoryId]![widget
-                                                            .indexOfChainInSavedChains!];
-                                                    overwrittenChain
-                                                      ..title =
-                                                          _chainTitleInputController
-                                                              .text
-                                                      ..actodos =
-                                                          ACToDo.getNewMethods(
-                                                              selectedMethods:
-                                                                  _addedActionMethods);
-
-                                                    simpleAlert(
-                                                        context: context,
-                                                        title:
-                                                            "上書きすることに\n成功しました",
-                                                        message: null,
-                                                        buttonText: "OK");
-                                                    ActionChain
-                                                        .saveActionChains(
-                                                            isSavedChains:
-                                                                true);
-                                                  });
-                                            }
-                                          },
-                                    iconData: widget.oldCategoryId != null
-                                        ? Icons.edit
-                                        : Icons.save,
-                                    textContent: widget.oldCategoryId != null
-                                        ? "上書き"
-                                        : "保存"),
-                                // キープ
-                                ControllIconButton(
-                                    onPressed: (_chainTitleInputController.text
-                                                .trim()
-                                                .isEmpty ||
-                                            _addedActionMethods.isEmpty)
-                                        ? null
-                                        : () {
+                                    // 実際の処理
+                                    if (widget.oldCategoryId != null) {
+                                      yesNoAlert(
+                                          context: context,
+                                          title: "編集モードを解除しますか？",
+                                          message:
+                                              "解除することで新たなSaved Chainを作成することができます",
+                                          yesAction: () {
+                                            Navigator.pop(context);
+                                            widget.oldCategoryId = null;
+                                            widget.indexOfChainInSavedChains =
+                                                null;
+                                            setState(() {});
+                                            // 作成した内容の削除
+                                            yesNoAlert(
+                                                context: context,
+                                                title:
+                                                    "このAction Chainを\n削除しますか？",
+                                                message: null,
+                                                yesAction: () {
+                                                  Navigator.pop(context);
+                                                  initializeMakeChainPage();
+                                                  simpleAlert(
+                                                      context: context,
+                                                      title:
+                                                          "初期化することに\n成功しました！",
+                                                      message: null,
+                                                      buttonText: "thank you!");
+                                                  setState(() {});
+                                                });
+                                          });
+                                    } else {
+                                      // 作成した内容の削除
+                                      yesNoAlert(
+                                          context: context,
+                                          title: "このページを\n初期化しますか？",
+                                          message: null,
+                                          yesAction: () {
+                                            Navigator.pop(context);
+                                            initializeMakeChainPage();
+                                            simpleAlert(
+                                                context: context,
+                                                title: "初期化することに\n成功しました！",
+                                                message: null,
+                                                buttonText: "thank you!");
+                                            setState(() {});
+                                          });
+                                    }
+                                  },
+                                  iconData: Icons.clear,
+                                  textContent: "初期化"),
+                              // 保存
+                              ControllIconButton(
+                                  onPressed: (_chainTitleInputController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _addedActionMethods.isEmpty)
+                                      ? null
+                                      : () {
+                                          if (widget.oldCategoryId == null) {
+                                            // 新しく作成する
                                             ActionChain.askToSaveChain(
                                                 context: context,
-                                                wantToKeep: true,
+                                                wantToKeep: false,
                                                 categoryId:
                                                     _selectedChainCategoryId ??
                                                         noneId,
                                                 selectedChain: ActionChain(
-                                                    title:
-                                                        _chainTitleInputController
-                                                            .text,
-                                                    actodos:
-                                                        _addedActionMethods),
+                                                  title:
+                                                      _chainTitleInputController
+                                                          .text,
+                                                  actodos: _addedActionMethods,
+                                                ),
                                                 releaseEditModeAction: () {
                                                   widget.oldCategoryId = null;
-                                                  widget
-                                                      .indexOfChainInSavedChains;
+                                                  widget.indexOfChainInSavedChains =
+                                                      null;
                                                 });
-                                          },
-                                    iconData: Icons.label_important,
-                                    textContent: "キープ"),
-                                // 実行
-                                ControllIconButton(
-                                    onPressed: _addedActionMethods.isEmpty
-                                        ? null
-                                        : () {
-                                            ACWorkspace.currentChain =
-                                                ActionChain(
-                                                    title:
+                                          } else {
+                                            // 上書きする
+                                            yesNoAlert(
+                                                context: context,
+                                                title: "上書きしますか？",
+                                                message:
+                                                    "既存のSaved Chainを\n上書きすることができます",
+                                                yesAction: () {
+                                                  Navigator.pop(context);
+                                                  // 上書きする
+                                                  final ActionChain
+                                                      overwrittenChain =
+                                                      currentWorkspace
+                                                              .savedChains[
+                                                          widget
+                                                              .oldCategoryId]![widget
+                                                          .indexOfChainInSavedChains!];
+                                                  overwrittenChain
+                                                    ..title =
                                                         _chainTitleInputController
-                                                            .text,
-                                                    actodos:
-                                                        _addedActionMethods);
-                                            ACWorkspace.saveCurrentChain();
-                                            Navigator.pop(context, {
-                                              "selectedCategoryId":
-                                                  _selectedChainCategoryId,
-                                              "oldCategoryId":
-                                                  widget.oldCategoryId,
-                                              "indexOfChainInSavedChains":
-                                                  widget
-                                                      .indexOfChainInSavedChains
-                                            });
-                                          },
-                                    iconData: Icons.near_me,
-                                    textContent: "実行"),
-                              ],
-                            ),
+                                                            .text
+                                                    ..actodos =
+                                                        ACToDo.getNewMethods(
+                                                            selectedMethods:
+                                                                _addedActionMethods);
+
+                                                  simpleAlert(
+                                                      context: context,
+                                                      title: "上書きすることに\n成功しました",
+                                                      message: null,
+                                                      buttonText: "OK");
+                                                  ActionChain.saveActionChains(
+                                                      isSavedChains: true);
+                                                });
+                                          }
+                                        },
+                                  iconData: widget.oldCategoryId != null
+                                      ? Icons.edit
+                                      : Icons.save,
+                                  textContent: widget.oldCategoryId != null
+                                      ? "上書き"
+                                      : "保存"),
+                              // キープ
+                              ControllIconButton(
+                                  onPressed: (_chainTitleInputController.text
+                                              .trim()
+                                              .isEmpty ||
+                                          _addedActionMethods.isEmpty)
+                                      ? null
+                                      : () {
+                                          ActionChain.askToSaveChain(
+                                              context: context,
+                                              wantToKeep: true,
+                                              categoryId:
+                                                  _selectedChainCategoryId ??
+                                                      noneId,
+                                              selectedChain: ActionChain(
+                                                  title:
+                                                      _chainTitleInputController
+                                                          .text,
+                                                  actodos: _addedActionMethods),
+                                              releaseEditModeAction: () {
+                                                widget.oldCategoryId = null;
+                                                widget
+                                                    .indexOfChainInSavedChains;
+                                              });
+                                        },
+                                  iconData: Icons.label_important,
+                                  textContent: "キープ"),
+                              // 実行
+                              ControllIconButton(
+                                  onPressed: _addedActionMethods.isEmpty
+                                      ? null
+                                      : () {
+                                          ACWorkspace.currentChain =
+                                              ActionChain(
+                                                  title:
+                                                      _chainTitleInputController
+                                                          .text,
+                                                  actodos: _addedActionMethods);
+                                          ACWorkspace.saveCurrentChain();
+                                          Navigator.pop(context, {
+                                            "selectedCategoryId":
+                                                _selectedChainCategoryId,
+                                            "oldCategoryId":
+                                                widget.oldCategoryId,
+                                            "indexOfChainInSavedChains":
+                                                widget.indexOfChainInSavedChains
+                                          });
+                                        },
+                                  iconData: Icons.near_me,
+                                  textContent: "実行"),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ]),
                     ),
                   ),
                 ),

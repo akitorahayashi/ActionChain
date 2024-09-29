@@ -14,7 +14,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 bool hasShowCelebrate = false;
 
-class ActionMethodCard extends StatefulWidget {
+class ACToDoCard extends StatefulWidget {
   final GlobalKey superKey;
   final bool isCurrentChain;
   final bool isInKeepedChain;
@@ -26,7 +26,7 @@ class ActionMethodCard extends StatefulWidget {
   final ACToDo actionMethodData;
   final Function()? editAction;
 
-  const ActionMethodCard({
+  const ACToDoCard({
     Key? key,
     required this.superKey,
     required this.isCurrentChain,
@@ -41,10 +41,10 @@ class ActionMethodCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ActionMethodCardState createState() => _ActionMethodCardState();
+  _ACToDoCardState createState() => _ACToDoCardState();
 }
 
-class _ActionMethodCardState extends State<ActionMethodCard> {
+class _ACToDoCardState extends State<ACToDoCard> {
   // todoのチェックを切り替える処理
   void _toggleActionMethodCheckBox() {
     // チェックの状態が変わったtodoの位置を変える関数
@@ -206,60 +206,64 @@ class _ActionMethodCardState extends State<ActionMethodCard> {
                 if (widget.actionMethodData.steps.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
-                    child: ReorderableColumn(
-                      children: widget.actionMethodData.steps.map((stepData) {
-                        return Padding(
-                          key: Key(UniqueKey().toString()),
-                          padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
-                          child: GestureDetector(
-                            onTap: widget.disableTapGesture
-                                ? null
-                                : () => _toggleStepCheckBox(stepData: stepData),
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16, 16, 16, 16),
-                                child: Row(
-                                  children: [
-                                    // 左側のチェックボックス
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          4, 0, 16, 0),
-                                      child: Transform.scale(
-                                        scale: 1.2,
-                                        child: getIcon(
-                                            isChecked: stepData.isChecked),
+                    child: PrimaryScrollController(
+                      controller: ScrollController(),
+                      child: ReorderableColumn(
+                        children: widget.actionMethodData.steps.map((stepData) {
+                          return Padding(
+                            key: Key(UniqueKey().toString()),
+                            padding: const EdgeInsets.fromLTRB(8, 0, 2, 0),
+                            child: GestureDetector(
+                              onTap: widget.disableTapGesture
+                                  ? null
+                                  : () =>
+                                      _toggleStepCheckBox(stepData: stepData),
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                                  child: Row(
+                                    children: [
+                                      // 左側のチェックボックス
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 0, 16, 0),
+                                        child: Transform.scale(
+                                          scale: 1.2,
+                                          child: getIcon(
+                                              isChecked: stepData.isChecked),
+                                        ),
                                       ),
-                                    ),
-                                    // stepのタイトル
-                                    Expanded(
-                                      child: Text(stepData.title,
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black.withOpacity(
-                                                  stepData.isChecked
-                                                      ? 0.3
-                                                      : 0.6))),
-                                    ),
-                                  ],
+                                      // stepのタイトル
+                                      Expanded(
+                                        child: Text(stepData.title,
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black.withOpacity(
+                                                    stepData.isChecked
+                                                        ? 0.3
+                                                        : 0.6))),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }).toList(),
-                      onReorder: (oldIndex, newIndex) {
-                        final reOrderedToDo =
-                            widget.actionMethodData.steps[oldIndex];
-                        widget.actionMethodData.steps.remove(reOrderedToDo);
-                        widget.actionMethodData.steps
-                            .insert(newIndex, reOrderedToDo);
-                        setState(() {});
-                      },
+                          );
+                        }).toList(),
+                        onReorder: (oldIndex, newIndex) {
+                          final reOrderedToDo =
+                              widget.actionMethodData.steps[oldIndex];
+                          widget.actionMethodData.steps.remove(reOrderedToDo);
+                          widget.actionMethodData.steps
+                              .insert(newIndex, reOrderedToDo);
+                          setState(() {});
+                        },
+                      ),
                     ),
                   )
               ],
