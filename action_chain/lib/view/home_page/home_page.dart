@@ -2,7 +2,7 @@ import 'package:action_chain/components/ui/action_chain_bottom_navbar/action_cha
 import 'package:action_chain/components/ui/action_chain_bottom_navbar/action_chain_bottom_navbar.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
-import 'package:action_chain/components/action_method_card.dart';
+import 'package:action_chain/components/actodo_card.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/drawer_for_workspace.dart';
 // import 'package:action_chain/view/home_page/effort_card_of_workspace.dart';
@@ -23,6 +23,7 @@ import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -317,40 +318,45 @@ class _HomePageState extends State<HomePage> {
                                                 120, 120, 120, 1)),
                                       ),
                                     ),
-                                  ReorderableColumn(
-                                      children: [
-                                        for (int indexOfActionMethod = 0;
-                                            indexOfActionMethod <
-                                                ACWorkspace.currentChain!
-                                                    .actodos.length;
-                                            indexOfActionMethod++)
-                                          ActionMethodCard(
-                                              key: Key(UniqueKey().toString()),
-                                              superKey: homePageKey,
-                                              isCurrentChain: true,
-                                              isInKeepedChain: false,
-                                              disableSliderable: true,
-                                              disableTapGesture: false,
-                                              // action method
-                                              actionMethods: ACWorkspace
-                                                  .currentChain!.actodos,
-                                              indexOfThisActionMethod:
-                                                  indexOfActionMethod,
-                                              actionMethodData: ACWorkspace
-                                                  .currentChain!
-                                                  .actodos[indexOfActionMethod],
-                                              editAction: () =>
-                                                  goToMakeChainPage()),
-                                      ],
-                                      onReorder: (oldIndex, newIndex) {
-                                        final ACToDo reorderedMethod =
-                                            ACWorkspace.currentChain!.actodos
-                                                .removeAt(oldIndex);
-                                        ACWorkspace.currentChain!.actodos
-                                            .insert(newIndex, reorderedMethod);
-                                        setState(() {});
-                                        ACWorkspace.saveCurrentChain();
-                                      }),
+                                  PrimaryScrollController(
+                                    controller: ScrollController(),
+                                    child: ReorderableColumn(
+                                        children: [
+                                          for (int indexOfActionMethod = 0;
+                                              indexOfActionMethod <
+                                                  ACWorkspace.currentChain!
+                                                      .actodos.length;
+                                              indexOfActionMethod++)
+                                            ACToDoCard(
+                                                key:
+                                                    Key(UniqueKey().toString()),
+                                                superKey: homePageKey,
+                                                isCurrentChain: true,
+                                                isInKeepedChain: false,
+                                                disableSliderable: true,
+                                                disableTapGesture: false,
+                                                // action method
+                                                actionMethods: ACWorkspace
+                                                    .currentChain!.actodos,
+                                                indexOfThisActionMethod:
+                                                    indexOfActionMethod,
+                                                actionMethodData: ACWorkspace
+                                                        .currentChain!.actodos[
+                                                    indexOfActionMethod],
+                                                editAction: () =>
+                                                    goToMakeChainPage()),
+                                        ],
+                                        onReorder: (oldIndex, newIndex) {
+                                          final ACToDo reorderedMethod =
+                                              ACWorkspace.currentChain!.actodos
+                                                  .removeAt(oldIndex);
+                                          ACWorkspace.currentChain!.actodos
+                                              .insert(
+                                                  newIndex, reorderedMethod);
+                                          setState(() {});
+                                          ACWorkspace.saveCurrentChain();
+                                        }),
+                                  ),
                                 ],
                               ),
                             ),

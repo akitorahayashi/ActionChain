@@ -1,5 +1,5 @@
 import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/components/action_method_card.dart';
+import 'package:action_chain/components/actodo_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
@@ -250,7 +250,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                     indexOfThisActionMethod <
                                         chainOfThisPage.actodos.length;
                                     indexOfThisActionMethod++)
-                                  ActionMethodCard(
+                                  ACToDoCard(
                                       key: Key(UniqueKey().toString()),
                                       superKey: chainDetailPageKey,
                                       isCurrentChain: false,
