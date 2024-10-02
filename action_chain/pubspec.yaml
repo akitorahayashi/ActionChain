@@ -40,7 +40,6 @@ dependencies:
   flutter_progress_hud: ^2.0.0
   shared_preferences: ^2.0.13
   reorderables: ^0.4.4
-  purchases_flutter: ^3.10.0
   flutter_launcher_icons: ^0.9.2
   url_launcher: ^6.0.20
   intl: ^0.17.0
