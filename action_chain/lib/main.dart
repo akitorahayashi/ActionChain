@@ -14,13 +14,12 @@ bool adTestMode = true;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // await ACAds.initializeACAds();
   await settingData.readSettings();
   await ACVibration.initVibrate();
   await ACCategory.readWorkspaceCategories();
   await ACWorkspace.readWorkspaces();
   // await actionChainUser.initializeFirebase();
-  // await MobileAds.instance.initialize();
   runApp(ActionChainApp(key: actionChainAppKey));
 }

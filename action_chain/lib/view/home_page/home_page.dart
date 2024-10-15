@@ -197,24 +197,24 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // 画面の描画が終わったタイミングで処理
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     if (!accetColorIsChanged) {
-  //       accetColorIsChanged = true;
-  //       actionChainAppKey.currentState?.setState(() {});
-  //     }
-  //     // スプラッシュ画面を閉じる
-  //     FlutterNativeSplash.remove();
-  //     if (settingData.isFirstEntry) {
-  //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-  //         return const ShowTutorialPage();
-  //       }));
-  //     }
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+    // 画面の描画が終わったタイミングで処理
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!accetColorIsChanged) {
+        accetColorIsChanged = true;
+        actionChainAppKey.currentState?.setState(() {});
+      }
+      // スプラッシュ画面を閉じる
+      FlutterNativeSplash.remove();
+      // if (settingData.isFirstEntry) {
+      //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //     return const ShowTutorialPage();
+      //   }));
+      // }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
