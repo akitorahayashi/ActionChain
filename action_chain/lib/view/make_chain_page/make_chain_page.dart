@@ -87,11 +87,11 @@ class _MakeChainPageState extends State<MakeChainPage> {
   @override
   void initState() {
     super.initState();
-    if (ACWorkspace.currentChain != null) {
+    if (ACWorkspace.runningActionChain != null) {
       // 編集モードの処理
       _selectedChainCategoryId = widget.selectedCategoryId;
-      _chainTitleInputController.text = ACWorkspace.currentChain!.title;
-      _addedActionMethods = ACWorkspace.currentChain!.actodos;
+      _chainTitleInputController.text = ACWorkspace.runningActionChain!.title;
+      _addedActionMethods = ACWorkspace.runningActionChain!.actodos;
     }
   }
 
@@ -222,10 +222,11 @@ class _MakeChainPageState extends State<MakeChainPage> {
                           child: Padding(
                             padding: const EdgeInsets.only(bottom: 36.0),
                             child: TextField(
-                              autofocus: ACWorkspace.currentChain == null ||
-                                  (ACWorkspace.currentChain!.title
-                                      .trim()
-                                      .isEmpty),
+                              autofocus:
+                                  ACWorkspace.runningActionChain == null ||
+                                      (ACWorkspace.runningActionChain!.title
+                                          .trim()
+                                          .isEmpty),
                               controller: _chainTitleInputController,
                               onChanged: (_) => setState(() {}),
                               style: TextStyle(
@@ -541,7 +542,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                       _selectedChainCategoryId = null;
                                       _chainTitleInputController.clear();
                                       // action method
-                                      ACWorkspace.currentChain = null;
+                                      ACWorkspace.runningActionChain = null;
                                       _actionTitleInputController.clear();
                                       _stepTitleInputController.clear();
                                       _addedActionMethods = [];
@@ -704,7 +705,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                   onPressed: _addedActionMethods.isEmpty
                                       ? null
                                       : () {
-                                          ACWorkspace.currentChain =
+                                          ACWorkspace.runningActionChain =
                                               ActionChain(
                                                   title:
                                                       _chainTitleInputController

@@ -61,16 +61,14 @@ class ActionChain {
   }) async {
     yesNoAlert(
         context: context,
-        title: wantToConduct
-            ? "このAction Chainを\n実行しますか？"
-            : "このAction Chainを\n編集しますか？",
+        title: "このAction Chainを\n${wantToConduct ? "実行" : "編集"}しますか？",
         message: null,
         yesAction: () {
           Navigator.pop(context);
           ACVibration.vibrate();
           // detail -> collection -> home
           Navigator.pop(context);
-          ACWorkspace.currentChain =
+          ACWorkspace.runningActionChain =
               ActionChain(title: chainName, actodos: actionMethods);
           removeKeepedChainAction();
           Future<void>.delayed(const Duration(milliseconds: 100))

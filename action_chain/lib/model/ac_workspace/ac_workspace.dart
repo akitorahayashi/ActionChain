@@ -18,7 +18,8 @@ class ACWorkspace {
       acWorkspaces[ACWorkspace.currentWorkspaceIndex];
   // workspace
   static int currentWorkspaceIndex = 0;
-  static ActionChain? currentChain;
+  // 現在実行中のActionChain
+  static ActionChain? runningActionChain;
 
   String name;
   List<ACCategory> chainCategories;
@@ -233,7 +234,7 @@ class ACWorkspace {
                                   context: context,
                                   title: "削除することに\n成功しました!",
                                   message: null,
-                                  buttonText: "thank you!");
+                                  buttonText: "OK");
                               // セーブする
                               ACWorkspace.saveACWorkspaces();
                             });
@@ -269,19 +270,22 @@ class ACWorkspace {
         }).toList();
       }
       if (pref.getString("currentChain") != null) {
-        ACWorkspace.currentChain =
+        ACWorkspace.runningActionChain =
             ActionChain.fromJson(json.decode(pref.getString("currentChain")!));
       }
     });
   }
 
   static void saveCurrentChain() =>
-      SharedPreferences.getInstance().then((value) => value.setString(
-          "currentChain", json.encode(ACWorkspace.currentChain)));
+      SharedPreferences.getInstance().then((pref) => pref.setString(
+          "currentChain", json.encode(ACWorkspace.runningActionChain)));
 
   static void saveACWorkspaces() async {
-    SharedPreferences.getInstance().then(
-        (pref) => pref.setString("acWorkspaces", json.encode(acWorkspaces)));
+    SharedPreferences.getInstance().then((pref) => pref.setString(
+        "acWorkspaces",
+        json.encode(acWorkspaces.map((acworkspace) {
+          return acworkspace.toJson();
+        }).toList())));
   }
 
   static void saveCurrentWorkspace(
