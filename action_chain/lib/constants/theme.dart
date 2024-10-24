@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ActionChainTheme {
+  final String themeName;
   // 基本色
   final MaterialColor accentColor;
   final Gradient gradientOfNavBar;
@@ -41,6 +42,7 @@ class ActionChainTheme {
   // reward
   final Color rewardButtonTitleColor;
   ActionChainTheme({
+    required this.themeName,
     // 基本色
     required this.accentColor,
     required this.gradientOfNavBar,
@@ -83,8 +85,9 @@ class ActionChainTheme {
   });
 }
 
-Map<String, ActionChainTheme> theme = {
-  "Sun Orange": ActionChainTheme(
+List<ActionChainTheme> theme = [
+  ActionChainTheme(
+    themeName: "Sun Orange",
     // 基本色
     accentColor: Colors.orange,
     gradientOfNavBar: const LinearGradient(colors: [
@@ -134,7 +137,8 @@ Map<String, ActionChainTheme> theme = {
     // reward
     rewardButtonTitleColor: const Color.fromRGBO(255, 190, 86, 1),
   ),
-  "Lime Green": ActionChainTheme(
+  ActionChainTheme(
+    themeName: "Lime Green",
     // 基本色
     accentColor: Colors.lightGreen,
     gradientOfNavBar: const LinearGradient(colors: [
@@ -184,7 +188,8 @@ Map<String, ActionChainTheme> theme = {
     // reward
     rewardButtonTitleColor: const Color.fromRGBO(123, 205, 60, 1),
   ),
-  "Marine Blue": ActionChainTheme(
+  ActionChainTheme(
+    themeName: "Marine Blue",
     // 基本色
     accentColor: Colors.cyan,
     gradientOfNavBar: const LinearGradient(colors: [
@@ -233,5 +238,5 @@ Map<String, ActionChainTheme> theme = {
     backupButtonTextColor: const Color.fromRGBO(90, 209, 242, 1),
     // reward
     rewardButtonTitleColor: Colors.cyan,
-  ),
-};
+  )
+];

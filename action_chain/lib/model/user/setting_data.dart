@@ -16,7 +16,7 @@ SettingData settingData = SettingData();
 
 class SettingData {
   // テーマ
-  String selectedTheme = "Sun Orange";
+  int selectedThemeIndex = 0;
 
   // アイコン
   String defaultIconCategory = "Default";
@@ -33,7 +33,7 @@ class SettingData {
   Map<String, dynamic> toJson() {
     return {
       // テーマ
-      "selectedTheme": settingData.selectedTheme,
+      "selectedThemeIndex": settingData.selectedThemeIndex,
       // アイコン
       "defaultIconCategory": settingData.defaultIconCategory,
       "iconRarity": iconRarity,
@@ -46,7 +46,7 @@ class SettingData {
   SettingData.fromJson(Map<String, dynamic> jsonData)
       :
         // テーマ
-        selectedTheme = jsonData["selectedTheme"] ?? "Sun Orange",
+        selectedThemeIndex = jsonData["selectedThemeIndex"] ?? 0,
         // アイコン
         defaultIconCategory = jsonData["defaultIconCategory"] ?? "Default",
         iconRarity = jsonData["iconRarity"] ?? "Common",
