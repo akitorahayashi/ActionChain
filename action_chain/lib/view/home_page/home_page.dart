@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   // 内容自体を初期化する関数
   void _initializeHomePageContent() {
-    ACWorkspace.currentChain = null;
+    ACWorkspace.runningActionChain = null;
     _selectedCategoryId = null;
     _oldCategoryId = null;
     _indexOfChain = null;
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          for (ACToDo actionMethod in ACWorkspace.currentChain!.actodos) {
+          for (ACToDo actionMethod in ACWorkspace.runningActionChain!.actodos) {
             actionMethod.isChecked = false;
             if (actionMethod.steps.isNotEmpty) {
               for (ACStep step in actionMethod.steps) {
@@ -93,7 +93,8 @@ class _HomePageState extends State<HomePage> {
   // チェック済みのmethodの数を数える関数
   int countCheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
+    for (ACToDo methodInSelectedChain
+        in ACWorkspace.runningActionChain!.actodos) {
       if (methodInSelectedChain.steps.isEmpty) {
         if (methodInSelectedChain.isChecked) {
           counter++;
@@ -111,7 +112,8 @@ class _HomePageState extends State<HomePage> {
 
   int totalNumberOfUncheckedMethods() {
     int counter = 0;
-    for (ACToDo methodInSelectedChain in ACWorkspace.currentChain!.actodos) {
+    for (ACToDo methodInSelectedChain
+        in ACWorkspace.runningActionChain!.actodos) {
       if (methodInSelectedChain.steps.isNotEmpty) {
         counter += methodInSelectedChain.steps.length;
       } else {
@@ -155,7 +157,7 @@ class _HomePageState extends State<HomePage> {
           // 初期化
           if (isLoopMode) {
             // チェックマークを外す
-            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
+            for (ACToDo method in ACWorkspace.runningActionChain!.actodos) {
               method.isChecked = false;
               for (ACStep step in method.steps) {
                 step.isChecked = false;
@@ -171,7 +173,6 @@ class _HomePageState extends State<HomePage> {
           ACWorkspace.saveCurrentWorkspace(
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
               selectedWorkspace: ACWorkspace.currentWorkspace);
-          ActionChain.saveActionChains(isSavedChains: true);
         });
   }
 
@@ -211,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                 pageTitle: "Action Chain",
                 // drawerを表示するボタン
                 leadingButtonOnPressed: () {
-                  if (ACWorkspace.currentChain != null) {
+                  if (ACWorkspace.runningActionChain != null) {
                     // 現在のAction Chainが
                     yesNoAlert(
                         context: context,
@@ -274,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                         // EffortCardOfWorkspace(),
 
                         // chainの内容を表示する
-                        if (ACWorkspace.currentChain != null)
+                        if (ACWorkspace.runningActionChain != null)
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 12.0),
@@ -282,14 +283,14 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.only(top: 22.0),
                               child: Column(
                                 children: [
-                                  if (ACWorkspace.currentChain!.title
+                                  if (ACWorkspace.runningActionChain!.title
                                       .trim()
                                       .isNotEmpty)
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           bottom: 12.0, left: 12, right: 12),
                                       child: Text(
-                                        ACWorkspace.currentChain!.title,
+                                        ACWorkspace.runningActionChain!.title,
                                         style: const TextStyle(
                                             fontSize: 21,
                                             fontWeight: FontWeight.bold,
@@ -303,8 +304,10 @@ class _HomePageState extends State<HomePage> {
                                         children: [
                                           for (int indexOfActionMethod = 0;
                                               indexOfActionMethod <
-                                                  ACWorkspace.currentChain!
-                                                      .actodos.length;
+                                                  ACWorkspace
+                                                      .runningActionChain!
+                                                      .actodos
+                                                      .length;
                                               indexOfActionMethod++)
                                             ACToDoCard(
                                                 key:
@@ -316,20 +319,24 @@ class _HomePageState extends State<HomePage> {
                                                 disableTapGesture: false,
                                                 // action method
                                                 actionMethods: ACWorkspace
-                                                    .currentChain!.actodos,
+                                                    .runningActionChain!
+                                                    .actodos,
                                                 indexOfThisActionMethod:
                                                     indexOfActionMethod,
                                                 actionMethodData: ACWorkspace
-                                                        .currentChain!.actodos[
+                                                        .runningActionChain!
+                                                        .actodos[
                                                     indexOfActionMethod],
                                                 editAction: () =>
                                                     goToMakeChainPage()),
                                         ],
                                         onReorder: (oldIndex, newIndex) {
                                           final ACToDo reorderedMethod =
-                                              ACWorkspace.currentChain!.actodos
+                                              ACWorkspace
+                                                  .runningActionChain!.actodos
                                                   .removeAt(oldIndex);
-                                          ACWorkspace.currentChain!.actodos
+                                          ACWorkspace
+                                              .runningActionChain!.actodos
                                               .insert(
                                                   newIndex, reorderedMethod);
                                           setState(() {});
@@ -340,7 +347,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                        if (ACWorkspace.currentChain == null)
+                        if (ACWorkspace.runningActionChain == null)
                           const SizedBox(height: 120),
                         // ボタン集
                         // ループ、完了
@@ -361,17 +368,20 @@ class _HomePageState extends State<HomePage> {
                                   textContent: "ループ"),
                               // 作成、完了
                               ControllIconButton(
-                                  onPressed: ACWorkspace.currentChain == null
-                                      ? () => goToMakeChainPage()
-                                      : (!isCompleted
-                                          ? null
-                                          : () => askToCompliteChain()),
-                                  iconData: ACWorkspace.currentChain == null
-                                      ? Icons.add
-                                      : Icons.done,
-                                  textContent: ACWorkspace.currentChain == null
-                                      ? "作成"
-                                      : "完了"),
+                                  onPressed:
+                                      ACWorkspace.runningActionChain == null
+                                          ? () => goToMakeChainPage()
+                                          : (!isCompleted
+                                              ? null
+                                              : () => askToCompliteChain()),
+                                  iconData:
+                                      ACWorkspace.runningActionChain == null
+                                          ? Icons.add
+                                          : Icons.done,
+                                  textContent:
+                                      ACWorkspace.runningActionChain == null
+                                          ? "作成"
+                                          : "完了"),
                             ],
                           ),
                         ),
@@ -381,15 +391,17 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             // 初期化
                             ControllIconButton(
-                                onPressed: ACWorkspace.currentChain == null
+                                onPressed: ACWorkspace.runningActionChain ==
+                                        null
                                     ? null
                                     : () => _askToInitializeHomePageContent(),
                                 iconData: Icons.clear,
                                 textContent: "初期化"),
                             // キープ
                             ControllIconButton(
-                                onPressed: !(ACWorkspace.currentChain != null &&
-                                        ACWorkspace.currentChain!.title
+                                onPressed: !(ACWorkspace.runningActionChain !=
+                                            null &&
+                                        ACWorkspace.runningActionChain!.title
                                             .trim()
                                             .isNotEmpty)
                                     ? null
@@ -406,7 +418,8 @@ class _HomePageState extends State<HomePage> {
                                               .keepedChains[
                                                   _selectedCategoryId ??
                                                       noneId]!
-                                              .add(ACWorkspace.currentChain!);
+                                              .add(ACWorkspace
+                                                  .runningActionChain!);
                                           // 初期化
                                           _initializeHomePageContent();
                                           homePageKey.currentState
@@ -424,12 +437,14 @@ class _HomePageState extends State<HomePage> {
                                 textContent: "キープ"),
                             // 編集
                             ControllIconButton(
-                                onPressed: ACWorkspace.currentChain == null
-                                    ? null
-                                    : () => goToMakeChainPage(),
+                                onPressed:
+                                    ACWorkspace.runningActionChain == null
+                                        ? null
+                                        : () => goToMakeChainPage(),
                                 iconData: Icons.edit,
-                                iconSize:
-                                    ACWorkspace.currentChain == null ? 28 : 26,
+                                iconSize: ACWorkspace.runningActionChain == null
+                                    ? 28
+                                    : 26,
                                 textContent: "編集"),
                           ],
                         ),

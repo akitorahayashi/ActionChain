@@ -46,7 +46,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
                     ACWorkspace.currentWorkspaceIndex) {
                   Navigator.pop(context);
                 } else {
-                  ACWorkspace.currentWorkspace.changeCurrentWorkspace(
+                  ACWorkspace.changeCurrentWorkspace(
                       newWorkspaceIndex: indexInStringWorkspaces);
                   ACVibration.vibrate();
                   Navigator.pop(context);
