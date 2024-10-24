@@ -27,7 +27,7 @@ Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
     isChecked ? thisIconData.checkedIcon : thisIconData.notCheckedIcon,
     color: iconColor ??
         (isChecked
-            ? theme[settingData.selectedThemeIndex].checkmarkColor
+            ? acTheme[settingData.selectedThemeIndex].checkmarkColor
             : Colors.black.withOpacity(0.56)),
     size: iconSize ??
         (fontawesomeCategories.contains(settingData.defaultIconCategory)

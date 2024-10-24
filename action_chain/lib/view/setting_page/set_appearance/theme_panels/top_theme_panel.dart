@@ -20,7 +20,7 @@ class TopThemePanel extends StatelessWidget {
         width: deviceWidth - 50,
         child: DecoratedBox(
           decoration: BoxDecoration(
-              gradient: theme[settingData.selectedTheme]!.gradientOfNavBar,
+              gradient: acTheme[settingData.selectedTheme]!.gradientOfNavBar,
               borderRadius: BorderRadius.circular(10)),
           // ガラス
           child: GlassContainer(
@@ -32,7 +32,7 @@ class TopThemePanel extends StatelessWidget {
                 // カードを表示
                 child: Card(
                   // 色
-                  color: theme[settingData.selectedTheme]!.panelColor,
+                  color: acTheme[settingData.selectedTheme]!.panelColor,
                   // 浮き具合
                   elevation: 2,
                   shape: RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class TopThemePanel extends StatelessWidget {
                               width: deviceWidth - 145,
                               height: deviceWidth - 145,
                               child: CircularProgressIndicator(
-                                  color: theme[settingData.selectedTheme]!
+                                  color: acTheme[settingData.selectedTheme]!
                                       .circleColor,
                                   strokeWidth: 10,
                                   value: value),
@@ -77,7 +77,7 @@ class TopThemePanel extends StatelessWidget {
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Icon(
                                       FontAwesomeIcons.solidSquareCheck,
-                                      color: theme[settingData.selectedTheme]!
+                                      color: acTheme[settingData.selectedTheme]!
                                           .checkmarkColor,
                                       size: 22,
                                     ),
@@ -85,8 +85,9 @@ class TopThemePanel extends StatelessWidget {
                                   Text(
                                     settingData.selectedTheme,
                                     style: TextStyle(
-                                        color: theme[settingData.selectedTheme]!
-                                            .checkmarkColor,
+                                        color:
+                                            acTheme[settingData.selectedTheme]!
+                                                .checkmarkColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 22),
                                   )

@@ -22,7 +22,7 @@ class _SetAppearancePageState extends State<SetAppearancePage> {
   @override
   Widget build(BuildContext context) {
     // テーマを表示させるための変数
-    List<String> unUsingTheme = theme.keys
+    List<String> unUsingTheme = acTheme.keys
         .where((themeName) => themeName != settingData.selectedTheme)
         .toList();
 

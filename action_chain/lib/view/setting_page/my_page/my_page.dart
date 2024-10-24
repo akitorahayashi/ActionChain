@@ -22,7 +22,7 @@ class _MyPageState extends State<MyPage> {
         const SizedBox(height: 10),
         // ignore: prefer_const_constructors
         Card(
-          color: theme[settingData.selectedTheme]!.myPagePanelColor,
+          color: acTheme[settingData.selectedTheme]!.myPagePanelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: AnimatedCrossFade(

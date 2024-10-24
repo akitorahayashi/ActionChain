@@ -55,7 +55,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: theme[settingData.selectedTheme]!.backgroundColor),
+                color: acTheme[settingData.selectedTheme]!.backgroundColor),
           ),
           CustomScrollView(
             slivers: [

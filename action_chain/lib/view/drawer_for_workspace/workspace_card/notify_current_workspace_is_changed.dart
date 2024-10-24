@@ -9,7 +9,7 @@ void notifyCurrentWorkspaceIsChanged(
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+          backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
             child: Column(
@@ -30,7 +30,7 @@ void notifyCurrentWorkspaceIsChanged(
                   child: Text(
                     newWorkspaceName,
                     style: TextStyle(
-                        color: theme[settingData.selectedTheme]!.accentColor,
+                        color: acTheme[settingData.selectedTheme]!.accentColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),

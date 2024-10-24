@@ -61,7 +61,7 @@ class ActionChainSliverAppBar extends StatelessWidget {
       // AppBarのデザイン
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          gradient: theme[settingData.selectedTheme]!.gradientOfNavBar,
+          gradient: acTheme[settingData.selectedTheme]!.gradientOfNavBar,
         ),
         child: FlexibleSpaceBar(
           centerTitle: true,

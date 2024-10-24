@@ -24,7 +24,7 @@ class SetFeaturesCategoryColumn extends StatelessWidget {
                   fontSize: 21,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
-                  color: theme[settingData.selectedTheme]!
+                  color: acTheme[settingData.selectedTheme]!
                       .titleColorOfSettingPage),
             ),
           ),

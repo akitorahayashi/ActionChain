@@ -11,7 +11,7 @@ void notifyActionMethodOrStepIsEditted({
   SnackBar snackBar = SnackBar(
     duration: const Duration(milliseconds: 900),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: theme[settingData.selectedTheme]!.panelColor,
+    backgroundColor: acTheme[settingData.selectedTheme]!.panelColor,
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

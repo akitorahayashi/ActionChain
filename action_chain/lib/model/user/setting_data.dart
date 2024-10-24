@@ -1,6 +1,5 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
@@ -9,8 +8,6 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:intl/intl.dart';
 
 SettingData settingData = SettingData();
 
@@ -73,13 +70,13 @@ class SettingData {
 
   // テーマを変更する関数
   Future<void> confirmToChangeTheme(
-      {required BuildContext context, required String themeName}) {
+      {required BuildContext context, required int relevantThemeIndex}) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[themeName]!.alertColor,
+            backgroundColor: acTheme[relevantThemeIndex].alertColor,
             child: DefaultTextStyle(
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -96,7 +93,8 @@ class SettingData {
                       height: 80,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          gradient: theme[themeName]!.gradientOfNavBar,
+                          gradient:
+                              acTheme[relevantThemeIndex].gradientOfNavBar,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GlassContainer(
@@ -104,15 +102,16 @@ class SettingData {
                             alignment: Alignment.center,
                             child: Card(
                               elevation: 5,
-                              color: theme[themeName]!.panelColor,
+                              color: acTheme[relevantThemeIndex].panelColor,
                               child: Container(
                                 width: 150,
                                 height: 50,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  themeName,
+                                  acTheme[relevantThemeIndex].themeName,
                                   style: TextStyle(
-                                      color: theme[themeName]!.checkmarkColor,
+                                      color: acTheme[relevantThemeIndex]
+                                          .checkmarkColor,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -124,7 +123,7 @@ class SettingData {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text("$themeNameに変更しますか？"),
+                    child: Text("$relevantThemeIndexに変更しますか？"),
                   ),
                   // 操作ボタン
                   ButtonBar(
@@ -137,13 +136,13 @@ class SettingData {
                         },
                         child: Text(
                           "戻る",
-                          style:
-                              TextStyle(color: theme[themeName]!.accentColor),
+                          style: TextStyle(
+                              color: acTheme[relevantThemeIndex].accentColor),
                         ),
                         // InkWell
                         style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.resolveWith(
-                              (states) => theme[themeName]!
+                          overlayColor: WidgetStateProperty.resolveWith(
+                              (states) => acTheme[relevantThemeIndex]
                                   .accentColor
                                   .withOpacity(0.2)),
                         ),
@@ -154,14 +153,14 @@ class SettingData {
                             // このアラートを消す
                             Navigator.pop(context);
                             // if (settingData.userLevel >= 5) {
-                            selectedTheme = themeName;
+                            settingData.selectedThemeIndex = relevantThemeIndex;
                             setAppearancePageKey.currentState?.setState(() {});
                             actionChainAppKey.currentState?.setState(() {});
                             ACVibration.vibrate();
                             // thank youアラート
                             simpleAlert(
                                 context: context,
-                                title: "変更することに\n成功しました",
+                                title: "変更することに\n成功しました！",
                                 message: null,
                                 buttonText: "OK");
                             settingData.saveSettings();
@@ -175,14 +174,15 @@ class SettingData {
                           },
                           // InkWell
                           style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.resolveWith(
-                                (states) => theme[themeName]!
+                            overlayColor: WidgetStateProperty.resolveWith(
+                                (states) => acTheme[relevantThemeIndex]
                                     .accentColor
                                     .withOpacity(0.2)),
                           ),
                           child: Text("変更",
                               style: TextStyle(
-                                  color: theme[themeName]!.accentColor))),
+                                  color: acTheme[relevantThemeIndex]
+                                      .accentColor))),
                     ],
                   )
                 ],

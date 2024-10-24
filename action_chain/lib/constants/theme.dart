@@ -85,7 +85,7 @@ class ActionChainTheme {
   });
 }
 
-List<ActionChainTheme> theme = [
+List<ActionChainTheme> acTheme = [
   ActionChainTheme(
     themeName: "Sun Orange",
     // 基本色

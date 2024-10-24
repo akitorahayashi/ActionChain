@@ -23,7 +23,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
       child: Stack(
         children: [
           // 背景色
-          Container(color: theme[settingData.selectedTheme]!.backgroundColor),
+          Container(color: acTheme[settingData.selectedTheme]!.backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -40,8 +40,8 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color:
-                            theme[settingData.selectedTheme]!.panelBorderColor),
+                        color: acTheme[settingData.selectedTheme]!
+                            .panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -73,8 +73,8 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color:
-                            theme[settingData.selectedTheme]!.panelBorderColor),
+                        color: acTheme[settingData.selectedTheme]!
+                            .panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -139,7 +139,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                                 },
                                 child: Icon(
                                   Icons.add,
-                                  color: theme[settingData.selectedTheme]!
+                                  color: acTheme[settingData.selectedTheme]!
                                       .accentColor,
                                 ),
                               ),

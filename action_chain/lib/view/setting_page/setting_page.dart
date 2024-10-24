@@ -48,7 +48,7 @@ class _SettingPageState extends State<SettingPage> {
             // 背景色
             Container(
                 decoration: BoxDecoration(
-                    color: theme[settingData.selectedTheme]!.backgroundColor),
+                    color: acTheme[settingData.selectedTheme]!.backgroundColor),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height),
             NestedScrollView(
@@ -122,7 +122,7 @@ class _SettingPageState extends State<SettingPage> {
                                     return Icon(
                                       _iconDataOfSettingPageContents[index][0],
                                       color: index == _selectedPageIndex
-                                          ? theme[settingData.selectedTheme]!
+                                          ? acTheme[settingData.selectedTheme]!
                                               .accentColor
                                           : Colors.black45,
                                     );
@@ -178,7 +178,7 @@ class _SettingPageState extends State<SettingPage> {
                                             border: Border.all(
                                               width: 1.5,
                                               color: _selectedPageIndex == 2
-                                                  ? theme[settingData
+                                                  ? acTheme[settingData
                                                           .selectedTheme]!
                                                       .accentColor
                                                       .withOpacity(1)
@@ -195,7 +195,7 @@ class _SettingPageState extends State<SettingPage> {
                                     return Icon(
                                       _iconDataOfSettingPageContents[index][0],
                                       color: index == _selectedPageIndex
-                                          ? theme[settingData.selectedTheme]!
+                                          ? acTheme[settingData.selectedTheme]!
                                               .accentColor
                                           : Colors.black45,
                                     );
@@ -207,7 +207,7 @@ class _SettingPageState extends State<SettingPage> {
                                   _iconDataOfSettingPageContents[index][1],
                                   style: TextStyle(
                                     color: index == _selectedPageIndex
-                                        ? theme[settingData.selectedTheme]!
+                                        ? acTheme[settingData.selectedTheme]!
                                             .accentColor
                                         : Colors.black45,
                                     fontWeight: FontWeight.bold,

@@ -32,7 +32,7 @@ class TipsCategoryBlock extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
-                        color: theme[settingData.selectedTheme]!
+                        color: acTheme[settingData.selectedTheme]!
                             .accentColor
                             .withOpacity(0.8)),
                   ),
@@ -44,7 +44,7 @@ class TipsCategoryBlock extends StatelessWidget {
               child: Text(
                 headerForThisTips,
                 style: TextStyle(
-                    color: theme[settingData.selectedTheme]!.accentColor,
+                    color: acTheme[settingData.selectedTheme]!.accentColor,
                     fontSize: 21,
                     fontWeight: FontWeight.bold),
               ),

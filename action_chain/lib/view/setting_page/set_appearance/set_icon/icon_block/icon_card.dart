@@ -41,7 +41,7 @@ class _IconCardState extends State<IconCard> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: isFocused ? 0 : 3,
-          color: theme[settingData.selectedTheme]!.panelColor,
+          color: acTheme[settingData.selectedTheme]!.panelColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Column(
@@ -59,7 +59,7 @@ class _IconCardState extends State<IconCard> {
                                 widget.selectedIconRarity]![widget.iconName]!
                             .notCheckedIcon,
                     color: isFocused
-                        ? theme[settingData.selectedTheme]!.checkmarkColor
+                        ? acTheme[settingData.selectedTheme]!.checkmarkColor
                         : Colors.black.withOpacity(0.5),
                     size: isFontawesomeCategories ? 17 : 20,
                   ),
@@ -70,7 +70,7 @@ class _IconCardState extends State<IconCard> {
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: isFocused
-                          ? theme[settingData.selectedTheme]!.checkmarkColor
+                          ? acTheme[settingData.selectedTheme]!.checkmarkColor
                           : Colors.black.withOpacity(0.5)),
                 )
               ],

@@ -34,7 +34,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 70),
         child: Card(
-          color: theme[settingData.selectedTheme]!.panelColor,
+          color: acTheme[settingData.selectedTheme]!.panelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: ClipRRect(
@@ -68,9 +68,9 @@ class ChangeWorkspaceCard extends StatelessWidget {
                             autoClose: true,
                             spacing: 8,
                             backgroundColor:
-                                theme[settingData.selectedTheme]!.panelColor,
+                                acTheme[settingData.selectedTheme]!.panelColor,
                             foregroundColor:
-                                theme[settingData.selectedTheme]!.accentColor,
+                                acTheme[settingData.selectedTheme]!.accentColor,
                             onPressed: (BuildContext context) {
                               if (!isInList) {
                                 Navigator.pop(context);
@@ -93,9 +93,9 @@ class ChangeWorkspaceCard extends StatelessWidget {
                       autoClose: true,
                       spacing: 8,
                       backgroundColor:
-                          theme[settingData.selectedTheme]!.panelColor,
+                          acTheme[settingData.selectedTheme]!.panelColor,
                       foregroundColor:
-                          theme[settingData.selectedTheme]!.accentColor,
+                          acTheme[settingData.selectedTheme]!.accentColor,
                       onPressed: (BuildContext context) {
                         if (!isInList) {
                           Navigator.pop(context);
@@ -131,7 +131,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color:
-                                theme[settingData.selectedTheme]!.accentColor,
+                                acTheme[settingData.selectedTheme]!.accentColor,
                             letterSpacing: 1)),
                   ),
                 ),

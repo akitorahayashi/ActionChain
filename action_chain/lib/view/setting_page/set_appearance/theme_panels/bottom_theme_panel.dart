@@ -17,7 +17,7 @@ class BottomThemePanel extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           settingData.confirmToChangeTheme(
-              context: context, themeName: themeName);
+              context: context, relevantThemeIndex: themeName);
         },
         child: SizedBox(
           width: deviceWidth - 50,
@@ -25,7 +25,7 @@ class BottomThemePanel extends StatelessWidget {
           // グラデーションと丸角
           child: DecoratedBox(
             decoration: BoxDecoration(
-                gradient: theme[themeName]!.gradientOfNavBar,
+                gradient: acTheme[themeName]!.gradientOfNavBar,
                 borderRadius: BorderRadius.circular(10)),
             // ガラス
             child: GlassContainer(
@@ -39,7 +39,7 @@ class BottomThemePanel extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
                       // 色
-                      color: theme[themeName]!.panelColor,
+                      color: acTheme[themeName]!.panelColor,
                       // 浮き具合
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -52,14 +52,14 @@ class BottomThemePanel extends StatelessWidget {
                                 const EdgeInsets.only(left: 18, right: 8.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color: theme[themeName]!.checkmarkColor,
+                              color: acTheme[themeName]!.checkmarkColor,
                             ),
                           ),
                           Text(
                             themeName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: theme[themeName]!.checkmarkColor,
+                                color: acTheme[themeName]!.checkmarkColor,
                                 fontSize: 20,
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.w800),

@@ -18,7 +18,7 @@ class _ActionChainAppState extends State<ActionChainApp> {
         debugShowCheckedModeBanner: false,
         title: "Action Chain",
         theme: ThemeData(
-            primarySwatch: theme[settingData.selectedTheme]!.accentColor),
+            primarySwatch: acTheme[settingData.selectedThemeIndex].accentColor),
         home: HomePage(key: homePageKey)
         // FutureBuilder(
         //   future: actionChainUser.initializeFirebase(),

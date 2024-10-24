@@ -1,6 +1,5 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_workspace/edit_acworkspace_dialog.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
@@ -95,7 +94,7 @@ class ACWorkspace {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -120,8 +119,8 @@ class ACWorkspace {
                         TextSpan(
                           text: newWorkspaceName,
                           style: TextStyle(
-                            color:
-                                theme[settingData.selectedTheme]!.accentColor,
+                            color: acTheme[settingData.selectedThemeIndex]
+                                .accentColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -170,7 +169,7 @@ class ACWorkspace {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -192,7 +191,8 @@ class ACWorkspace {
                     child: Text(
                       willDeletedWorkspace.name,
                       style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
+                          color: acTheme[settingData.selectedThemeIndex]
+                              .accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),

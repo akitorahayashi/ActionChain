@@ -25,19 +25,21 @@ class ControllIconButton extends StatelessWidget {
       child: Card(
         color: onPressed == null
             ? const Color.fromRGBO(200, 200, 200, 1)
-            : theme[settingData.selectedTheme]!.borderColorOfControllIconButton,
+            : acTheme[settingData.selectedTheme]!
+                .borderColorOfControllIconButton,
         child: Card(
           // ループのため
           color: buttonIsColored == null
               ? null
               : (buttonIsColored!
-                  ? theme[settingData.selectedTheme]!.coloredControllButtonColor
+                  ? acTheme[settingData.selectedTheme]!
+                      .coloredControllButtonColor
                   : null),
           child: InkWell(
             onTap: onPressed,
             splashColor: buttonIsColored != null
                 ? Colors.transparent
-                : theme[settingData.selectedTheme]!
+                : acTheme[settingData.selectedTheme]!
                     .textColorOfControllIconButton
                     .withOpacity(0.12),
             highlightColor: Colors.transparent,
@@ -50,7 +52,7 @@ class ControllIconButton extends StatelessWidget {
                     iconData,
                     color: onPressed == null
                         ? const Color.fromRGBO(200, 200, 200, 1)
-                        : theme[settingData.selectedTheme]!
+                        : acTheme[settingData.selectedTheme]!
                             .backupButtonTextColor,
                     size: iconSize ?? 28,
                   ),
@@ -60,7 +62,7 @@ class ControllIconButton extends StatelessWidget {
                   style: TextStyle(
                       color: onPressed == null
                           ? const Color.fromRGBO(200, 200, 200, 1)
-                          : theme[settingData.selectedTheme]!
+                          : acTheme[settingData.selectedTheme]!
                               .textColorOfControllIconButton,
                       fontWeight: FontWeight.w900,
                       fontSize: 13,

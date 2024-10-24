@@ -41,7 +41,7 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -135,7 +135,7 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -147,7 +147,8 @@ class ACCategory {
                     child: Text(
                       addedCategoryName,
                       style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
+                          color:
+                              acTheme[settingData.selectedTheme]!.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
@@ -187,7 +188,7 @@ class ACCategory {
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
             title: Column(
               children: [
                 Padding(
@@ -252,7 +253,7 @@ class ACCategory {
                           child: Text(
                             "戻す",
                             style: TextStyle(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[settingData.selectedTheme]!
                                     .accentColor),
                           ),
                         ),
@@ -285,7 +286,7 @@ class ACCategory {
                           child: Text(
                             "完了",
                             style: TextStyle(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[settingData.selectedTheme]!
                                     .accentColor),
                           ),
                         )
@@ -307,7 +308,7 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -330,7 +331,8 @@ class ACCategory {
                       ACWorkspace.currentWorkspace
                           .chainCategories[indexOfCategoryInCategories].title,
                       style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
+                          color:
+                              acTheme[settingData.selectedTheme]!.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
