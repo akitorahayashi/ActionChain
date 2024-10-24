@@ -51,30 +51,33 @@ class ACWorkspace {
     };
   }
 
-  ACWorkspace.fromJson(Map<String, dynamic> jsonData)
-      : name = jsonData["name"] as String,
-        chainCategories = jsonData["chainCategories"]?.map((chainCategory) {
-              return chainCategory.toJson();
-            }).toList() ??
-            [],
-        savedChains = (jsonData["savedChains"] as Map<String, dynamic>).map(
-          (chainName, actionChains) {
-            final createdActionChains = (actionChains as List<dynamic>)
-                .map((jsonActionChainData) =>
-                    ActionChain.fromJson(jsonActionChainData))
-                .toList();
-            return MapEntry(chainName, createdActionChains);
-          },
-        ),
-        keepedChains = (jsonData["keepedChains"] as Map<String, dynamic>).map(
-          (chainName, actionChains) {
-            final createdActionChains = (actionChains as List<dynamic>)
-                .map((jsonActionChainData) =>
-                    ActionChain.fromJson(jsonActionChainData))
-                .toList();
-            return MapEntry(chainName, createdActionChains);
-          },
-        );
+  factory ACWorkspace.fromJson(Map<String, dynamic> jsonData) {
+    return ACWorkspace(
+      name: jsonData["name"] as String,
+      chainCategories: (jsonData["chainCategories"] as List<dynamic>?)
+              ?.map((chainCategory) => ACCategory.fromJson(chainCategory))
+              .toList() ??
+          [],
+      savedChains: (jsonData["savedChains"] as Map<String, dynamic>).map(
+        (chainName, actionChains) {
+          final createdActionChains = (actionChains as List<dynamic>)
+              .map((jsonActionChainData) =>
+                  ActionChain.fromJson(jsonActionChainData))
+              .toList();
+          return MapEntry(chainName, createdActionChains);
+        },
+      ),
+      keepedChains: (jsonData["keepedChains"] as Map<String, dynamic>).map(
+        (chainName, actionChains) {
+          final createdActionChains = (actionChains as List<dynamic>)
+              .map((jsonActionChainData) =>
+                  ActionChain.fromJson(jsonActionChainData))
+              .toList();
+          return MapEntry(chainName, createdActionChains);
+        },
+      ),
+    );
+  }
 
   static void addWorkspaceAlert({required BuildContext context}) {
     showDialog(
@@ -249,7 +252,7 @@ class ACWorkspace {
         });
   }
 
-  void changeCurrentWorkspace({required int newWorkspaceIndex}) {
+  static void changeCurrentWorkspace({required int newWorkspaceIndex}) {
     ACWorkspace.currentWorkspaceIndex = newWorkspaceIndex;
     currentWorkspace = acWorkspaces[newWorkspaceIndex];
     SharedPreferences.getInstance().then((pref) {
@@ -263,10 +266,11 @@ class ACWorkspace {
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;
       if (pref.getString("acWorkspaces") != null) {
-        acWorkspaces = json
-            .decode(pref.getString("acWorkspaces")!)
-            .map((acworkspaceJsonData) {
-          return ACWorkspace.fromJson(acworkspaceJsonData);
+        acWorkspaces =
+            (json.decode(pref.getString("acWorkspaces")!) as List<dynamic>)
+                .map((acworkspaceJsonData) {
+          return ACWorkspace.fromJson(
+              acworkspaceJsonData as Map<String, dynamic>);
         }).toList();
       }
       if (pref.getString("currentChain") != null) {

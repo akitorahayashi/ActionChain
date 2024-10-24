@@ -83,18 +83,6 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                         child: Column(
                           children: [
                             ReorderableColumn(
-                              onReorder: (oldIndex, newIndex) {
-                                //TODO currentWorkspaceをまたぐときの処理
-                                setState(() {
-                                  if (newIndex > oldIndex) {
-                                    newIndex -= 1;
-                                  }
-                                  final ACWorkspace item =
-                                      acWorkspaces.removeAt(oldIndex);
-                                  acWorkspaces.insert(newIndex, item);
-                                  ACWorkspace.saveACWorkspaces();
-                                });
-                              },
                               children: [
                                 for (ACWorkspace acWorkspace
                                     in acWorkspaces) // すべてのworkspaceを表示
@@ -104,6 +92,42 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                                       indexInStringWorkspaces:
                                           acWorkspaces.indexOf(acWorkspace)),
                               ],
+                              onReorder: (oldIndex, newIndex) {
+                                // currentWorkspaceをまたぐときの処理
+                                setState(() {
+                                  if (newIndex > oldIndex) {
+                                    newIndex -= 1;
+                                  }
+                                  final ACWorkspace item =
+                                      acWorkspaces.removeAt(oldIndex);
+                                  acWorkspaces.insert(newIndex, item);
+
+                                  // currentWorkspaceIndexの更新
+                                  if (ACWorkspace.currentWorkspaceIndex ==
+                                      oldIndex) {
+                                    ACWorkspace.changeCurrentWorkspace(
+                                        newWorkspaceIndex: newIndex);
+                                  } else if (ACWorkspace.currentWorkspaceIndex >
+                                          oldIndex &&
+                                      ACWorkspace.currentWorkspaceIndex <=
+                                          newIndex) {
+                                    ACWorkspace.changeCurrentWorkspace(
+                                        newWorkspaceIndex:
+                                            ACWorkspace.currentWorkspaceIndex -
+                                                1);
+                                  } else if (ACWorkspace.currentWorkspaceIndex <
+                                          oldIndex &&
+                                      ACWorkspace.currentWorkspaceIndex >=
+                                          newIndex) {
+                                    ACWorkspace.changeCurrentWorkspace(
+                                        newWorkspaceIndex:
+                                            ACWorkspace.currentWorkspaceIndex +
+                                                1);
+                                  }
+
+                                  ACWorkspace.saveACWorkspaces();
+                                });
+                              },
                             ),
                             // 新しくworkspaceを追加する
                             Align(
