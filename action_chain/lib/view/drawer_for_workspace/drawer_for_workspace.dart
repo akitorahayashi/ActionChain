@@ -23,7 +23,9 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
       child: Stack(
         children: [
           // 背景色
-          Container(color: acTheme[settingData.selectedTheme]!.backgroundColor),
+          Container(
+              color: acTheme[SettingData.shared.selectedThemeIndex]
+                  .backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -40,7 +42,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: acTheme[settingData.selectedTheme]!
+                        color: acTheme[SettingData.shared.selectedThemeIndex]
                             .panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -73,7 +75,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: acTheme[settingData.selectedTheme]!
+                        color: acTheme[SettingData.shared.selectedThemeIndex]
                             .panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -139,7 +141,8 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                                 },
                                 child: Icon(
                                   Icons.add,
-                                  color: acTheme[settingData.selectedTheme]!
+                                  color: acTheme[
+                                          SettingData.shared.selectedThemeIndex]
                                       .accentColor,
                                 ),
                               ),

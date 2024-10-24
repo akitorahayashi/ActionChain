@@ -9,7 +9,7 @@ class DoubleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: acTheme[settingData.selectedTheme]!.niceAppsCardColor,
+      color: acTheme[SettingData.shared.selectedThemeIndex].niceAppsCardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

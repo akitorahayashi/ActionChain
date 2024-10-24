@@ -6,8 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
 class BottomThemePanel extends StatelessWidget {
-  final String themeName;
-  const BottomThemePanel({Key? key, required this.themeName}) : super(key: key);
+  final int relevantThemeIndex;
+  const BottomThemePanel({Key? key, required this.relevantThemeIndex})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +17,8 @@ class BottomThemePanel extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
       child: GestureDetector(
         onTap: () {
-          settingData.confirmToChangeTheme(
-              context: context, relevantThemeIndex: themeName);
+          SettingData.shared.confirmToChangeTheme(
+              context: context, relevantThemeIndex: relevantThemeIndex);
         },
         child: SizedBox(
           width: deviceWidth - 50,
@@ -25,7 +26,7 @@ class BottomThemePanel extends StatelessWidget {
           // グラデーションと丸角
           child: DecoratedBox(
             decoration: BoxDecoration(
-                gradient: acTheme[themeName]!.gradientOfNavBar,
+                gradient: acTheme[relevantThemeIndex].gradientOfNavBar,
                 borderRadius: BorderRadius.circular(10)),
             // ガラス
             child: GlassContainer(
@@ -39,7 +40,7 @@ class BottomThemePanel extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
                       // 色
-                      color: acTheme[themeName]!.panelColor,
+                      color: acTheme[relevantThemeIndex].panelColor,
                       // 浮き具合
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -52,14 +53,16 @@ class BottomThemePanel extends StatelessWidget {
                                 const EdgeInsets.only(left: 18, right: 8.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color: acTheme[themeName]!.checkmarkColor,
+                              color: acTheme[relevantThemeIndex].checkmarkColor,
                             ),
                           ),
                           Text(
-                            themeName,
+                            acTheme[SettingData.shared.selectedThemeIndex]
+                                .themeName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: acTheme[themeName]!.checkmarkColor,
+                                color:
+                                    acTheme[relevantThemeIndex].checkmarkColor,
                                 fontSize: 20,
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.w800),

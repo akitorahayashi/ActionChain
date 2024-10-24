@@ -10,7 +10,8 @@ class BackgroundOfCircularIndicatorPainter extends CustomPainter {
 
     final Paint brushForCircle = Paint()
       ..style = PaintingStyle.stroke
-      ..color = acTheme[settingData.selectedTheme]!.circleBackgroundColor
+      ..color =
+          acTheme[SettingData.shared.selectedThemeIndex].circleBackgroundColor
       ..strokeWidth = 30;
 
     canvas.drawCircle(

@@ -25,7 +25,8 @@ class _SelectChainWallState extends State<SelectChainWall> {
       body: Stack(children: [
         Container(
           decoration: BoxDecoration(
-              color: acTheme[settingData.selectedTheme]!.backgroundColor),
+              color: acTheme[SettingData.shared.selectedThemeIndex]
+                  .backgroundColor),
         ),
         CustomScrollView(
           slivers: [

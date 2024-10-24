@@ -1,7 +1,5 @@
 import 'package:action_chain/view/setting_page/my_page/authorization_card/sign_in_card.dart';
-import 'package:action_chain/view/setting_page/my_page/authorization_card/action_chain_user_card/user_introduction_card.dart';
 import 'package:action_chain/view/setting_page/my_page/tips_page/select_tips_panel.dart';
-import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +20,8 @@ class _MyPageState extends State<MyPage> {
         const SizedBox(height: 10),
         // ignore: prefer_const_constructors
         Card(
-          color: acTheme[settingData.selectedTheme]!.myPagePanelColor,
+          color:
+              acTheme[SettingData.shared.selectedThemeIndex].myPagePanelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: AnimatedCrossFade(

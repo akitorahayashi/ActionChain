@@ -17,22 +17,24 @@ class ActionChainElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ButtonStyle(
-          overlayColor: MaterialStateProperty.all(
-              acTheme[settingData.selectedTheme]!.pressedElevatedButtonColor),
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
+          overlayColor: WidgetStateProperty.all(
+              acTheme[SettingData.shared.selectedThemeIndex]!
+                  .pressedElevatedButtonColor),
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.disabled)) {
                 return const Color.fromRGBO(220, 220, 220, 1);
               }
-              return acTheme[settingData.selectedTheme]!.elevatedButtonColor;
+              return acTheme[SettingData.shared.selectedThemeIndex]
+                  .elevatedButtonColor;
             },
           ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           )),
-          elevation: MaterialStateProperty.resolveWith<double>(
-            (Set<MaterialState> states) {
+          elevation: WidgetStateProperty.resolveWith<double>(
+            (Set<WidgetState> states) {
               return 2;
             },
           ),

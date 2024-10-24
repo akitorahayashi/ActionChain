@@ -94,7 +94,8 @@ class ACWorkspace {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: acTheme[settingData.selectedThemeIndex].alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -119,8 +120,9 @@ class ACWorkspace {
                         TextSpan(
                           text: newWorkspaceName,
                           style: TextStyle(
-                            color: acTheme[settingData.selectedThemeIndex]
-                                .accentColor,
+                            color:
+                                acTheme[SettingData.shared.selectedThemeIndex]
+                                    .accentColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -169,7 +171,8 @@ class ACWorkspace {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: acTheme[settingData.selectedThemeIndex].alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -191,7 +194,7 @@ class ACWorkspace {
                     child: Text(
                       willDeletedWorkspace.name,
                       style: TextStyle(
-                          color: acTheme[settingData.selectedThemeIndex]
+                          color: acTheme[SettingData.shared.selectedThemeIndex]
                               .accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),

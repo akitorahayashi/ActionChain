@@ -16,7 +16,7 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   // await ACAds.initializeACAds();
-  await settingData.readSettings();
+  await SettingData.shared.readSettings();
   await ACVibration.initVibrate();
   await ACWorkspace.readWorkspaces();
   // await actionChainUser.initializeFirebase();

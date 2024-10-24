@@ -9,9 +9,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
-SettingData settingData = SettingData();
-
 class SettingData {
+  static SettingData shared = SettingData();
   // テーマ
   int selectedThemeIndex = 0;
 
@@ -30,13 +29,13 @@ class SettingData {
   Map<String, dynamic> toJson() {
     return {
       // テーマ
-      "selectedThemeIndex": settingData.selectedThemeIndex,
+      "selectedThemeIndex": SettingData.shared.selectedThemeIndex,
       // アイコン
-      "defaultIconCategory": settingData.defaultIconCategory,
+      "defaultIconCategory": SettingData.shared.defaultIconCategory,
       "iconRarity": iconRarity,
-      "defaultIconName": settingData.defaultIconName,
+      "defaultIconName": SettingData.shared.defaultIconName,
       // チュートリアル
-      "isFirstEntry": settingData.isFirstEntry,
+      "isFirstEntry": SettingData.shared.isFirstEntry,
     };
   }
 
@@ -55,7 +54,7 @@ class SettingData {
   Future<void> readSettings() async {
     await SharedPreferences.getInstance().then((pref) {
       if (pref.getString("settingData") != null) {
-        settingData =
+        SettingData.shared =
             SettingData.fromJson(json.decode(pref.getString("settingData")!));
       }
     });
@@ -64,7 +63,7 @@ class SettingData {
   // 全ての設定を保存する関数
   void saveSettings() {
     SharedPreferences.getInstance().then((pref) {
-      pref.setString("settingData", json.encode(settingData.toJson()));
+      pref.setString("settingData", json.encode(SettingData.shared.toJson()));
     });
   }
 
@@ -153,7 +152,8 @@ class SettingData {
                             // このアラートを消す
                             Navigator.pop(context);
                             // if (settingData.userLevel >= 5) {
-                            settingData.selectedThemeIndex = relevantThemeIndex;
+                            SettingData.shared.selectedThemeIndex =
+                                relevantThemeIndex;
                             setAppearancePageKey.currentState?.setState(() {});
                             actionChainAppKey.currentState?.setState(() {});
                             ACVibration.vibrate();
@@ -163,7 +163,7 @@ class SettingData {
                                 title: "変更することに\n成功しました！",
                                 message: null,
                                 buttonText: "OK");
-                            settingData.saveSettings();
+                            SettingData.shared.saveSettings();
                             // } else {
                             //   simpleAlert(
                             //       context: context,
@@ -205,9 +205,9 @@ class SettingData {
         yesAction: () {
           Navigator.pop(context);
           // if (settingData.userLevel >= 10) {
-          settingData.defaultIconCategory = categoryNameOfThisIcon;
-          settingData.iconRarity = selectedIconRarity;
-          settingData.defaultIconName = iconName;
+          SettingData.shared.defaultIconCategory = categoryNameOfThisIcon;
+          SettingData.shared.iconRarity = selectedIconRarity;
+          SettingData.shared.defaultIconName = iconName;
           setAppearancePageKey.currentState?.setState(() {});
           ACVibration.vibrate();
           simpleAlert(
@@ -215,7 +215,7 @@ class SettingData {
               title: "チェックマークのアイコンを変更しました",
               message: null,
               buttonText: "OK");
-          settingData.saveSettings();
+          SettingData.shared.saveSettings();
           // } else {
           //   simpleAlert(
           //       context: context,

@@ -34,7 +34,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 70),
         child: Card(
-          color: acTheme[settingData.selectedTheme]!.panelColor,
+          color: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: ClipRRect(
@@ -68,9 +68,11 @@ class ChangeWorkspaceCard extends StatelessWidget {
                             autoClose: true,
                             spacing: 8,
                             backgroundColor:
-                                acTheme[settingData.selectedTheme]!.panelColor,
+                                acTheme[SettingData.shared.selectedThemeIndex]
+                                    .panelColor,
                             foregroundColor:
-                                acTheme[settingData.selectedTheme]!.accentColor,
+                                acTheme[SettingData.shared.selectedThemeIndex]
+                                    .accentColor,
                             onPressed: (BuildContext context) {
                               if (!isInList) {
                                 Navigator.pop(context);
@@ -93,9 +95,11 @@ class ChangeWorkspaceCard extends StatelessWidget {
                       autoClose: true,
                       spacing: 8,
                       backgroundColor:
-                          acTheme[settingData.selectedTheme]!.panelColor,
+                          acTheme[SettingData.shared.selectedThemeIndex]
+                              .panelColor,
                       foregroundColor:
-                          acTheme[settingData.selectedTheme]!.accentColor,
+                          acTheme[SettingData.shared.selectedThemeIndex]
+                              .accentColor,
                       onPressed: (BuildContext context) {
                         if (!isInList) {
                           Navigator.pop(context);
@@ -131,7 +135,8 @@ class ChangeWorkspaceCard extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
                             color:
-                                acTheme[settingData.selectedTheme]!.accentColor,
+                                acTheme[SettingData.shared.selectedThemeIndex]
+                                    .accentColor,
                             letterSpacing: 1)),
                   ),
                 ),

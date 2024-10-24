@@ -10,15 +10,15 @@ Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
   // このカテゴリーで指定されたアイコンがない場合、デフォルトのものを使う
   IconForCheckBox thisIconData = (() {
     // 指定したアイコンがなければ、チェックボックスを使う
-    if (iconsForCheckBox[settingData.defaultIconCategory] != null &&
-        iconsForCheckBox[settingData.defaultIconCategory]![
-                settingData.iconRarity] !=
+    if (iconsForCheckBox[SettingData.shared.defaultIconCategory] != null &&
+        iconsForCheckBox[SettingData.shared.defaultIconCategory]![
+                SettingData.shared.iconRarity] !=
             null &&
-        iconsForCheckBox[settingData.defaultIconCategory]![
-                settingData.iconRarity]![settingData.defaultIconName] !=
+        iconsForCheckBox[SettingData.shared.defaultIconCategory]![SettingData
+                .shared.iconRarity]![SettingData.shared.defaultIconName] !=
             null) {
-      return iconsForCheckBox[settingData.defaultIconCategory]![
-          settingData.iconRarity]![settingData.defaultIconName]!;
+      return iconsForCheckBox[SettingData.shared.defaultIconCategory]![
+          SettingData.shared.iconRarity]![SettingData.shared.defaultIconName]!;
     } else {
       return iconsForCheckBox["Default"]!["Common"]!["box"]!;
     }
@@ -27,10 +27,10 @@ Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
     isChecked ? thisIconData.checkedIcon : thisIconData.notCheckedIcon,
     color: iconColor ??
         (isChecked
-            ? acTheme[settingData.selectedThemeIndex].checkmarkColor
+            ? acTheme[SettingData.shared.selectedThemeIndex].checkmarkColor
             : Colors.black.withOpacity(0.56)),
     size: iconSize ??
-        (fontawesomeCategories.contains(settingData.defaultIconCategory)
+        (fontawesomeCategories.contains(SettingData.shared.defaultIconCategory)
             ? 17
             : 19),
   );

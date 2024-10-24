@@ -12,7 +12,8 @@ Future<void> yesNoAlert(
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: acTheme[settingData.selectedTheme]!.alertColor,
+          backgroundColor:
+              acTheme[SettingData.shared.selectedThemeIndex].alertColor,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
             child: Column(
@@ -24,7 +25,8 @@ Future<void> yesNoAlert(
                   child: Text(
                     title,
                     style: TextStyle(
-                        color: acTheme[settingData.selectedTheme]!.accentColor,
+                        color: acTheme[SettingData.shared.selectedThemeIndex]
+                            .accentColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),
                   ),

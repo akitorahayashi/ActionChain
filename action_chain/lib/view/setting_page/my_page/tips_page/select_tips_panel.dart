@@ -16,7 +16,7 @@ class _SelectTipsPanelState extends State<SelectTipsPanel> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: acTheme[settingData.selectedTheme]!.myPagePanelColor,
+      color: acTheme[SettingData.shared.selectedThemeIndex].myPagePanelColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [

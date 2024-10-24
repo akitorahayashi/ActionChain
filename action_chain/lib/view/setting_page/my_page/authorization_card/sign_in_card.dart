@@ -33,7 +33,7 @@ class _SignInCardState extends State<SignInCard> {
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: acTheme[settingData.selectedTheme]!
+                      color: acTheme[SettingData.shared.selectedThemeIndex]
                           .accentColor
                           .withOpacity(0.8)),
                 ),
@@ -48,7 +48,8 @@ class _SignInCardState extends State<SignInCard> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     letterSpacing: 1,
-                    color: acTheme[settingData.selectedTheme]!.accentColor),
+                    color: acTheme[SettingData.shared.selectedThemeIndex]
+                        .accentColor),
               ),
             ),
             const Padding(
@@ -64,7 +65,8 @@ class _SignInCardState extends State<SignInCard> {
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: acTheme[settingData.selectedTheme]!.accentColor),
+                    color: acTheme[SettingData.shared.selectedThemeIndex]
+                        .accentColor),
               ),
             ),
             const Padding(
@@ -94,15 +96,17 @@ class _SignInCardState extends State<SignInCard> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color: acTheme[settingData.selectedTheme]!
-                                  .accentColor
-                                  .withOpacity(0.84),
+                              color:
+                                  acTheme[SettingData.shared.selectedThemeIndex]
+                                      .accentColor
+                                      .withOpacity(0.84),
                             ),
                           ),
                           Text(
                             "Sign in with Google",
                             style: TextStyle(
-                                color: acTheme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .accentColor
                                     .withOpacity(0.84),
                                 fontSize: 20,

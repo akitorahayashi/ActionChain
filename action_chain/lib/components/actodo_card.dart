@@ -114,7 +114,7 @@ class _ACToDoCardState extends State<ACToDoCard> {
           widget.disableTapGesture ? null : () => _toggleActionMethodCheckBox(),
       onLongPress: widget.actionMethodData.isChecked ? () {} : null,
       child: Card(
-        color: acTheme[settingData.selectedTheme]!.panelColor,
+        color: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Slidable(
@@ -130,9 +130,11 @@ class _ACToDoCardState extends State<ACToDoCard> {
                         // タップしたらクローズ
                         autoClose: true,
                         backgroundColor:
-                            acTheme[settingData.selectedTheme]!.panelColor,
+                            acTheme[SettingData.shared.selectedThemeIndex]
+                                .panelColor,
                         foregroundColor:
-                            acTheme[settingData.selectedTheme]!.accentColor,
+                            acTheme[SettingData.shared.selectedThemeIndex]
+                                .accentColor,
                         onPressed: (BuildContext context) async {
                           // タップしたらこれをremoveする
                           widget.actionMethods
@@ -154,9 +156,11 @@ class _ACToDoCardState extends State<ACToDoCard> {
                       flex: 10,
                       spacing: 8,
                       backgroundColor:
-                          acTheme[settingData.selectedTheme]!.panelColor,
+                          acTheme[SettingData.shared.selectedThemeIndex]
+                              .panelColor,
                       foregroundColor:
-                          acTheme[settingData.selectedTheme]!.accentColor,
+                          acTheme[SettingData.shared.selectedThemeIndex]
+                              .accentColor,
                       onPressed: (BuildContext context) => widget.editAction!(),
                       icon: Icons.edit,
                       label: 'Edit',
