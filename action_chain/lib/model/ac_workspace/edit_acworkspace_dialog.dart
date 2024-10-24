@@ -23,7 +23,6 @@ class EditACWorkspaceDialog extends StatefulWidget {
 }
 
 class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
-  String? _selectedWorkspaceCategoryId;
   bool isInitialized = false;
   final TextEditingController _workspaceNameInputController =
       TextEditingController();
@@ -31,9 +30,8 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
   Widget build(BuildContext context) {
     if (widget.oldWorkspaceCategoryId != null && !isInitialized) {
       isInitialized = true;
-      _selectedWorkspaceCategoryId = widget.oldWorkspaceCategoryId;
-      _workspaceNameInputController.text = json.decode(acWorkspaces[
-          widget.oldWorkspaceCategoryId]![widget.oldWorkspaceIndex!])["name"];
+      _workspaceNameInputController.text =
+          json.decode(acWorkspaces[widget.oldWorkspaceIndex!])["name"];
     }
     return Dialog(
       backgroundColor: theme[settingData.selectedTheme]!.alertColor,
@@ -44,68 +42,6 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
           // スペーサー
           const SizedBox(
             height: 30,
-          ),
-          // カテゴリー選択のためのDropdownButton
-          SizedBox(
-            width: 230,
-            child: DropdownButton(
-                iconEnabledColor: theme[settingData.selectedTheme]!.accentColor,
-                isExpanded: true,
-                // smallCategoryをなしにすることで選択できるようになることを知らせる
-                hint: Text(
-                  _selectedWorkspaceCategoryId == null
-                      ? "Category"
-                      : workspaceCategories[workspaceCategories.indexWhere(
-                              (workspaceCategory) =>
-                                  _selectedWorkspaceCategoryId ==
-                                  workspaceCategory.id)]
-                          .title,
-                  style: TextStyle(
-                      color: Colors.black.withOpacity(
-                          _selectedWorkspaceCategoryId == null ? 0.35 : 0.5),
-                      fontWeight: FontWeight.w600),
-                ),
-                items: [
-                  ACCategory(id: noneId, title: "なし"),
-                  ...workspaceCategories.sublist(1),
-                  ACCategory(id: "---makeNew", title: "新しく作る"),
-                ].map((ACCategory item) {
-                  return DropdownMenuItem(
-                    value: item,
-                    child: Text(
-                      item.title,
-                      style: (item.id == noneId &&
-                                  _selectedWorkspaceCategoryId == null) ||
-                              item.id == _selectedWorkspaceCategoryId
-                          ? TextStyle(
-                              color:
-                                  theme[settingData.selectedTheme]!.accentColor,
-                              fontWeight: FontWeight.bold)
-                          : TextStyle(
-                              color: Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.bold),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (ACCategory? newSmallCategory) async {
-                  if (newSmallCategory != null) {
-                    switch (newSmallCategory.id) {
-                      case noneId:
-                        _selectedWorkspaceCategoryId = null;
-                        break;
-                      case "---makeNew":
-                        _selectedWorkspaceCategoryId =
-                            await ACCategory.addCategoryAlert(
-                          context: context,
-                          isChainCategory: false,
-                        );
-                        break;
-                      default:
-                        _selectedWorkspaceCategoryId = newSmallCategory.id;
-                    }
-                    setState(() {});
-                  }
-                }),
           ),
           // 新しいworkspace名を入力するTextFormField
           Padding(
@@ -127,7 +63,7 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                 )),
           ),
           // 閉じる 追加するボタン
-          ButtonBar(
+          OverflowBar(
             alignment: MainAxisAlignment.spaceEvenly,
             children: [
               // カテゴリーを作らずにアラートを閉じるボタン
@@ -147,16 +83,15 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                       // workspacesを更新
                       if (widget.oldWorkspaceCategoryId == null) {
                         // add action
-                        acWorkspaces[_selectedWorkspaceCategoryId ?? noneId]!
-                            .add(json.encode(ACWorkspace(
-                                name: _enteredWorkspaceName,
-                                chainCategories: [
+                        acWorkspaces.add(json.encode(ACWorkspace(
+                            name: _enteredWorkspaceName,
+                            chainCategories: [
                               ACCategory(id: noneId, title: "なし")
                             ],
-                                savedChains: {
+                            savedChains: {
                               noneId: []
                             },
-                                keepedChains: {
+                            keepedChains: {
                               noneId: []
                             }).toJson()));
                         ACWorkspace.notifyWorkspaceIsAdded(
@@ -166,15 +101,12 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                         // edit action
                         final ACWorkspace editedWorkspace =
                             ACWorkspace.fromJson(json.decode(
-                                acWorkspaces[widget.oldWorkspaceCategoryId!]![
-                                    widget.oldWorkspaceIndex!]));
+                                acWorkspaces[widget.oldWorkspaceIndex!]));
                         editedWorkspace.name = _enteredWorkspaceName;
                         // 消していれる
-                        acWorkspaces[widget.oldWorkspaceCategoryId]!
-                            .removeAt(widget.oldWorkspaceIndex!);
-                        acWorkspaces[_selectedWorkspaceCategoryId ?? noneId]!
-                            .insert(widget.oldWorkspaceIndex!,
-                                json.encode(editedWorkspace.toJson()));
+                        acWorkspaces.removeAt(widget.oldWorkspaceIndex!);
+                        acWorkspaces.insert(widget.oldWorkspaceIndex!,
+                            json.encode(editedWorkspace.toJson()));
                         simpleAlert(
                             context: context,
                             title: "変更することに\n成功しました",

@@ -60,7 +60,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/action_chain.png"
+  image_path: 'assets/action_chain.png'
 
 # flutter pub run flutter_native_splash:create
 flutter_native_splash:

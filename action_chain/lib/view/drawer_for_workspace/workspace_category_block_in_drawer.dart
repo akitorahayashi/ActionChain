@@ -42,7 +42,7 @@ class _WorkspaceCategoryBlockInDrawerState
                 ChangeWorkspaceCard(
                     key: Key(UniqueKey().toString()),
                     isInList: true,
-                    stringWorkspace:
+                    acWorkspace:
                         acWorkspaces[widget.workspaceCategory.id]![index],
                     workspaceCategoryId: widget.workspaceCategory.id,
                     indexInStringWorkspaces: index),

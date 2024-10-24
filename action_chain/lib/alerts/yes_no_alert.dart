@@ -44,7 +44,7 @@ Future<void> yesNoAlert(
                   const SizedBox(
                     height: 30,
                   ),
-                ButtonBar(
+                OverflowBar(
                   alignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TextButton(

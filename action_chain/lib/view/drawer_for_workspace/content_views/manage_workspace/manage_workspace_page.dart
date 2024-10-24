@@ -91,11 +91,8 @@ class _ManageWorkspacePageState extends State<ManageWorkspacePage> {
                         ),
                         ChangeWorkspaceCard(
                             isInList: false,
-                            stringWorkspace: acWorkspaces[
-                                    ACWorkspace.currentWorkspaceCategoryId]![
-                                ACWorkspace.currentWorkspaceIndex],
-                            workspaceCategoryId:
-                                ACWorkspace.currentWorkspaceCategoryId,
+                            acWorkspace:
+                                acWorkspaces[ACWorkspace.currentWorkspaceIndex],
                             indexInStringWorkspaces:
                                 ACWorkspace.currentWorkspaceIndex)
                       ],

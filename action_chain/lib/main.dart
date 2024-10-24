@@ -10,7 +10,7 @@ import 'app.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-bool adTestMode = true;
+bool kAdTestMode = true;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

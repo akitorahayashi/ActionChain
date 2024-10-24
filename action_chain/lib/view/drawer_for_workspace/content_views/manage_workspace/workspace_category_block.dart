@@ -111,7 +111,7 @@ class WorkspaceCategoryBlock extends StatelessWidget {
                       ChangeWorkspaceCard(
                           key: Key(UniqueKey().toString()),
                           isInList: true,
-                          stringWorkspace: acWorkspaces[workspaceCategory.id]![
+                          acWorkspace: acWorkspaces[workspaceCategory.id]![
                               indexInStringWorkspaces],
                           workspaceCategoryId: workspaceCategory.id,
                           indexInStringWorkspaces: indexInStringWorkspaces)

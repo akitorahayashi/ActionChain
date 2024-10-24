@@ -158,8 +158,8 @@ class ActionChain {
   }
 
   static void saveActionChains({required bool isSavedChains}) {
-    final currentACWorkspaceData = acWorkspaces[ACWorkspace
-        .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex];
+    final currentACWorkspaceData =
+        acWorkspaces[ACWorkspace.currentWorkspaceIndex];
     currentACWorkspaceData[isSavedChains ? "savedChains" : "keepedChains"] =
         (isSavedChains
                 ? currentWorkspace.savedChains
@@ -169,8 +169,7 @@ class ActionChain {
           actodos.map((actodoData) => actodoData.toJson()).toList();
       return MapEntry(chainName, mappedACToDos);
     });
-    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex] = currentACWorkspaceData;
+    acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currentACWorkspaceData;
     ACWorkspace.saveStringWorkspaces();
   }
 }

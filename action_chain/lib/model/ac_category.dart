@@ -113,8 +113,6 @@ class ACCategory {
                               workspaceCategories.add(ACCategory(
                                   id: newCategoryId,
                                   title: _enteredCategoryName!));
-                              // workspacesを更新
-                              acWorkspaces[newCategoryId] = [];
 
                               manageWorkspacePageKey.currentState
                                   ?.setState(() {});
@@ -439,12 +437,11 @@ class ACCategory {
   // --- save ---
 
   static void saveChainCategoriesInCurrentWorkspace() {
-    final currenWorkspaceData = json.decode(acWorkspaces[ACWorkspace
-        .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
+    final currenWorkspaceData =
+        json.decode(acWorkspaces[ACWorkspace.currentWorkspaceIndex]);
     currenWorkspaceData["chainCategories"] = ACCategory.categoriesToJson(
         categoryArray: currentWorkspace.chainCategories);
-    acWorkspaces[ACWorkspace.currentWorkspaceCategoryId]![
-        ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
+    acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
     SharedPreferences.getInstance().then((pref) {
       pref.setString("stringWorkspaces", json.encode(acWorkspaces));
     });

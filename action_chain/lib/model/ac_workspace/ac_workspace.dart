@@ -13,14 +13,13 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-ACWorkspace currentWorkspace = ACWorkspace.fromJson(acWorkspaces[ACWorkspace
-    .currentWorkspaceCategoryId]![ACWorkspace.currentWorkspaceIndex]);
+ACWorkspace currentWorkspace =
+    ACWorkspace.fromJson(acWorkspaces[ACWorkspace.currentWorkspaceIndex]);
 
 List<ACCategory> workspaceCategories = [ACCategory(id: noneId, title: "なし")];
 
 class ACWorkspace {
   // workspace
-  static String currentWorkspaceCategoryId = noneId;
   static int currentWorkspaceIndex = 0;
   static ActionChain? currentChain;
 
@@ -162,11 +161,10 @@ class ACWorkspace {
 
   static void deleteWorkspaceAlert({
     required BuildContext context,
-    required String selectedWorkspaceCategoryId,
     required int indexInStringWorkspaces,
   }) {
-    final ACWorkspace willDeletedWorkspace = ACWorkspace.fromJson(json.decode(
-        acWorkspaces[selectedWorkspaceCategoryId]![indexInStringWorkspaces]));
+    final ACWorkspace willDeletedWorkspace = ACWorkspace.fromJson(
+        json.decode(acWorkspaces[indexInStringWorkspaces]));
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -207,7 +205,7 @@ class ACWorkspace {
                         fontSize: 13),
                   ),
                   // はい、いいえボタン
-                  ButtonBar(
+                  OverflowBar(
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // いいえボタン
@@ -221,16 +219,13 @@ class ACWorkspace {
                           onPressed: () {
                             // stringWorkspacesから削除
                             SharedPreferences.getInstance().then((pref) {
-                              if (ACWorkspace.currentWorkspaceCategoryId ==
-                                      selectedWorkspaceCategoryId &&
-                                  ACWorkspace.currentWorkspaceIndex >
-                                      indexInStringWorkspaces) {
+                              if (ACWorkspace.currentWorkspaceIndex >
+                                  indexInStringWorkspaces) {
                                 ACWorkspace.currentWorkspaceIndex--;
                                 pref.setInt("currentWorkspaceIndex",
                                     ACWorkspace.currentWorkspaceIndex);
                               }
-                              acWorkspaces[selectedWorkspaceCategoryId]!
-                                  .removeAt(indexInStringWorkspaces);
+                              acWorkspaces.removeAt(indexInStringWorkspaces);
                               drawerForWorkspaceKey.currentState
                                   ?.setState(() {});
                               manageWorkspacePageKey.currentState
@@ -257,16 +252,11 @@ class ACWorkspace {
         });
   }
 
-  void changeCurrentWorkspace(
-      {required String selectedWorkspaceCategoryId,
-      required int newWorkspaceIndex}) {
-    ACWorkspace.currentWorkspaceCategoryId = selectedWorkspaceCategoryId;
+  void changeCurrentWorkspace({required int newWorkspaceIndex}) {
     ACWorkspace.currentWorkspaceIndex = newWorkspaceIndex;
-    currentWorkspace = ACWorkspace.fromJson(json
-        .decode(acWorkspaces[selectedWorkspaceCategoryId]![newWorkspaceIndex]));
+    currentWorkspace =
+        ACWorkspace.fromJson(json.decode(acWorkspaces[newWorkspaceIndex]));
     SharedPreferences.getInstance().then((pref) {
-      pref.setString(
-          "currentWorkspaceCategoryId", ACWorkspace.currentWorkspaceCategoryId);
       pref.setInt("currentWorkspaceIndex", ACWorkspace.currentWorkspaceIndex);
     });
   }
@@ -274,12 +264,14 @@ class ACWorkspace {
   // --- save ---
   static Future<void> readWorkspaces() async {
     await SharedPreferences.getInstance().then((pref) {
-      ACWorkspace.currentWorkspaceCategoryId =
-          pref.getString("currentWorkspaceCategoryId") ?? noneId;
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;
       if (pref.getString("acWorkspaces") != null) {
-        acWorkspaces = json.decode(pref.getString("acWorkspaces")!);
+        acWorkspaces = json
+            .decode(pref.getString("acWorkspaces")!)
+            .map((acworkspaceJsonData) {
+          return ACWorkspace.fromJson(acworkspaceJsonData);
+        }).toList();
       }
       if (pref.getString("currentChain") != null) {
         ACWorkspace.currentChain =
@@ -298,10 +290,9 @@ class ACWorkspace {
   }
 
   static void saveCurrentWorkspace(
-      {required String selectedWorkspaceCategoryId,
-      required int selectedWorkspaceIndex,
+      {required int selectedWorkspaceIndex,
       required ACWorkspace selectedWorkspace}) {
-    acWorkspaces[selectedWorkspaceCategoryId]![selectedWorkspaceIndex] =
+    acWorkspaces[selectedWorkspaceIndex] =
         json.encode(currentWorkspace.toJson());
     ACWorkspace.saveStringWorkspaces();
   }

@@ -193,19 +193,6 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                       message: null,
                                       yesAction: () {
                                         Navigator.pop(context);
-                                        // カウントする
-                                        final int nummberOfActionMethods = (() {
-                                          int counter = 0;
-                                          for (ACToDo method
-                                              in chainOfThisPage.actodos) {
-                                            if (method.steps.isEmpty) {
-                                              counter++;
-                                            } else {
-                                              counter += method.steps.length;
-                                            }
-                                          }
-                                          return counter;
-                                        }());
                                         // 更新して消す
                                         Navigator.pop(context);
                                         currentWorkspace.keepedChains[
@@ -222,9 +209,6 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         ActionChain.saveActionChains(
                                             isSavedChains: false);
                                         ACWorkspace.saveCurrentWorkspace(
-                                            selectedWorkspaceCategoryId:
-                                                ACWorkspace
-                                                    .currentWorkspaceCategoryId,
                                             selectedWorkspaceIndex: ACWorkspace
                                                 .currentWorkspaceIndex,
                                             selectedWorkspace:

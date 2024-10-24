@@ -205,6 +205,7 @@ class _HomePageState extends State<HomePage> {
       if (!accetColorIsChanged) {
         accetColorIsChanged = true;
         actionChainAppKey.currentState?.setState(() {});
+        homePageKey.currentState?.setState(() {});
       }
       // スプラッシュ画面を閉じる
       FlutterNativeSplash.remove();
