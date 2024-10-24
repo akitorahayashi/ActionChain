@@ -5,32 +5,24 @@ import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/components/actodo_card.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/drawer_for_workspace.dart';
-// import 'package:action_chain/view/home_page/effort_card_of_workspace.dart';
 import 'package:action_chain/view/make_chain_page/make_chain_page.dart';
 import 'package:action_chain/view/chain_wall/select_chain_wall.dart';
 import 'package:action_chain/view/setting_page/setting_page.dart';
-import 'package:action_chain/view/show_tutorial_page.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/main.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:reorderables/reorderables.dart';
-import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required Key key}) : super(key: key);
@@ -160,18 +152,6 @@ class _HomePageState extends State<HomePage> {
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          // カウントする
-          final int nummberOfActionMethods = (() {
-            int counter = 0;
-            for (ACToDo method in ACWorkspace.currentChain!.actodos) {
-              if (method.steps.isEmpty) {
-                counter++;
-              } else {
-                counter += method.steps.length;
-              }
-            }
-            return counter;
-          }());
           // 初期化
           if (isLoopMode) {
             // チェックマークを外す
@@ -189,8 +169,6 @@ class _HomePageState extends State<HomePage> {
           ACVibration.vibrate();
           // 保存
           ACWorkspace.saveCurrentWorkspace(
-              selectedWorkspaceCategoryId:
-                  ACWorkspace.currentWorkspaceCategoryId,
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
               selectedWorkspace: currentWorkspace);
           ActionChain.saveActionChains(isSavedChains: true);

@@ -10,12 +10,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 class EditACWorkspaceDialog extends StatefulWidget {
-  final String? oldWorkspaceCategoryId;
   final int? oldWorkspaceIndex;
-  const EditACWorkspaceDialog(
-      {Key? key,
-      required this.oldWorkspaceCategoryId,
-      required this.oldWorkspaceIndex})
+  const EditACWorkspaceDialog({Key? key, required this.oldWorkspaceIndex})
       : super(key: key);
 
   @override
@@ -23,13 +19,14 @@ class EditACWorkspaceDialog extends StatefulWidget {
 }
 
 class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
-  bool isInitialized = false;
+  bool hasComplitedTextPasteToController = false;
   final TextEditingController _workspaceNameInputController =
       TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if (widget.oldWorkspaceCategoryId != null && !isInitialized) {
-      isInitialized = true;
+    if (widget.oldWorkspaceIndex != null &&
+        !hasComplitedTextPasteToController) {
+      hasComplitedTextPasteToController = true;
       _workspaceNameInputController.text =
           json.decode(acWorkspaces[widget.oldWorkspaceIndex!])["name"];
     }
@@ -81,7 +78,7 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                       // アラートを閉じる
                       Navigator.pop(context);
                       // workspacesを更新
-                      if (widget.oldWorkspaceCategoryId == null) {
+                      if (widget.oldWorkspaceIndex == null) {
                         // add action
                         acWorkspaces.add(json.encode(ACWorkspace(
                             name: _enteredWorkspaceName,
@@ -118,13 +115,12 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                       homePageKey.currentState?.setState(() {});
                       ACVibration.vibrate();
                       // workspacesをセーブする
-                      ACWorkspace.saveStringWorkspaces();
+                      ACWorkspace.saveACWorkspaces();
                     } else {
                       Navigator.pop(context);
                     }
                   },
-                  child:
-                      Text(widget.oldWorkspaceCategoryId == null ? "追加" : "編集"))
+                  child: Text(widget.oldWorkspaceIndex == null ? "追加" : "編集"))
             ],
           )
         ],

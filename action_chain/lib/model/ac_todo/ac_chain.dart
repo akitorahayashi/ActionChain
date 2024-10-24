@@ -170,6 +170,6 @@ class ActionChain {
       return MapEntry(chainName, mappedACToDos);
     });
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currentACWorkspaceData;
-    ACWorkspace.saveStringWorkspaces();
+    ACWorkspace.saveACWorkspaces();
   }
 }

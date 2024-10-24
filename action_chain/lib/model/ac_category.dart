@@ -118,7 +118,7 @@ class ACCategory {
                                   ?.setState(() {});
                               // 保存
                               ACCategory.saveWorkspaceCategories();
-                              ACWorkspace.saveStringWorkspaces();
+                              ACWorkspace.saveACWorkspaces();
                             }
                             ACVibration.vibrate();
                             returnedCategoryId = newCategoryId;
@@ -414,7 +414,7 @@ class ACCategory {
                               manageWorkspacePageKey.currentState
                                   ?.setState(() {});
                               // 保存
-                              ACWorkspace.saveStringWorkspaces();
+                              ACWorkspace.saveACWorkspaces();
                               ACCategory.saveWorkspaceCategories();
                             }
                             ACVibration.vibrate();

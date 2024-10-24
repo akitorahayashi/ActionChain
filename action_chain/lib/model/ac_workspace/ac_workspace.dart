@@ -80,8 +80,7 @@ class ACWorkspace {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const EditACWorkspaceDialog(
-              oldWorkspaceCategoryId: null, oldWorkspaceIndex: null);
+          return const EditACWorkspaceDialog(oldWorkspaceIndex: null);
         });
   }
 
@@ -146,15 +145,12 @@ class ACWorkspace {
   }
 
   static void editWorkspaceAlert(
-      {required BuildContext context,
-      required String selectedWorkspaceCategoryId,
-      required int selectedWorkspaceIndex}) {
+      {required BuildContext context, required int selectedWorkspaceIndex}) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return EditACWorkspaceDialog(
-              oldWorkspaceCategoryId: selectedWorkspaceCategoryId,
               oldWorkspaceIndex: selectedWorkspaceIndex);
         });
   }
@@ -239,7 +235,7 @@ class ACWorkspace {
                                   message: null,
                                   buttonText: "thank you!");
                               // セーブする
-                              ACWorkspace.saveStringWorkspaces();
+                              ACWorkspace.saveACWorkspaces();
                             });
                           },
                           child: const Text("削除"))
@@ -284,7 +280,7 @@ class ACWorkspace {
       SharedPreferences.getInstance().then((value) => value.setString(
           "currentChain", json.encode(ACWorkspace.currentChain)));
 
-  static void saveStringWorkspaces() async {
+  static void saveACWorkspaces() async {
     SharedPreferences.getInstance().then(
         (pref) => pref.setString("acWorkspaces", json.encode(acWorkspaces)));
   }
@@ -294,7 +290,7 @@ class ACWorkspace {
       required ACWorkspace selectedWorkspace}) {
     acWorkspaces[selectedWorkspaceIndex] =
         json.encode(currentWorkspace.toJson());
-    ACWorkspace.saveStringWorkspaces();
+    ACWorkspace.saveACWorkspaces();
   }
   // --- save ---
 }
