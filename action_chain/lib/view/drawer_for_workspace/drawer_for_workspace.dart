@@ -1,10 +1,7 @@
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/change_workspace_card.dart';
-import 'package:action_chain/view/drawer_for_workspace/content_views/content_card.dart';
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
-import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
@@ -87,24 +84,26 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                           children: [
                             ReorderableColumn(
                               onReorder: (oldIndex, newIndex) {
-                              //TODO currentWorkspaceをまたぐときの処理
-                              setState(() {
-                                if (newIndex > oldIndex) {
-                                  newIndex -= 1;
-                                }
-                                final ACWorkspace item = acWorkspaces.removeAt(oldIndex);
-                                acWorkspaces.insert(newIndex, item);
-                                ACWorkspace.saveACWorkspaces();
-                              });
-                            },
+                                //TODO currentWorkspaceをまたぐときの処理
+                                setState(() {
+                                  if (newIndex > oldIndex) {
+                                    newIndex -= 1;
+                                  }
+                                  final ACWorkspace item =
+                                      acWorkspaces.removeAt(oldIndex);
+                                  acWorkspaces.insert(newIndex, item);
+                                  ACWorkspace.saveACWorkspaces();
+                                });
+                              },
                               children: [
-                            for (ACWorkspace acWorkspace in acWorkspaces) // すべてのworkspaceを表示
-                              ChangeWorkspaceCard(
-                                  isInList: true,
-                                  acWorkspace: acWorkspace.name,
-                                  indexInStringWorkspaces:
-                                      acWorkspaces.indexOf(acWorkspace)),
-                                      ],
+                                for (ACWorkspace acWorkspace
+                                    in acWorkspaces) // すべてのworkspaceを表示
+                                  ChangeWorkspaceCard(
+                                      isInList: true,
+                                      acWorkspace: acWorkspace.name,
+                                      indexInStringWorkspaces:
+                                          acWorkspaces.indexOf(acWorkspace)),
+                              ],
                             ),
                             // 新しくworkspaceを追加する
                             Align(
@@ -118,37 +117,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                                   Icons.add,
                                   color: theme[settingData.selectedTheme]!
                                       .accentColor,
-                              ),),
-                              ),
-                          
-                        
-                                                    ],
-                                                  ),
-                    ),
-                
-                // コンテンツビューを選ぶ
-                if (!widget.isContentMode)
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(3, 16, 3, 5),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: theme[settingData.selectedTheme]!
-                              .panelBorderColor),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 8.0, bottom: 5),
-                              child: Text(
-                                "content",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.4),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ),
                           ],
@@ -156,9 +125,10 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                       ),
                     ),
                   ),
+                ),
                 const SizedBox(
-                  height: 250,
-                )
+                  height: 250.0,
+                ),
               ]))
             ],
           ),
