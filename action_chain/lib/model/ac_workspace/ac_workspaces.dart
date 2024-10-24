@@ -4,7 +4,7 @@ import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 
-List<dynamic> acWorkspaces = [
+List<ACWorkspace> acWorkspaces = [
   ACWorkspace(name: "デフォルト", chainCategories: [
     ACCategory(id: noneId, title: "なし")
   ], savedChains: {
@@ -33,5 +33,5 @@ List<dynamic> acWorkspaces = [
         ACToDo(title: "お弁当", steps: []),
       ]),
     ]
-  }).toJson()
+  })
 ];

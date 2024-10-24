@@ -7,7 +7,6 @@ import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class EditACWorkspaceDialog extends StatefulWidget {
   final int? oldWorkspaceIndex;
@@ -28,7 +27,7 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
         !hasComplitedTextPasteToController) {
       hasComplitedTextPasteToController = true;
       _workspaceNameInputController.text =
-          json.decode(acWorkspaces[widget.oldWorkspaceIndex!])["name"];
+          acWorkspaces[widget.oldWorkspaceIndex!].name;
     }
     return Dialog(
       backgroundColor: theme[settingData.selectedTheme]!.alertColor,
@@ -80,7 +79,7 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                       // workspacesを更新
                       if (widget.oldWorkspaceIndex == null) {
                         // add action
-                        acWorkspaces.add(json.encode(ACWorkspace(
+                        acWorkspaces.add(ACWorkspace(
                             name: _enteredWorkspaceName,
                             chainCategories: [
                               ACCategory(id: noneId, title: "なし")
@@ -90,20 +89,19 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                             },
                             keepedChains: {
                               noneId: []
-                            }).toJson()));
+                            }));
                         ACWorkspace.notifyWorkspaceIsAdded(
                             context: context,
                             newWorkspaceName: _enteredWorkspaceName);
                       } else {
                         // edit action
                         final ACWorkspace editedWorkspace =
-                            ACWorkspace.fromJson(json.decode(
-                                acWorkspaces[widget.oldWorkspaceIndex!]));
+                            acWorkspaces[widget.oldWorkspaceIndex!];
                         editedWorkspace.name = _enteredWorkspaceName;
                         // 消していれる
                         acWorkspaces.removeAt(widget.oldWorkspaceIndex!);
-                        acWorkspaces.insert(widget.oldWorkspaceIndex!,
-                            json.encode(editedWorkspace.toJson()));
+                        acWorkspaces.insert(
+                            widget.oldWorkspaceIndex!, editedWorkspace);
                         simpleAlert(
                             context: context,
                             title: "変更することに\n成功しました",

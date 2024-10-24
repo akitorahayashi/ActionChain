@@ -78,7 +78,7 @@ class ACCategory {
                       )),
                 ),
                 // 閉じる 追加するボタン
-                ButtonBar(
+                OverflowBar(
                   alignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     // カテゴリーを作らずにアラートを閉じるボタン
@@ -371,7 +371,7 @@ class ACCategory {
                         fontWeight: FontWeight.w600),
                   ),
                   // はい、いいえボタン
-                  ButtonBar(
+                  OverflowBar(
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // いいえボタン
@@ -437,58 +437,11 @@ class ACCategory {
   // --- save ---
 
   static void saveChainCategoriesInCurrentWorkspace() {
-    final currenWorkspaceData =
-        json.decode(acWorkspaces[ACWorkspace.currentWorkspaceIndex]);
-    currenWorkspaceData["chainCategories"] = ACCategory.categoriesToJson(
-        categoryArray: currentWorkspace.chainCategories);
+    final currenWorkspaceData = acWorkspaces[ACWorkspace.currentWorkspaceIndex];
+    currenWorkspaceData.chainCategories = currentWorkspace.chainCategories;
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
     SharedPreferences.getInstance().then((pref) {
-      pref.setString("stringWorkspaces", json.encode(acWorkspaces));
+      pref.setString("acWorkspaces", json.encode(acWorkspaces));
     });
   }
-
-  static void saveWorkspaceCategories() {
-    SharedPreferences.getInstance().then(
-      (pref) => pref.setString(
-        "workspaceCategories",
-        json.encode(
-          ACCategory.categoriesToJson(categoryArray: workspaceCategories),
-        ),
-      ),
-    );
-  }
-
-  static Future<void> readWorkspaceCategories() async {
-    await SharedPreferences.getInstance().then((pref) {
-      if (pref.getString("workspaceCategories") != null) {
-        workspaceCategories = ACCategory.jsonToCategories(
-          jsonCategoriesData: json.decode(
-            pref.getString("workspaceCategories")!,
-          ),
-        );
-      }
-    });
-  }
-
-  // --- save ---
-
-  // --- json convert ---
-
-  // List<Category> → String
-  static List<dynamic> categoriesToJson(
-      {required List<ACCategory> categoryArray}) {
-    return categoryArray.map((accategory) {
-      return accategory.toJson();
-    }).toList();
-  }
-
-  // String → List<Category>
-  static List<ACCategory> jsonToCategories(
-      {required List<dynamic> jsonCategoriesData}) {
-    return jsonCategoriesData.map((jsonCategoryData) {
-      return ACCategory.fromJson(jsonCategoryData);
-    }).toList();
-  }
-
-  // --- json convert ---
 }
