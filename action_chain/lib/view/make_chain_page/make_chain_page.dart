@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reorderables/reorderables.dart';
 
+// ignore: must_be_immutable
 class MakeChainPage extends StatefulWidget {
   String? selectedCategoryId;
   String? oldCategoryId;
@@ -158,7 +159,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                               hint: Text(
                                 _selectedChainCategoryId == null
                                     ? "Category"
-                                    : currentWorkspace.chainCategories
+                                    : ACWorkspace
+                                        .currentWorkspace.chainCategories
                                         .where((chainCategory) =>
                                             chainCategory.id ==
                                             _selectedChainCategoryId!)
@@ -170,7 +172,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                 ),
                               ),
                               items: [
-                                ...currentWorkspace.chainCategories,
+                                ...ACWorkspace.currentWorkspace.chainCategories,
                                 ACCategory(id: "---makeNew", title: "新しく作る"),
                               ].map((ACCategory chainCategory) {
                                 return DropdownMenuItem(
@@ -203,8 +205,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                     case "---makeNew":
                                       _selectedChainCategoryId =
                                           await ACCategory.addCategoryAlert(
-                                              context: context,
-                                              isChainCategory: true);
+                                              context: context);
                                       break;
                                     default:
                                       _selectedChainCategoryId =
@@ -529,7 +530,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                         // 初期化, 保存、キープ、実行
                         Padding(
                           padding: const EdgeInsets.only(top: 10.0),
-                          child: ButtonBar(
+                          child: OverflowBar(
                             alignment: MainAxisAlignment.center,
                             children: [
                               // 初期化
@@ -640,7 +641,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                   // 上書きする
                                                   final ActionChain
                                                       overwrittenChain =
-                                                      currentWorkspace
+                                                      ACWorkspace
+                                                              .currentWorkspace
                                                               .savedChains[
                                                           widget
                                                               .oldCategoryId]![widget

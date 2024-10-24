@@ -32,7 +32,6 @@ class ACCategory {
 
   static Future<String?> addCategoryAlert({
     required BuildContext context,
-    required bool isChainCategory,
   }) async {
     String? returnedCategoryId;
     // カテゴリーを作成するためのmember
@@ -92,34 +91,23 @@ class ACCategory {
                         onPressed: () {
                           if (_enteredCategoryName != null) {
                             final String newCategoryId = UniqueKey().toString();
-                            if (isChainCategory) {
-                              // todo category
-                              // categoriesを更新
-                              currentWorkspace.chainCategories.add(ACCategory(
-                                  id: newCategoryId,
-                                  title: _enteredCategoryName!));
-                              currentWorkspace.savedChains[newCategoryId] = [];
-                              // chainsを更新
-                              currentWorkspace.keepedChains[newCategoryId] = [];
-                              selectChainWallKey.currentState?.setState(() {});
-                              // 保存
-                              ACCategory
-                                  .saveChainCategoriesInCurrentWorkspace();
-                              ActionChain.saveActionChains(isSavedChains: true);
-                              ActionChain.saveActionChains(
-                                  isSavedChains: false);
-                            } else {
-                              // workspace category
-                              workspaceCategories.add(ACCategory(
-                                  id: newCategoryId,
-                                  title: _enteredCategoryName!));
+                            // todo category
+                            // categoriesを更新
+                            ACWorkspace.currentWorkspace.chainCategories.add(
+                                ACCategory(
+                                    id: newCategoryId,
+                                    title: _enteredCategoryName!));
+                            ACWorkspace.currentWorkspace
+                                .savedChains[newCategoryId] = [];
+                            // chainsを更新
+                            ACWorkspace.currentWorkspace
+                                .keepedChains[newCategoryId] = [];
+                            selectChainWallKey.currentState?.setState(() {});
+                            // 保存
+                            ACCategory.saveChainCategoriesInCurrentWorkspace();
+                            ActionChain.saveActionChains(isSavedChains: true);
+                            ActionChain.saveActionChains(isSavedChains: false);
 
-                              manageWorkspacePageKey.currentState
-                                  ?.setState(() {});
-                              // 保存
-                              ACCategory.saveWorkspaceCategories();
-                              ACWorkspace.saveACWorkspaces();
-                            }
                             ACVibration.vibrate();
                             returnedCategoryId = newCategoryId;
                             Navigator.pop(context);
@@ -187,11 +175,9 @@ class ACCategory {
 
   static void showRenameCategoryDialog(
       {required BuildContext context,
-      required bool isChainCategory,
       required int indexOfCategoryInCategories}) {
-    final ACCategory _oldCategory = isChainCategory
-        ? currentWorkspace.chainCategories[indexOfCategoryInCategories]
-        : workspaceCategories[indexOfCategoryInCategories];
+    final ACCategory _oldCategory = ACWorkspace
+        .currentWorkspace.chainCategories[indexOfCategoryInCategories];
     // textFieldに改名する準備をする
     String? newCategoryName = _oldCategory.title;
     TextEditingController _controllerForRename =
@@ -254,7 +240,7 @@ class ACCategory {
                           )),
                     ),
                     // 戻す、完了ボタン
-                    ButtonBar(
+                    OverflowBar(
                       alignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // 戻すボタン
@@ -277,24 +263,15 @@ class ACCategory {
                             if (newCategoryName == null) {
                               Navigator.pop(context);
                             } else {
-                              if (isChainCategory) {
-                                // chain category
-                                currentWorkspace
-                                    .chainCategories[
-                                        indexOfCategoryInCategories]
-                                    .title = newCategoryName!;
-                                selectChainWallKey.currentState
-                                    ?.setState(() {});
-                                ACCategory
-                                    .saveChainCategoriesInCurrentWorkspace();
-                              } else {
-                                // workspace category
-                                workspaceCategories[indexOfCategoryInCategories]
-                                    .title = newCategoryName!;
-                                ACCategory.saveWorkspaceCategories();
-                                manageWorkspacePageKey.currentState
-                                    ?.setState(() {});
-                              }
+                              // chain category
+                              ACWorkspace
+                                  .currentWorkspace
+                                  .chainCategories[indexOfCategoryInCategories]
+                                  .title = newCategoryName!;
+                              selectChainWallKey.currentState?.setState(() {});
+                              ACCategory
+                                  .saveChainCategoriesInCurrentWorkspace();
+
                               ACVibration.vibrate();
                               Navigator.pop(context);
                               // thank you アラート
@@ -324,7 +301,6 @@ class ACCategory {
 
   static void confirmToDeleteThisCategory(
       {required BuildContext context,
-      required bool isChainCategory,
       required int indexOfCategoryInCategories}) {
     showDialog(
         context: context,
@@ -351,11 +327,8 @@ class ACCategory {
                     padding: const EdgeInsets.only(
                         top: 12, bottom: 15.0, left: 12, right: 10),
                     child: Text(
-                      (isChainCategory
-                                  ? currentWorkspace.chainCategories
-                                  : workspaceCategories)[
-                              indexOfCategoryInCategories]
-                          .title,
+                      ACWorkspace.currentWorkspace
+                          .chainCategories[indexOfCategoryInCategories].title,
                       style: TextStyle(
                           color: theme[settingData.selectedTheme]!.accentColor,
                           fontWeight: FontWeight.bold,
@@ -364,7 +337,7 @@ class ACCategory {
                   ),
                   // ※カテゴリーに含まれる分析も削除されます
                   Text(
-                    "※ カテゴリーに含まれる${isChainCategory ? "Chain" : "Workspace"}\n  も一緒に削除されます",
+                    "※ カテゴリーに含まれるChain\n  も一緒に削除されます",
                     style: TextStyle(
                         fontSize: 12,
                         color: Colors.black.withOpacity(0.5),
@@ -385,38 +358,23 @@ class ACCategory {
                           onPressed: () {
                             // アラートを消す
                             Navigator.pop(context);
-                            if (isChainCategory) {
-                              // categoriesから削除
-                              final ACCategory removedCategory =
-                                  currentWorkspace.chainCategories
-                                      .removeAt(indexOfCategoryInCategories);
-                              // savedChainsから削除
-                              currentWorkspace.savedChains
-                                  .remove(removedCategory.id);
-                              // keepedChainsから削除
-                              currentWorkspace.keepedChains
-                                  .remove(removedCategory.id);
-                              // このアラートを消して thank you アラートを表示する
-                              selectChainWallKey.currentState?.setState(() {});
-                              // セーブする
-                              ACCategory
-                                  .saveChainCategoriesInCurrentWorkspace();
-                              ActionChain.saveActionChains(isSavedChains: true);
-                              ActionChain.saveActionChains(
-                                  isSavedChains: false);
-                            } else {
-                              // workspace category
-                              // 削除
-                              final ACCategory removedCategory =
-                                  workspaceCategories
-                                      .removeAt(indexOfCategoryInCategories);
-                              acWorkspaces.remove(removedCategory.id);
-                              manageWorkspacePageKey.currentState
-                                  ?.setState(() {});
-                              // 保存
-                              ACWorkspace.saveACWorkspaces();
-                              ACCategory.saveWorkspaceCategories();
-                            }
+                            // categoriesから削除
+                            final ACCategory removedCategory = ACWorkspace
+                                .currentWorkspace.chainCategories
+                                .removeAt(indexOfCategoryInCategories);
+                            // savedChainsから削除
+                            ACWorkspace.currentWorkspace.savedChains
+                                .remove(removedCategory.id);
+                            // keepedChainsから削除
+                            ACWorkspace.currentWorkspace.keepedChains
+                                .remove(removedCategory.id);
+                            // このアラートを消して thank you アラートを表示する
+                            selectChainWallKey.currentState?.setState(() {});
+                            // セーブする
+                            ACCategory.saveChainCategoriesInCurrentWorkspace();
+                            ActionChain.saveActionChains(isSavedChains: true);
+                            ActionChain.saveActionChains(isSavedChains: false);
+
                             ACVibration.vibrate();
                             simpleAlert(
                                 context: context,
@@ -438,7 +396,8 @@ class ACCategory {
 
   static void saveChainCategoriesInCurrentWorkspace() {
     final currenWorkspaceData = acWorkspaces[ACWorkspace.currentWorkspaceIndex];
-    currenWorkspaceData.chainCategories = currentWorkspace.chainCategories;
+    currenWorkspaceData.chainCategories =
+        ACWorkspace.currentWorkspace.chainCategories;
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
     SharedPreferences.getInstance().then((pref) {
       pref.setString("acWorkspaces", json.encode(acWorkspaces));

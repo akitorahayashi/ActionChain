@@ -100,7 +100,8 @@ class ActionChain {
           Navigator.pop(context);
           ACVibration.vibrate();
           if (wantToKeep) {
-            currentWorkspace.keepedChains[categoryId]!.add(selectedChain);
+            ACWorkspace.currentWorkspace.keepedChains[categoryId]!
+                .add(selectedChain);
             releaseEditModeAction!();
             // ホームに戻る
             Navigator.pop(context);
@@ -111,10 +112,11 @@ class ActionChain {
                 buttonText: "OK");
             ActionChain.saveActionChains(isSavedChains: false);
           } else {
-            currentWorkspace.savedChains[categoryId]!.add(ActionChain(
-                title: selectedChain.title,
-                actodos: ACToDo.getNewMethods(
-                    selectedMethods: selectedChain.actodos)));
+            ACWorkspace.currentWorkspace.savedChains[categoryId]!.add(
+                ActionChain(
+                    title: selectedChain.title,
+                    actodos: ACToDo.getNewMethods(
+                        selectedMethods: selectedChain.actodos)));
             simpleAlert(
                 context: context,
                 title: "保村することに\n成功しました",
@@ -140,10 +142,11 @@ class ActionChain {
           Navigator.pop(context);
           Navigator.pop(context);
           if (isSavedChain) {
-            currentWorkspace.savedChains[categoryId]!.removeAt(indexOfOldChain);
+            ACWorkspace.currentWorkspace.savedChains[categoryId]!
+                .removeAt(indexOfOldChain);
             ActionChain.saveActionChains(isSavedChains: true);
           } else {
-            currentWorkspace.keepedChains[categoryId]!
+            ACWorkspace.currentWorkspace.keepedChains[categoryId]!
                 .removeAt(indexOfOldChain);
             ActionChain.saveActionChains(isSavedChains: false);
           }
@@ -160,15 +163,11 @@ class ActionChain {
   static void saveActionChains({required bool isSavedChains}) {
     final currentACWorkspaceData =
         acWorkspaces[ACWorkspace.currentWorkspaceIndex];
-    currentACWorkspaceData[isSavedChains ? "savedChains" : "keepedChains"] =
-        (isSavedChains
-                ? currentWorkspace.savedChains
-                : currentWorkspace.keepedChains)
-            .map((chainName, actodos) {
-      final mappedACToDos =
-          actodos.map((actodoData) => actodoData.toJson()).toList();
-      return MapEntry(chainName, mappedACToDos);
-    });
+    isSavedChains
+        ? currentACWorkspaceData.savedChains
+        : currentACWorkspaceData.keepedChains = (isSavedChains
+            ? ACWorkspace.currentWorkspace.savedChains
+            : ACWorkspace.currentWorkspace.keepedChains);
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currentACWorkspaceData;
     ACWorkspace.saveACWorkspaces();
   }

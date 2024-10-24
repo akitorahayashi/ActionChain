@@ -59,7 +59,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                           ),
                           ChangeWorkspaceCard(
                               isInList: false,
-                              acWorkspace: currentWorkspace.name,
+                              acWorkspace: ACWorkspace.currentWorkspace.name,
                               indexInStringWorkspaces:
                                   ACWorkspace.currentWorkspaceIndex)
                         ],

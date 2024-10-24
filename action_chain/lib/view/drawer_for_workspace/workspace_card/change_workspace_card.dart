@@ -46,13 +46,13 @@ class ChangeWorkspaceCard extends StatelessWidget {
                     ACWorkspace.currentWorkspaceIndex) {
                   Navigator.pop(context);
                 } else {
-                  currentWorkspace.changeCurrentWorkspace(
+                  ACWorkspace.currentWorkspace.changeCurrentWorkspace(
                       newWorkspaceIndex: indexInStringWorkspaces);
                   ACVibration.vibrate();
                   Navigator.pop(context);
                   notifyCurrentWorkspaceIsChanged(
                       context: context,
-                      newWorkspaceName: currentWorkspace.name);
+                      newWorkspaceName: ACWorkspace.currentWorkspace.name);
                   homePageKey.currentState?.setState(() {});
                 }
               },
@@ -121,7 +121,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
                                 : "") +
                             ((indexInStringWorkspaces ==
                                     ACWorkspace.currentWorkspaceIndex)
-                                ? currentWorkspace.name
+                                ? ACWorkspace.currentWorkspace.name
                                 : json.decode(acWorkspace)["name"]) +
                             ((indexInStringWorkspaces ==
                                         ACWorkspace.currentWorkspaceIndex &&

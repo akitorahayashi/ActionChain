@@ -40,8 +40,8 @@ class _SelectChainWallState extends State<SelectChainWall> {
                 size: 23,
                 color: Colors.white,
               ),
-              trailingButtonOnPressed: () => ACCategory.addCategoryAlert(
-                  context: context, isChainCategory: true),
+              trailingButtonOnPressed: () =>
+                  ACCategory.addCategoryAlert(context: context),
               trailingIcon: const Icon(
                 FontAwesomeIcons.objectGroup,
                 size: 23,
@@ -62,13 +62,15 @@ class _SelectChainWallState extends State<SelectChainWall> {
                             children: [
                               for (int indexOfCategory = 0;
                                   indexOfCategory <
-                                      currentWorkspace.chainCategories.length;
+                                      ACWorkspace.currentWorkspace
+                                          .chainCategories.length;
                                   indexOfCategory++)
                                 // なしで中身がなかったら非表示
                                 if (!(indexOfCategory == 0 &&
                                     (widget.isSavedChains
-                                            ? currentWorkspace.savedChains
-                                            : currentWorkspace
+                                            ? ACWorkspace
+                                                .currentWorkspace.savedChains
+                                            : ACWorkspace.currentWorkspace
                                                 .keepedChains)[noneId]!
                                         .isEmpty))
                                   ChainCategoryPanel(
@@ -79,10 +81,10 @@ class _SelectChainWallState extends State<SelectChainWall> {
                             ],
                             onReorder: ((oldIndex, newIndex) {
                               if (newIndex != 0) {
-                                final ACCategory reorderedCategory =
-                                    currentWorkspace.chainCategories
-                                        .removeAt(oldIndex);
-                                currentWorkspace.chainCategories
+                                final ACCategory reorderedCategory = ACWorkspace
+                                    .currentWorkspace.chainCategories
+                                    .removeAt(oldIndex);
+                                ACWorkspace.currentWorkspace.chainCategories
                                     .insert(newIndex, reorderedCategory);
                                 setState(() {});
                                 ACCategory

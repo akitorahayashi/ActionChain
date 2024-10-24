@@ -12,7 +12,6 @@ import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reorderables/reorderables.dart';
 
@@ -34,8 +33,9 @@ class ChainDetailPage extends StatefulWidget {
 class _ChainDetailPageState extends State<ChainDetailPage> {
   ActionChain get chainOfThisPage =>
       (widget.isSavedChain
-              ? currentWorkspace.savedChains
-              : currentWorkspace.keepedChains)[widget.categoryOfThisChain.id]
+              ? ACWorkspace.currentWorkspace.savedChains
+              : ACWorkspace
+                  .currentWorkspace.keepedChains)[widget.categoryOfThisChain.id]
           ?[widget.indexOfThisChainInChains] ??
       ActionChain(title: "", actodos: []);
 
@@ -130,10 +130,11 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                             // keepedなら削除
                                             removeKeepedChainAction: () {
                                               if (!widget.isSavedChain) {
-                                                currentWorkspace.keepedChains[
-                                                        widget
-                                                            .categoryOfThisChain
-                                                            .id]!
+                                                ACWorkspace
+                                                    .currentWorkspace
+                                                    .keepedChains[widget
+                                                        .categoryOfThisChain
+                                                        .id]!
                                                     .removeAt(widget
                                                         .indexOfThisChainInChains);
                                                 ActionChain.saveActionChains(
@@ -171,7 +172,8 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                               // keepedなら削除
                                               removeKeepedChainAction: () {
                                                 if (!widget.isSavedChain) {
-                                                  currentWorkspace
+                                                  ACWorkspace
+                                                      .currentWorkspace
                                                       .keepedChains[widget
                                                           .categoryOfThisChain
                                                           .id]!
@@ -195,7 +197,9 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         Navigator.pop(context);
                                         // 更新して消す
                                         Navigator.pop(context);
-                                        currentWorkspace.keepedChains[
+                                        ACWorkspace
+                                            .currentWorkspace
+                                            .keepedChains[
                                                 widget.categoryOfThisChain.id]!
                                             .removeAt(widget
                                                 .indexOfThisChainInChains);
@@ -212,7 +216,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                             selectedWorkspaceIndex: ACWorkspace
                                                 .currentWorkspaceIndex,
                                             selectedWorkspace:
-                                                currentWorkspace);
+                                                ACWorkspace.currentWorkspace);
                                         ActionChain.saveActionChains(
                                             isSavedChains: true);
                                       }),

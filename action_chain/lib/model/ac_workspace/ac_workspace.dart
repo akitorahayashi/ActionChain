@@ -13,12 +13,9 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-ACWorkspace currentWorkspace =
-    ACWorkspace.fromJson(acWorkspaces[ACWorkspace.currentWorkspaceIndex]);
-
-List<ACCategory> workspaceCategories = [ACCategory(id: noneId, title: "なし")];
-
 class ACWorkspace {
+  static ACWorkspace currentWorkspace =
+      acWorkspaces[ACWorkspace.currentWorkspaceIndex];
   // workspace
   static int currentWorkspaceIndex = 0;
   static ActionChain? currentChain;
@@ -37,8 +34,9 @@ class ACWorkspace {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "chainCategories":
-          ACCategory.categoriesToJson(categoryArray: chainCategories),
+      "chainCategories": chainCategories.map((chainCategory) {
+        return chainCategory.toJson();
+      }).toList(),
       "savedChains": savedChains.map((chainName, actodos) {
         final mappedACToDos =
             actodos.map((actodoData) => actodoData.toJson()).toList();
@@ -54,8 +52,10 @@ class ACWorkspace {
 
   ACWorkspace.fromJson(Map<String, dynamic> jsonData)
       : name = jsonData["name"] as String,
-        chainCategories = ACCategory.jsonToCategories(
-            jsonCategoriesData: jsonData["chainCategories"] as List<dynamic>),
+        chainCategories = jsonData["chainCategories"]?.map((chainCategory) {
+              return chainCategory.toJson();
+            }).toList() ??
+            [],
         savedChains = (jsonData["savedChains"] as Map<String, dynamic>).map(
           (chainName, actionChains) {
             final createdActionChains = (actionChains as List<dynamic>)
@@ -159,8 +159,8 @@ class ACWorkspace {
     required BuildContext context,
     required int indexInStringWorkspaces,
   }) {
-    final ACWorkspace willDeletedWorkspace = ACWorkspace.fromJson(
-        json.decode(acWorkspaces[indexInStringWorkspaces]));
+    final ACWorkspace willDeletedWorkspace =
+        acWorkspaces[indexInStringWorkspaces];
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -250,8 +250,7 @@ class ACWorkspace {
 
   void changeCurrentWorkspace({required int newWorkspaceIndex}) {
     ACWorkspace.currentWorkspaceIndex = newWorkspaceIndex;
-    currentWorkspace =
-        ACWorkspace.fromJson(json.decode(acWorkspaces[newWorkspaceIndex]));
+    currentWorkspace = acWorkspaces[newWorkspaceIndex];
     SharedPreferences.getInstance().then((pref) {
       pref.setInt("currentWorkspaceIndex", ACWorkspace.currentWorkspaceIndex);
     });
@@ -288,8 +287,7 @@ class ACWorkspace {
   static void saveCurrentWorkspace(
       {required int selectedWorkspaceIndex,
       required ACWorkspace selectedWorkspace}) {
-    acWorkspaces[selectedWorkspaceIndex] =
-        json.encode(currentWorkspace.toJson());
+    acWorkspaces[selectedWorkspaceIndex] = currentWorkspace;
     ACWorkspace.saveACWorkspaces();
   }
   // --- save ---

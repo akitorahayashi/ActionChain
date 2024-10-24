@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
           // 保存
           ACWorkspace.saveCurrentWorkspace(
               selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
-              selectedWorkspace: currentWorkspace);
+              selectedWorkspace: ACWorkspace.currentWorkspace);
           ActionChain.saveActionChains(isSavedChains: true);
         });
   }
@@ -346,7 +346,7 @@ class _HomePageState extends State<HomePage> {
                         // ループ、完了
                         Padding(
                           padding: const EdgeInsets.only(top: 24.0),
-                          child: ButtonBar(
+                          child: OverflowBar(
                             alignment: MainAxisAlignment.center,
                             children: [
                               // ループ
@@ -376,7 +376,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         // 初期化、キープ、編集
-                        ButtonBar(
+                        OverflowBar(
                           alignment: MainAxisAlignment.center,
                           children: [
                             // 初期化
@@ -401,7 +401,9 @@ class _HomePageState extends State<HomePage> {
                                         yesAction: () {
                                           Navigator.pop(context);
                                           ACVibration.vibrate();
-                                          currentWorkspace.keepedChains[
+                                          ACWorkspace
+                                              .currentWorkspace
+                                              .keepedChains[
                                                   _selectedCategoryId ??
                                                       noneId]!
                                               .add(ACWorkspace.currentChain!);

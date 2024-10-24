@@ -18,7 +18,6 @@ void main() async {
   // await ACAds.initializeACAds();
   await settingData.readSettings();
   await ACVibration.initVibrate();
-  await ACCategory.readWorkspaceCategories();
   await ACWorkspace.readWorkspaces();
   // await actionChainUser.initializeFirebase();
   runApp(ActionChainApp(key: actionChainAppKey));

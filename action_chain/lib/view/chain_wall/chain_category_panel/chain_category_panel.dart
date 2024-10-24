@@ -21,7 +21,7 @@ class ChainCategoryPanel extends StatefulWidget {
 
 class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
   ACCategory get categoryOfThisCard =>
-      currentWorkspace.chainCategories[widget.indexOfCategory];
+      ACWorkspace.currentWorkspace.chainCategories[widget.indexOfCategory];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -34,11 +34,11 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                   color: theme[settingData.selectedTheme]!.panelBorderColor,
                   width: 20)),
           child: GestureDetector(
-            onLongPress:
-                currentWorkspace.chainCategories[widget.indexOfCategory].id ==
-                        noneId
-                    ? () {}
-                    : null,
+            onLongPress: ACWorkspace.currentWorkspace
+                        .chainCategories[widget.indexOfCategory].id ==
+                    noneId
+                ? () {}
+                : null,
             child: Card(
               color: theme[settingData.selectedTheme]!
                   .categoryPanelColorInCollection,
@@ -62,7 +62,6 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 onTap: () {
                                   ACCategory.confirmToDeleteThisCategory(
                                       context: context,
-                                      isChainCategory: true,
                                       indexOfCategoryInCategories:
                                           widget.indexOfCategory);
                                 },
@@ -97,7 +96,6 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 onTap: () {
                                   ACCategory.showRenameCategoryDialog(
                                       context: context,
-                                      isChainCategory: true,
                                       indexOfCategoryInCategories:
                                           widget.indexOfCategory);
                                 },
@@ -118,20 +116,23 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                           for (int index = 0;
                               index <
                                   (widget.isSavedChain
-                                              ? currentWorkspace.savedChains
-                                              : currentWorkspace.keepedChains)[
+                                              ? ACWorkspace
+                                                  .currentWorkspace.savedChains
+                                              : ACWorkspace.currentWorkspace
+                                                  .keepedChains)[
                                           categoryOfThisCard.id]!
                                       .length;
                               index++)
                             ChainCard(
                               key: Key(UniqueKey().toString()),
                               isSavedChain: widget.isSavedChain,
-                              categoryOfThisChain: currentWorkspace
+                              categoryOfThisChain: ACWorkspace.currentWorkspace
                                   .chainCategories[widget.indexOfCategory],
                               indexOfThisChainInChains: index,
                               chainOfThisCard: (widget.isSavedChain
-                                      ? currentWorkspace.savedChains
-                                      : currentWorkspace.keepedChains)[
+                                      ? ACWorkspace.currentWorkspace.savedChains
+                                      : ACWorkspace
+                                          .currentWorkspace.keepedChains)[
                                   categoryOfThisCard.id]![index],
                             )
                         ],
@@ -139,13 +140,13 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                           if (oldIndex != newIndex) {
                             final ActionChain reorderedChain = (widget
                                         .isSavedChain
-                                    ? currentWorkspace.savedChains
-                                    : currentWorkspace
+                                    ? ACWorkspace.currentWorkspace.savedChains
+                                    : ACWorkspace.currentWorkspace
                                         .keepedChains)[categoryOfThisCard.id]!
                                 .removeAt(oldIndex);
                             (widget.isSavedChain
-                                    ? currentWorkspace.savedChains
-                                    : currentWorkspace
+                                    ? ACWorkspace.currentWorkspace.savedChains
+                                    : ACWorkspace.currentWorkspace
                                         .keepedChains)[categoryOfThisCard.id]!
                                 .insert(newIndex, reorderedChain);
                             setState(() {});
