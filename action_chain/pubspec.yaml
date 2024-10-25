@@ -51,6 +51,8 @@ dependencies:
   flutter_native_splash: ^2.2.4
   modal_bottom_sheet: ^3.0.0
   flutter_slidable: ^3.1.1
+  flutter_dotenv: ^5.2.1
+  google_mobile_ads: ^5.2.0
 
 dev_dependencies:
   flutter_test:
