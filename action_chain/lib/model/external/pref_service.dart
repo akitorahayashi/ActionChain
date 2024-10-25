@@ -10,7 +10,7 @@ class PrefService {
     return _instance;
   }
 
-  Future<SharedPreferences> get sharedPreferences async {
+  Future<SharedPreferences> get getPref async {
     _pref ??= await SharedPreferences.getInstance();
     return _pref!;
   }

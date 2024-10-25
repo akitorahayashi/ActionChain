@@ -5,6 +5,7 @@ import 'package:action_chain/model/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
+import 'package:action_chain/model/external/pref_service.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -220,8 +221,8 @@ class ACWorkspace {
                       // はいボタン
                       TextButton(
                           onPressed: () {
-                            // stringWorkspacesから削除
-                            SharedPreferences.getInstance().then((pref) {
+                            // acWorkspacesから削除
+                            PrefService().getPref.then((pref) {
                               if (ACWorkspace.currentWorkspaceIndex >
                                   indexInStringWorkspaces) {
                                 ACWorkspace.currentWorkspaceIndex--;
@@ -258,14 +259,14 @@ class ACWorkspace {
   static void changeCurrentWorkspace({required int newWorkspaceIndex}) {
     ACWorkspace.currentWorkspaceIndex = newWorkspaceIndex;
     currentWorkspace = acWorkspaces[newWorkspaceIndex];
-    SharedPreferences.getInstance().then((pref) {
+    PrefService().getPref.then((pref) {
       pref.setInt("currentWorkspaceIndex", ACWorkspace.currentWorkspaceIndex);
     });
   }
 
   // --- save ---
   static Future<void> readWorkspaces() async {
-    await SharedPreferences.getInstance().then((pref) {
+    await PrefService().getPref.then((pref) {
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;
       if (pref.getString("acWorkspaces") != null) {
@@ -283,12 +284,11 @@ class ACWorkspace {
     });
   }
 
-  static void saveCurrentChain() =>
-      SharedPreferences.getInstance().then((pref) => pref.setString(
-          "currentChain", json.encode(ACWorkspace.runningActionChain)));
+  static void saveCurrentChain() => PrefService().getPref.then((pref) => pref
+      .setString("currentChain", json.encode(ACWorkspace.runningActionChain)));
 
   static void saveACWorkspaces() async {
-    SharedPreferences.getInstance().then((pref) => pref.setString(
+    PrefService().getPref.then((pref) => pref.setString(
         "acWorkspaces",
         json.encode(acWorkspaces.map((acworkspace) {
           return acworkspace.toJson();

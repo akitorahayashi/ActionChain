@@ -3,10 +3,10 @@ import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
+import 'package:action_chain/model/external/pref_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
 class SettingData {
@@ -52,7 +52,7 @@ class SettingData {
 
   // 設定を読み込む関数
   Future<void> readSettings() async {
-    await SharedPreferences.getInstance().then((pref) {
+    await PrefService().getPref.then((pref) {
       if (pref.getString("settingData") != null) {
         SettingData.shared =
             SettingData.fromJson(json.decode(pref.getString("settingData")!));
@@ -62,7 +62,7 @@ class SettingData {
 
   // 全ての設定を保存する関数
   void saveSettings() {
-    SharedPreferences.getInstance().then((pref) {
+    PrefService().getPref.then((pref) {
       pref.setString("settingData", json.encode(SettingData.shared.toJson()));
     });
   }
@@ -125,7 +125,7 @@ class SettingData {
                     child: Text("$relevantThemeIndexに変更しますか？"),
                   ),
                   // 操作ボタン
-                  ButtonBar(
+                  OverflowBar(
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // 戻るボタン
