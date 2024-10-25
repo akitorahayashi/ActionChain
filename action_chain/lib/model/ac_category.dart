@@ -4,7 +4,7 @@ import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/external/pref_service.dart';
+import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:flutter/material.dart';
@@ -406,7 +406,7 @@ class ACCategory {
     currenWorkspaceData.chainCategories =
         ACWorkspace.currentWorkspace.chainCategories;
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
-    PrefService().getPref.then((pref) {
+    ACPref().getPref.then((pref) {
       pref.setString("acWorkspaces", json.encode(acWorkspaces));
     });
   }

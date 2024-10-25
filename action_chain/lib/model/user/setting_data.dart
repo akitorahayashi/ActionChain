@@ -3,7 +3,7 @@ import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/external/pref_service.dart';
+import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
@@ -52,7 +52,7 @@ class SettingData {
 
   // 設定を読み込む関数
   Future<void> readSettings() async {
-    await PrefService().getPref.then((pref) {
+    await ACPref().getPref.then((pref) {
       if (pref.getString("settingData") != null) {
         SettingData.shared =
             SettingData.fromJson(json.decode(pref.getString("settingData")!));
@@ -62,7 +62,7 @@ class SettingData {
 
   // 全ての設定を保存する関数
   void saveSettings() {
-    PrefService().getPref.then((pref) {
+    ACPref().getPref.then((pref) {
       pref.setString("settingData", json.encode(SettingData.shared.toJson()));
     });
   }

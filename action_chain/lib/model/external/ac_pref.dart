@@ -1,12 +1,12 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PrefService {
-  static final PrefService _instance = PrefService._internal();
+class ACPref {
+  static final ACPref _instance = ACPref._internal();
   static SharedPreferences? _pref;
 
-  PrefService._internal();
+  ACPref._internal();
 
-  factory PrefService() {
+  factory ACPref() {
     return _instance;
   }
 

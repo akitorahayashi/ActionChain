@@ -1,4 +1,4 @@
-import 'package:action_chain/model/external/pref_service.dart';
+import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class ACVibration {
@@ -9,14 +9,14 @@ class ACVibration {
     bool canVibrateOrNot = await Vibrate.canVibrate;
     canVibrate = canVibrateOrNot;
     if (canVibrate) {
-      await PrefService().getPref.then((pref) {
+      await ACPref().getPref.then((pref) {
         ACVibration.vibrationStrength = pref.getInt("vibrationStrength") ?? 2;
       });
     }
   }
 
   static Future<void> saveVibrationStrength() async {
-    await PrefService().getPref.then((pref) =>
+    await ACPref().getPref.then((pref) =>
         pref.setInt("vibrationStrength", ACVibration.vibrationStrength));
   }
 
