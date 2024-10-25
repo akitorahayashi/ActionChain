@@ -19,7 +19,6 @@ class SettingData {
       canVibrate: false);
   // テーマ
   int selectedThemeIndex;
-
   // アイコン
   String defaultIconCategory;
   String iconRarity;
