@@ -1,5 +1,5 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_sliding_tutorial/flutter_sliding_tutorial.dart';
@@ -49,7 +49,7 @@ class _ShowTutorialPageState extends State<ShowTutorialPage> {
           height: 60,
           child: Card(
             // 色
-            color: acTheme[0].panelColor,
+            color: acThemeDataList[0].panelColor,
             // 浮き具合
             elevation: 2,
             shape:
@@ -118,7 +118,7 @@ class _ShowTutorialPageState extends State<ShowTutorialPage> {
                                     child: Text(
                                       content.title,
                                       style: TextStyle(
-                                          color: acTheme[0].accentColor,
+                                          color: acThemeDataList[0].accentColor,
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold),
                                     ),

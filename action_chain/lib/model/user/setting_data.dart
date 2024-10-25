@@ -1,7 +1,7 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +75,7 @@ class SettingData {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: acTheme[relevantThemeIndex].alertColor,
+            backgroundColor: acThemeDataList[relevantThemeIndex].alertColor,
             child: DefaultTextStyle(
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -92,8 +92,8 @@ class SettingData {
                       height: 80,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          gradient:
-                              acTheme[relevantThemeIndex].gradientOfNavBar,
+                          gradient: acThemeDataList[relevantThemeIndex]
+                              .gradientOfNavBar,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GlassContainer(
@@ -101,15 +101,16 @@ class SettingData {
                             alignment: Alignment.center,
                             child: Card(
                               elevation: 5,
-                              color: acTheme[relevantThemeIndex].panelColor,
+                              color: acThemeDataList[relevantThemeIndex]
+                                  .panelColor,
                               child: Container(
                                 width: 150,
                                 height: 50,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  acTheme[relevantThemeIndex].themeName,
+                                  acThemeDataList[relevantThemeIndex].themeName,
                                   style: TextStyle(
-                                      color: acTheme[relevantThemeIndex]
+                                      color: acThemeDataList[relevantThemeIndex]
                                           .checkmarkColor,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -136,12 +137,13 @@ class SettingData {
                         child: Text(
                           "戻る",
                           style: TextStyle(
-                              color: acTheme[relevantThemeIndex].accentColor),
+                              color: acThemeDataList[relevantThemeIndex]
+                                  .accentColor),
                         ),
                         // InkWell
                         style: ButtonStyle(
                           overlayColor: WidgetStateProperty.resolveWith(
-                              (states) => acTheme[relevantThemeIndex]
+                              (states) => acThemeDataList[relevantThemeIndex]
                                   .accentColor
                                   .withOpacity(0.2)),
                         ),
@@ -175,13 +177,13 @@ class SettingData {
                           // InkWell
                           style: ButtonStyle(
                             overlayColor: WidgetStateProperty.resolveWith(
-                                (states) => acTheme[relevantThemeIndex]
+                                (states) => acThemeDataList[relevantThemeIndex]
                                     .accentColor
                                     .withOpacity(0.2)),
                           ),
                           child: Text("変更",
                               style: TextStyle(
-                                  color: acTheme[relevantThemeIndex]
+                                  color: acThemeDataList[relevantThemeIndex]
                                       .accentColor))),
                     ],
                   )

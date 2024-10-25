@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 class SetFeaturesCategoryColumn extends StatelessWidget {
@@ -24,7 +24,7 @@ class SetFeaturesCategoryColumn extends StatelessWidget {
                   fontSize: 21,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
-                  color: acTheme[SettingData.shared.selectedThemeIndex]
+                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                       .titleColorOfSettingPage),
             ),
           ),

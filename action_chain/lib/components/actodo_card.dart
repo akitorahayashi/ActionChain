@@ -5,7 +5,7 @@ import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
 
@@ -114,7 +114,8 @@ class _ACToDoCardState extends State<ACToDoCard> {
           widget.disableTapGesture ? null : () => _toggleActionMethodCheckBox(),
       onLongPress: widget.actionMethodData.isChecked ? () {} : null,
       child: Card(
-        color: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
+        color:
+            acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Slidable(
@@ -129,12 +130,12 @@ class _ACToDoCardState extends State<ACToDoCard> {
                       SlidableAction(
                         // タップしたらクローズ
                         autoClose: true,
-                        backgroundColor:
-                            acTheme[SettingData.shared.selectedThemeIndex]
-                                .panelColor,
-                        foregroundColor:
-                            acTheme[SettingData.shared.selectedThemeIndex]
-                                .accentColor,
+                        backgroundColor: acThemeDataList[
+                                SettingData.shared.selectedThemeIndex]
+                            .panelColor,
+                        foregroundColor: acThemeDataList[
+                                SettingData.shared.selectedThemeIndex]
+                            .accentColor,
                         onPressed: (BuildContext context) async {
                           // タップしたらこれをremoveする
                           widget.actionMethods
@@ -156,10 +157,10 @@ class _ACToDoCardState extends State<ACToDoCard> {
                       flex: 10,
                       spacing: 8,
                       backgroundColor:
-                          acTheme[SettingData.shared.selectedThemeIndex]
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
                               .panelColor,
                       foregroundColor:
-                          acTheme[SettingData.shared.selectedThemeIndex]
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
                               .accentColor,
                       onPressed: (BuildContext context) => widget.editAction!(),
                       icon: Icons.edit,

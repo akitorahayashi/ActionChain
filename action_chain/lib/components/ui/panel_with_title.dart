@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 class PanelWithTitle extends StatelessWidget {
@@ -11,7 +11,8 @@ class PanelWithTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: acTheme[SettingData.shared.selectedThemeIndex].myPagePanelColor,
+      color: acThemeDataList[SettingData.shared.selectedThemeIndex]
+          .myPagePanelColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 3.5,
       child: Padding(
@@ -27,7 +28,8 @@ class PanelWithTitle extends StatelessWidget {
                         fontSize: 26,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 3,
-                        color: acTheme[SettingData.shared.selectedThemeIndex]
+                        color: acThemeDataList[
+                                SettingData.shared.selectedThemeIndex]
                             .titleColorOfSettingPage)),
               ),
             ),

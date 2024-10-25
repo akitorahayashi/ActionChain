@@ -7,9 +7,9 @@ import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -55,7 +55,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
         children: [
           Container(
             decoration: BoxDecoration(
-                color: acTheme[SettingData.shared.selectedThemeIndex]
+                color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                     .backgroundColor),
           ),
           CustomScrollView(

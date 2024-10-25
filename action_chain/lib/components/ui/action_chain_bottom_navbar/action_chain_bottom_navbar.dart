@@ -1,6 +1,6 @@
 import 'package:action_chain/model/external/ac_ads.dart';
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 class ActionChainBottomNavBar extends StatefulWidget {
@@ -21,8 +21,8 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
           boxShadow: [
             BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(0.6))
           ],
-          gradient:
-              acTheme[SettingData.shared.selectedThemeIndex].gradientOfNavBar,
+          gradient: acThemeDataList[SettingData.shared.selectedThemeIndex]
+              .gradientOfNavBar,
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,

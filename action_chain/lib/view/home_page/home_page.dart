@@ -12,11 +12,11 @@ import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:flutter/material.dart';
 
@@ -206,7 +206,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           // 背景色
           Container(
-              color: acTheme[SettingData.shared.selectedThemeIndex]
+              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .backgroundColor),
           CustomScrollView(
             slivers: [
@@ -531,13 +531,15 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Icon(
                           Icons.label_important,
-                          color: acTheme[SettingData.shared.selectedThemeIndex]
+                          color: acThemeDataList[
+                                  SettingData.shared.selectedThemeIndex]
                               .categoryPanelColorInCollection,
                           size: 30,
                         ),
                         Icon(
                           Icons.label_important_outline,
-                          color: acTheme[SettingData.shared.selectedThemeIndex]
+                          color: acThemeDataList[
+                                  SettingData.shared.selectedThemeIndex]
                               .panelBorderColor,
                           size: 30,
                         ),

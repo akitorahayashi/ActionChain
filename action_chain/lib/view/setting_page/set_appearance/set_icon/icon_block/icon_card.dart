@@ -1,5 +1,5 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:flutter/material.dart';
 
@@ -41,7 +41,8 @@ class _IconCardState extends State<IconCard> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: isFocused ? 0 : 3,
-          color: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
+          color:
+              acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Column(
@@ -59,7 +60,7 @@ class _IconCardState extends State<IconCard> {
                                 widget.selectedIconRarity]![widget.iconName]!
                             .notCheckedIcon,
                     color: isFocused
-                        ? acTheme[SettingData.shared.selectedThemeIndex]
+                        ? acThemeDataList[SettingData.shared.selectedThemeIndex]
                             .checkmarkColor
                         : Colors.black.withOpacity(0.5),
                     size: isFontawesomeCategories ? 17 : 20,
@@ -71,7 +72,8 @@ class _IconCardState extends State<IconCard> {
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: isFocused
-                          ? acTheme[SettingData.shared.selectedThemeIndex]
+                          ? acThemeDataList[
+                                  SettingData.shared.selectedThemeIndex]
                               .checkmarkColor
                           : Colors.black.withOpacity(0.5)),
                 )

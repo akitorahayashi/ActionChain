@@ -1,7 +1,7 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/view/home_page/method_completion_indicator/background_of_circularindicator_painter.dart';
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'dart:io';
 
@@ -20,7 +20,7 @@ class TopThemePanel extends StatelessWidget {
         width: deviceWidth - 50,
         child: DecoratedBox(
           decoration: BoxDecoration(
-              gradient: acTheme[SettingData.shared.selectedThemeIndex]
+              gradient: acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .gradientOfNavBar,
               borderRadius: BorderRadius.circular(10)),
           // ガラス
@@ -33,8 +33,8 @@ class TopThemePanel extends StatelessWidget {
                 // カードを表示
                 child: Card(
                   // 色
-                  color:
-                      acTheme[SettingData.shared.selectedThemeIndex].panelColor,
+                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
+                      .panelColor,
                   // 浮き具合
                   elevation: 2,
                   shape: RoundedRectangleBorder(
@@ -62,7 +62,7 @@ class TopThemePanel extends StatelessWidget {
                               width: deviceWidth - 145,
                               height: deviceWidth - 145,
                               child: CircularProgressIndicator(
-                                  color: acTheme[
+                                  color: acThemeDataList[
                                           SettingData.shared.selectedThemeIndex]
                                       .circleColor,
                                   strokeWidth: 10,
@@ -80,18 +80,18 @@ class TopThemePanel extends StatelessWidget {
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Icon(
                                       FontAwesomeIcons.solidSquareCheck,
-                                      color: acTheme[SettingData
+                                      color: acThemeDataList[SettingData
                                               .shared.selectedThemeIndex]
                                           .checkmarkColor,
                                       size: 22,
                                     ),
                                   ),
                                   Text(
-                                    acTheme[SettingData
+                                    acThemeDataList[SettingData
                                             .shared.selectedThemeIndex]
                                         .themeName,
                                     style: TextStyle(
-                                        color: acTheme[SettingData
+                                        color: acThemeDataList[SettingData
                                                 .shared.selectedThemeIndex]
                                             .checkmarkColor,
                                         fontWeight: FontWeight.w800,

@@ -1,7 +1,7 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/view/chain_wall/chain_category_panel/chain_category_panel.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +25,7 @@ class _SelectChainWallState extends State<SelectChainWall> {
       body: Stack(children: [
         Container(
           decoration: BoxDecoration(
-              color: acTheme[SettingData.shared.selectedThemeIndex]
+              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .backgroundColor),
         ),
         CustomScrollView(

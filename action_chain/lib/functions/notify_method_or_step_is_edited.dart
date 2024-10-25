@@ -1,6 +1,6 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 void notifyActionMethodOrStepIsEditted({
@@ -11,7 +11,8 @@ void notifyActionMethodOrStepIsEditted({
   SnackBar snackBar = SnackBar(
     duration: const Duration(milliseconds: 900),
     behavior: SnackBarBehavior.floating,
-    backgroundColor: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
+    backgroundColor:
+        acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [

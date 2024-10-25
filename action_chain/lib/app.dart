@@ -1,6 +1,6 @@
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/view/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,8 @@ class _ActionChainAppState extends State<ActionChainApp> {
         title: "Action Chain",
         theme: ThemeData(
             primarySwatch:
-                acTheme[SettingData.shared.selectedThemeIndex].accentColor),
+                acThemeDataList[SettingData.shared.selectedThemeIndex]
+                    .accentColor),
         home: HomePage(key: homePageKey)
         // FutureBuilder(
         //   future: actionChainUser.initializeFirebase(),

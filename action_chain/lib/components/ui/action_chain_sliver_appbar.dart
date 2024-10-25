@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 class ActionChainSliverAppBar extends StatelessWidget {
@@ -61,8 +61,8 @@ class ActionChainSliverAppBar extends StatelessWidget {
       // AppBarのデザイン
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          gradient:
-              acTheme[SettingData.shared.selectedThemeIndex].gradientOfNavBar,
+          gradient: acThemeDataList[SettingData.shared.selectedThemeIndex]
+              .gradientOfNavBar,
         ),
         child: FlexibleSpaceBar(
           centerTitle: true,

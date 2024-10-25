@@ -1,5 +1,5 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 class ActionChainElevatedButton extends StatelessWidget {
@@ -18,14 +18,14 @@ class ActionChainElevatedButton extends StatelessWidget {
         onPressed: onPressed,
         style: ButtonStyle(
           overlayColor: WidgetStateProperty.all(
-              acTheme[SettingData.shared.selectedThemeIndex]!
+              acThemeDataList[SettingData.shared.selectedThemeIndex]!
                   .pressedElevatedButtonColor),
           backgroundColor: WidgetStateProperty.resolveWith<Color>(
             (Set<WidgetState> states) {
               if (states.contains(WidgetState.disabled)) {
                 return const Color.fromRGBO(220, 220, 220, 1);
               }
-              return acTheme[SettingData.shared.selectedThemeIndex]
+              return acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .elevatedButtonColor;
             },
           ),

@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 
-class ActionChainTheme {
+class ACTheme extends InheritedWidget {
+  final ACThemeData data;
+
+  ACTheme({required this.data, required Widget child}) : super(child: child);
+
+  static ACThemeData of(BuildContext context) {
+    final ACTheme? customTheme =
+        context.dependOnInheritedWidgetOfExactType<ACTheme>();
+    return customTheme!.data;
+  }
+
+  @override
+  bool updateShouldNotify(ACTheme oldWidget) {
+    return data != oldWidget.data;
+  }
+}
+
+class ACThemeData {
   final String themeName;
   // 基本色
   final MaterialColor accentColor;
@@ -41,7 +58,7 @@ class ActionChainTheme {
   final Color backupButtonTextColor;
   // reward
   final Color rewardButtonTitleColor;
-  ActionChainTheme({
+  ACThemeData({
     required this.themeName,
     // 基本色
     required this.accentColor,
@@ -85,8 +102,8 @@ class ActionChainTheme {
   });
 }
 
-List<ActionChainTheme> acTheme = [
-  ActionChainTheme(
+List<ACThemeData> acThemeDataList = [
+  ACThemeData(
     themeName: "Sun Orange",
     // 基本色
     accentColor: Colors.orange,
@@ -137,7 +154,7 @@ List<ActionChainTheme> acTheme = [
     // reward
     rewardButtonTitleColor: const Color.fromRGBO(255, 190, 86, 1),
   ),
-  ActionChainTheme(
+  ACThemeData(
     themeName: "Lime Green",
     // 基本色
     accentColor: Colors.lightGreen,
@@ -188,7 +205,7 @@ List<ActionChainTheme> acTheme = [
     // reward
     rewardButtonTitleColor: const Color.fromRGBO(123, 205, 60, 1),
   ),
-  ActionChainTheme(
+  ACThemeData(
     themeName: "Marine Blue",
     // 基本色
     accentColor: Colors.cyan,
