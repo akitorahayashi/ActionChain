@@ -24,8 +24,8 @@ class ButtonToDocs extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                    color:
-                        theme[settingData.selectedTheme]!.tipsCardBorderColor),
+                    color: acTheme[SettingData.shared.selectedThemeIndex]
+                        .tipsCardBorderColor),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18)),
@@ -41,8 +41,9 @@ class ButtonToDocs extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
-                              color: theme[settingData.selectedTheme]!
-                                  .titleColorOfSettingPage,
+                              color:
+                                  acTheme[SettingData.shared.selectedThemeIndex]
+                                      .titleColorOfSettingPage,
                             ),
                           ),
                         ),

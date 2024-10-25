@@ -1,22 +1,18 @@
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
+import 'package:action_chain/model/external/pref_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
-import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:intl/intl.dart';
-
-SettingData settingData = SettingData();
 
 class SettingData {
+  static SettingData shared = SettingData();
   // テーマ
-  String selectedTheme = "Sun Orange";
+  int selectedThemeIndex = 0;
 
   // アイコン
   String defaultIconCategory = "Default";
@@ -33,20 +29,20 @@ class SettingData {
   Map<String, dynamic> toJson() {
     return {
       // テーマ
-      "selectedTheme": settingData.selectedTheme,
+      "selectedThemeIndex": SettingData.shared.selectedThemeIndex,
       // アイコン
-      "defaultIconCategory": settingData.defaultIconCategory,
+      "defaultIconCategory": SettingData.shared.defaultIconCategory,
       "iconRarity": iconRarity,
-      "defaultIconName": settingData.defaultIconName,
+      "defaultIconName": SettingData.shared.defaultIconName,
       // チュートリアル
-      "isFirstEntry": settingData.isFirstEntry,
+      "isFirstEntry": SettingData.shared.isFirstEntry,
     };
   }
 
   SettingData.fromJson(Map<String, dynamic> jsonData)
       :
         // テーマ
-        selectedTheme = jsonData["selectedTheme"] ?? "Sun Orange",
+        selectedThemeIndex = jsonData["selectedThemeIndex"] ?? 0,
         // アイコン
         defaultIconCategory = jsonData["defaultIconCategory"] ?? "Default",
         iconRarity = jsonData["iconRarity"] ?? "Common",
@@ -56,9 +52,9 @@ class SettingData {
 
   // 設定を読み込む関数
   Future<void> readSettings() async {
-    await SharedPreferences.getInstance().then((pref) {
+    await PrefService().getPref.then((pref) {
       if (pref.getString("settingData") != null) {
-        settingData =
+        SettingData.shared =
             SettingData.fromJson(json.decode(pref.getString("settingData")!));
       }
     });
@@ -66,20 +62,20 @@ class SettingData {
 
   // 全ての設定を保存する関数
   void saveSettings() {
-    SharedPreferences.getInstance().then((pref) {
-      pref.setString("settingData", json.encode(settingData.toJson()));
+    PrefService().getPref.then((pref) {
+      pref.setString("settingData", json.encode(SettingData.shared.toJson()));
     });
   }
 
   // テーマを変更する関数
   Future<void> confirmToChangeTheme(
-      {required BuildContext context, required String themeName}) {
+      {required BuildContext context, required int relevantThemeIndex}) {
     return showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[themeName]!.alertColor,
+            backgroundColor: acTheme[relevantThemeIndex].alertColor,
             child: DefaultTextStyle(
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -96,7 +92,8 @@ class SettingData {
                       height: 80,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          gradient: theme[themeName]!.gradientOfNavBar,
+                          gradient:
+                              acTheme[relevantThemeIndex].gradientOfNavBar,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: GlassContainer(
@@ -104,15 +101,16 @@ class SettingData {
                             alignment: Alignment.center,
                             child: Card(
                               elevation: 5,
-                              color: theme[themeName]!.panelColor,
+                              color: acTheme[relevantThemeIndex].panelColor,
                               child: Container(
                                 width: 150,
                                 height: 50,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  themeName,
+                                  acTheme[relevantThemeIndex].themeName,
                                   style: TextStyle(
-                                      color: theme[themeName]!.checkmarkColor,
+                                      color: acTheme[relevantThemeIndex]
+                                          .checkmarkColor,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -124,10 +122,10 @@ class SettingData {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text("$themeNameに変更しますか？"),
+                    child: Text("$relevantThemeIndexに変更しますか？"),
                   ),
                   // 操作ボタン
-                  ButtonBar(
+                  OverflowBar(
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       // 戻るボタン
@@ -137,13 +135,13 @@ class SettingData {
                         },
                         child: Text(
                           "戻る",
-                          style:
-                              TextStyle(color: theme[themeName]!.accentColor),
+                          style: TextStyle(
+                              color: acTheme[relevantThemeIndex].accentColor),
                         ),
                         // InkWell
                         style: ButtonStyle(
-                          overlayColor: MaterialStateProperty.resolveWith(
-                              (states) => theme[themeName]!
+                          overlayColor: WidgetStateProperty.resolveWith(
+                              (states) => acTheme[relevantThemeIndex]
                                   .accentColor
                                   .withOpacity(0.2)),
                         ),
@@ -154,17 +152,18 @@ class SettingData {
                             // このアラートを消す
                             Navigator.pop(context);
                             // if (settingData.userLevel >= 5) {
-                            selectedTheme = themeName;
+                            SettingData.shared.selectedThemeIndex =
+                                relevantThemeIndex;
                             setAppearancePageKey.currentState?.setState(() {});
                             actionChainAppKey.currentState?.setState(() {});
                             ACVibration.vibrate();
                             // thank youアラート
                             simpleAlert(
                                 context: context,
-                                title: "変更することに\n成功しました",
+                                title: "変更することに\n成功しました！",
                                 message: null,
                                 buttonText: "OK");
-                            settingData.saveSettings();
+                            SettingData.shared.saveSettings();
                             // } else {
                             //   simpleAlert(
                             //       context: context,
@@ -175,14 +174,15 @@ class SettingData {
                           },
                           // InkWell
                           style: ButtonStyle(
-                            overlayColor: MaterialStateProperty.resolveWith(
-                                (states) => theme[themeName]!
+                            overlayColor: WidgetStateProperty.resolveWith(
+                                (states) => acTheme[relevantThemeIndex]
                                     .accentColor
                                     .withOpacity(0.2)),
                           ),
                           child: Text("変更",
                               style: TextStyle(
-                                  color: theme[themeName]!.accentColor))),
+                                  color: acTheme[relevantThemeIndex]
+                                      .accentColor))),
                     ],
                   )
                 ],
@@ -205,9 +205,9 @@ class SettingData {
         yesAction: () {
           Navigator.pop(context);
           // if (settingData.userLevel >= 10) {
-          settingData.defaultIconCategory = categoryNameOfThisIcon;
-          settingData.iconRarity = selectedIconRarity;
-          settingData.defaultIconName = iconName;
+          SettingData.shared.defaultIconCategory = categoryNameOfThisIcon;
+          SettingData.shared.iconRarity = selectedIconRarity;
+          SettingData.shared.defaultIconName = iconName;
           setAppearancePageKey.currentState?.setState(() {});
           ACVibration.vibrate();
           simpleAlert(
@@ -215,7 +215,7 @@ class SettingData {
               title: "チェックマークのアイコンを変更しました",
               message: null,
               buttonText: "OK");
-          settingData.saveSettings();
+          SettingData.shared.saveSettings();
           // } else {
           //   simpleAlert(
           //       context: context,

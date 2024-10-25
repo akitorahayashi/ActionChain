@@ -28,13 +28,14 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0, top: 4),
                     child: Card(
-                      color: theme[settingData.selectedTheme]!
+                      color: acTheme[SettingData.shared.selectedThemeIndex]
                           .categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .panelBorderColor,
                                 width: 2)),
                         child: const SizedBox(
@@ -47,13 +48,14 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 4.0, bottom: 4),
                     child: Card(
-                      color: theme[settingData.selectedTheme]!
+                      color: acTheme[SettingData.shared.selectedThemeIndex]
                           .categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .panelBorderColor,
                                 width: 2)),
                         child: const SizedBox(
@@ -66,8 +68,8 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                 ],
               ),
           style: ButtonStyle(
-            overlayColor: MaterialStateProperty.resolveWith((states) =>
-                theme[settingData.selectedTheme]!
+            overlayColor: WidgetStateProperty.resolveWith((states) =>
+                acTheme[SettingData.shared.selectedThemeIndex]
                     .accentColor
                     .withOpacity(0.05)),
           ),

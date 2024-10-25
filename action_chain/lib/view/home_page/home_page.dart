@@ -205,7 +205,9 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           // 背景色
-          Container(color: theme[settingData.selectedTheme]!.backgroundColor),
+          Container(
+              color: acTheme[SettingData.shared.selectedThemeIndex]
+                  .backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -529,13 +531,13 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Icon(
                           Icons.label_important,
-                          color: theme[settingData.selectedTheme]!
+                          color: acTheme[SettingData.shared.selectedThemeIndex]
                               .categoryPanelColorInCollection,
                           size: 30,
                         ),
                         Icon(
                           Icons.label_important_outline,
-                          color: theme[settingData.selectedTheme]!
+                          color: acTheme[SettingData.shared.selectedThemeIndex]
                               .panelBorderColor,
                           size: 30,
                         ),

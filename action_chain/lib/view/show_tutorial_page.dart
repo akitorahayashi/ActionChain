@@ -27,8 +27,8 @@ class _ShowTutorialPageState extends State<ShowTutorialPage> {
   void turnPageAction() {
     if (currentPageIndex == _tutorialContents.length - 1) {
       Navigator.pop(context);
-      settingData.isFirstEntry = false;
-      settingData.saveSettings();
+      SettingData.shared.isFirstEntry = false;
+      SettingData.shared.saveSettings();
     } else {
       tutorialPageController.animateToPage(
         currentPageIndex + 1,
@@ -49,7 +49,7 @@ class _ShowTutorialPageState extends State<ShowTutorialPage> {
           height: 60,
           child: Card(
             // 色
-            color: theme["Sun Orange"]!.panelColor,
+            color: acTheme[0].panelColor,
             // 浮き具合
             elevation: 2,
             shape:
@@ -118,8 +118,7 @@ class _ShowTutorialPageState extends State<ShowTutorialPage> {
                                     child: Text(
                                       content.title,
                                       style: TextStyle(
-                                          color:
-                                              theme["Sun Orange"]!.accentColor,
+                                          color: acTheme[0].accentColor,
                                           fontSize: 24,
                                           fontWeight: FontWeight.bold),
                                     ),

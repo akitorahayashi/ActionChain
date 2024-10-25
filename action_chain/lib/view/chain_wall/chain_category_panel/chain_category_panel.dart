@@ -31,7 +31,8 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
         child: DecoratedBox(
           decoration: BoxDecoration(
               border: Border.all(
-                  color: theme[settingData.selectedTheme]!.panelBorderColor,
+                  color: acTheme[SettingData.shared.selectedThemeIndex]
+                      .panelBorderColor,
                   width: 20)),
           child: GestureDetector(
             onLongPress: ACWorkspace.currentWorkspace
@@ -40,7 +41,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                 ? () {}
                 : null,
             child: Card(
-              color: theme[settingData.selectedTheme]!
+              color: acTheme[SettingData.shared.selectedThemeIndex]
                   .categoryPanelColorInCollection,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -67,7 +68,8 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.remove,
-                                  color: theme[settingData.selectedTheme]!
+                                  color: acTheme[
+                                          SettingData.shared.selectedThemeIndex]
                                       .accentColor,
                                   size: 19,
                                 ),
@@ -80,7 +82,8 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 child: Text(
                                   categoryOfThisCard.title,
                                   style: TextStyle(
-                                      color: theme[settingData.selectedTheme]!
+                                      color: acTheme[SettingData
+                                              .shared.selectedThemeIndex]
                                           .accentColor,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 1,
@@ -101,7 +104,8 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.edit,
-                                  color: theme[settingData.selectedTheme]!
+                                  color: acTheme[
+                                          SettingData.shared.selectedThemeIndex]
                                       .accentColor,
                                   size: 17,
                                 ),

@@ -4,12 +4,11 @@ import 'package:action_chain/constants/theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
+import 'package:action_chain/model/external/pref_service.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 const String noneId = "---n";
 
@@ -41,7 +40,8 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -135,7 +135,8 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -147,13 +148,14 @@ class ACCategory {
                     child: Text(
                       addedCategoryName,
                       style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
+                          color: acTheme[SettingData.shared.selectedThemeIndex]
+                              .accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
                   ),
                   Text(
-                    "を追加しました",
+                    "を追加しました！",
                     style: TextStyle(
                         color: Colors.black.withOpacity(0.7),
                         fontWeight: FontWeight.w600),
@@ -187,7 +189,8 @@ class ACCategory {
         barrierDismissible: true,
         builder: (context) {
           return AlertDialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             title: Column(
               children: [
                 Padding(
@@ -252,7 +255,8 @@ class ACCategory {
                           child: Text(
                             "戻す",
                             style: TextStyle(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .accentColor),
                           ),
                         ),
@@ -277,7 +281,7 @@ class ACCategory {
                               // thank you アラート
                               simpleAlert(
                                   context: context,
-                                  title: "変更することに\n成功しました",
+                                  title: "変更することに\n成功しました！",
                                   message: null,
                                   buttonText: "OK");
                             }
@@ -285,7 +289,8 @@ class ACCategory {
                           child: Text(
                             "完了",
                             style: TextStyle(
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .accentColor),
                           ),
                         )
@@ -307,7 +312,8 @@ class ACCategory {
         barrierDismissible: false,
         builder: (context) {
           return Dialog(
-            backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+            backgroundColor:
+                acTheme[SettingData.shared.selectedThemeIndex].alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -330,7 +336,8 @@ class ACCategory {
                       ACWorkspace.currentWorkspace
                           .chainCategories[indexOfCategoryInCategories].title,
                       style: TextStyle(
-                          color: theme[settingData.selectedTheme]!.accentColor,
+                          color: acTheme[SettingData.shared.selectedThemeIndex]
+                              .accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
@@ -378,7 +385,7 @@ class ACCategory {
                             ACVibration.vibrate();
                             simpleAlert(
                                 context: context,
-                                title: "削除することに\n成功しました",
+                                title: "削除することに\n成功しました！",
                                 message: null,
                                 buttonText: "OK");
                           },
@@ -399,7 +406,7 @@ class ACCategory {
     currenWorkspaceData.chainCategories =
         ACWorkspace.currentWorkspace.chainCategories;
     acWorkspaces[ACWorkspace.currentWorkspaceIndex] = currenWorkspaceData;
-    SharedPreferences.getInstance().then((pref) {
+    PrefService().getPref.then((pref) {
       pref.setString("acWorkspaces", json.encode(acWorkspaces));
     });
   }

@@ -9,14 +9,16 @@ import 'app.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 // import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 bool kAdTestMode = true;
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await dotenv.load(fileName: ".env");
   // await ACAds.initializeACAds();
-  await settingData.readSettings();
+  await SettingData.shared.readSettings();
   await ACVibration.initVibrate();
   await ACWorkspace.readWorkspaces();
   // await actionChainUser.initializeFirebase();

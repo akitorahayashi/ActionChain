@@ -1,5 +1,5 @@
+import 'package:action_chain/model/external/pref_service.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ACVibration {
   static int vibrationStrength = 2;
@@ -9,14 +9,14 @@ class ACVibration {
     bool canVibrateOrNot = await Vibrate.canVibrate;
     canVibrate = canVibrateOrNot;
     if (canVibrate) {
-      await SharedPreferences.getInstance().then((pref) {
+      await PrefService().getPref.then((pref) {
         ACVibration.vibrationStrength = pref.getInt("vibrationStrength") ?? 2;
       });
     }
   }
 
   static Future<void> saveVibrationStrength() async {
-    await SharedPreferences.getInstance().then((pref) =>
+    await PrefService().getPref.then((pref) =>
         pref.setInt("vibrationStrength", ACVibration.vibrationStrength));
   }
 

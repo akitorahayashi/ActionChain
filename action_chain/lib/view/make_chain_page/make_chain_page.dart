@@ -109,7 +109,9 @@ class _MakeChainPageState extends State<MakeChainPage> {
       body: Stack(
         children: [
           // 背景色
-          Container(color: theme[settingData.selectedTheme]!.backgroundColor),
+          Container(
+              color: acTheme[SettingData.shared.selectedThemeIndex]
+                  .backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -154,7 +156,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                           padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                           child: DropdownButton(
                               iconEnabledColor:
-                                  theme[settingData.selectedTheme]!.accentColor,
+                                  acTheme[SettingData.shared.selectedThemeIndex]
+                                      .accentColor,
                               isExpanded: true,
                               hint: Text(
                                 _selectedChainCategoryId == null
@@ -185,8 +188,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             chainCategory.id ==
                                                 _selectedChainCategoryId
                                         ? TextStyle(
-                                            color: theme[
-                                                    settingData.selectedTheme]!
+                                            color: acTheme[SettingData
+                                                    .shared.selectedThemeIndex]
                                                 .accentColor,
                                             fontWeight: FontWeight.bold)
                                         : TextStyle(
@@ -265,7 +268,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                 fontWeight: FontWeight.w800,
                                 fontSize: 24,
                                 letterSpacing: 0.8,
-                                color: theme[settingData.selectedTheme]!
+                                color: acTheme[
+                                        SettingData.shared.selectedThemeIndex]
                                     .backupButtonTextColor),
                           ),
                         ),
@@ -365,7 +369,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                               .trim()
                                               .isEmpty
                                           ? Colors.black45
-                                          : theme[settingData.selectedTheme]!
+                                          : acTheme[SettingData
+                                                  .shared.selectedThemeIndex]
                                               .accentColor,
                                       size: 25,
                                     ),
@@ -516,7 +521,8 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                         color: _stepTitleInputController.text
                                                 .trim()
                                                 .isNotEmpty
-                                            ? theme[settingData.selectedTheme]!
+                                            ? acTheme[SettingData
+                                                    .shared.selectedThemeIndex]
                                                 .accentColor
                                             : Colors.black,
                                         size: 25,

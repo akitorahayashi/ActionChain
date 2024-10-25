@@ -21,10 +21,11 @@ class SetAppearancePage extends StatefulWidget {
 class _SetAppearancePageState extends State<SetAppearancePage> {
   @override
   Widget build(BuildContext context) {
-    // テーマを表示させるための変数
-    List<String> unUsingTheme = theme.keys
-        .where((themeName) => themeName != settingData.selectedTheme)
-        .toList();
+    // 使っていないテーマのindexを集めたリスト
+    List<int> unUsingThemeIndices =
+        List<int>.generate(acTheme.length, (index) => index)
+            .where((index) => index != SettingData.shared.selectedThemeIndex)
+            .toList();
 
     return Center(
       child: ListView(
@@ -43,8 +44,10 @@ class _SetAppearancePageState extends State<SetAppearancePage> {
                     child: Column(
                       children: [
                         TopThemePanel(),
-                        BottomThemePanel(themeName: unUsingTheme[0]),
-                        BottomThemePanel(themeName: unUsingTheme[1]),
+                        BottomThemePanel(
+                            relevantThemeIndex: unUsingThemeIndices[0]),
+                        BottomThemePanel(
+                            relevantThemeIndex: unUsingThemeIndices[1]),
                       ],
                     ),
                   ),

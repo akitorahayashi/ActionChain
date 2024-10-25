@@ -21,7 +21,8 @@ class _ActionChainBottomNavBarState extends State<ActionChainBottomNavBar> {
           boxShadow: [
             BoxShadow(blurRadius: 10, color: Colors.black.withOpacity(0.6))
           ],
-          gradient: theme[settingData.selectedTheme]!.gradientOfNavBar,
+          gradient:
+              acTheme[SettingData.shared.selectedThemeIndex].gradientOfNavBar,
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,

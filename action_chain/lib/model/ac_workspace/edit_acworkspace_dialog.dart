@@ -30,7 +30,8 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
           acWorkspaces[widget.oldWorkspaceIndex!].name;
     }
     return Dialog(
-      backgroundColor: theme[settingData.selectedTheme]!.alertColor,
+      backgroundColor:
+          acTheme[SettingData.shared.selectedThemeIndex].alertColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
