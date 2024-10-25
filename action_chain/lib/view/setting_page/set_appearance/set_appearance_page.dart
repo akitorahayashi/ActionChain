@@ -7,7 +7,7 @@ import 'package:action_chain/view/setting_page/set_appearance/theme_panels/top_t
 import 'package:action_chain/components/ui/panel_with_title.dart';
 import 'package:flutter/material.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 
 class SetAppearancePage extends StatefulWidget {
   const SetAppearancePage({
@@ -23,7 +23,7 @@ class _SetAppearancePageState extends State<SetAppearancePage> {
   Widget build(BuildContext context) {
     // 使っていないテーマのindexを集めたリスト
     List<int> unUsingThemeIndices =
-        List<int>.generate(acTheme.length, (index) => index)
+        List<int>.generate(acThemeDataList.length, (index) => index)
             .where((index) => index != SettingData.shared.selectedThemeIndex)
             .toList();
 

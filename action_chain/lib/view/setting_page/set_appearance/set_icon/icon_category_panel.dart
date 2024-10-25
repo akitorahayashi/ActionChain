@@ -1,5 +1,5 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_icon/icon_block/icon_block.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +25,9 @@ class IconCategoryPanel extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
-                    color: acTheme[SettingData.shared.selectedThemeIndex]
-                        .checkmarkColor),
+                    color:
+                        acThemeDataList[SettingData.shared.selectedThemeIndex]
+                            .checkmarkColor),
               ),
             ),
             // Super Rare, Rare

@@ -1,7 +1,7 @@
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/workspace_card/notify_current_workspace_is_changed.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,8 @@ class ChangeWorkspaceCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 70),
         child: Card(
-          color: acTheme[SettingData.shared.selectedThemeIndex].panelColor,
+          color:
+              acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: ClipRRect(
@@ -57,36 +58,36 @@ class ChangeWorkspaceCard extends StatelessWidget {
                 }
               },
               child: Slidable(
-                startActionPane: indexInStringWorkspaces ==
-                        ACWorkspace.currentWorkspaceIndex
-                    ? null
-                    : ActionPane(
-                        motion: const ScrollMotion(),
-                        extentRatio: 0.35,
-                        children: [
-                          SlidableAction(
-                            autoClose: true,
-                            spacing: 8,
-                            backgroundColor:
-                                acTheme[SettingData.shared.selectedThemeIndex]
+                startActionPane:
+                    indexInStringWorkspaces == ACWorkspace.currentWorkspaceIndex
+                        ? null
+                        : ActionPane(
+                            motion: const ScrollMotion(),
+                            extentRatio: 0.35,
+                            children: [
+                              SlidableAction(
+                                autoClose: true,
+                                spacing: 8,
+                                backgroundColor: acThemeDataList[
+                                        SettingData.shared.selectedThemeIndex]
                                     .panelColor,
-                            foregroundColor:
-                                acTheme[SettingData.shared.selectedThemeIndex]
+                                foregroundColor: acThemeDataList[
+                                        SettingData.shared.selectedThemeIndex]
                                     .accentColor,
-                            onPressed: (BuildContext context) {
-                              if (!isInList) {
-                                Navigator.pop(context);
-                              }
-                              ACWorkspace.deleteWorkspaceAlert(
-                                  context: context,
-                                  indexInStringWorkspaces:
-                                      indexInStringWorkspaces);
-                            },
-                            icon: Icons.remove,
-                            label: "Delete",
+                                onPressed: (BuildContext context) {
+                                  if (!isInList) {
+                                    Navigator.pop(context);
+                                  }
+                                  ACWorkspace.deleteWorkspaceAlert(
+                                      context: context,
+                                      indexInStringWorkspaces:
+                                          indexInStringWorkspaces);
+                                },
+                                icon: Icons.remove,
+                                label: "Delete",
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
                 endActionPane: ActionPane(
                   motion: const ScrollMotion(),
                   extentRatio: 0.35,
@@ -95,10 +96,10 @@ class ChangeWorkspaceCard extends StatelessWidget {
                       autoClose: true,
                       spacing: 8,
                       backgroundColor:
-                          acTheme[SettingData.shared.selectedThemeIndex]
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
                               .panelColor,
                       foregroundColor:
-                          acTheme[SettingData.shared.selectedThemeIndex]
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
                               .accentColor,
                       onPressed: (BuildContext context) {
                         if (!isInList) {
@@ -134,9 +135,9 @@ class ChangeWorkspaceCard extends StatelessWidget {
                                 : ""),
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color:
-                                acTheme[SettingData.shared.selectedThemeIndex]
-                                    .accentColor,
+                            color: acThemeDataList[
+                                    SettingData.shared.selectedThemeIndex]
+                                .accentColor,
                             letterSpacing: 1)),
                   ),
                 ),

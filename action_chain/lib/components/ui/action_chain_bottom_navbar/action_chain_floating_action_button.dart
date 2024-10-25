@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 class ActionChainFloatingActionButton extends StatelessWidget {
@@ -28,13 +28,14 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0, top: 4),
                     child: Card(
-                      color: acTheme[SettingData.shared.selectedThemeIndex]
-                          .categoryPanelColorInCollection,
+                      color:
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
+                              .categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: acTheme[
+                                color: acThemeDataList[
                                         SettingData.shared.selectedThemeIndex]
                                     .panelBorderColor,
                                 width: 2)),
@@ -48,13 +49,14 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 4.0, bottom: 4),
                     child: Card(
-                      color: acTheme[SettingData.shared.selectedThemeIndex]
-                          .categoryPanelColorInCollection,
+                      color:
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
+                              .categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: acTheme[
+                                color: acThemeDataList[
                                         SettingData.shared.selectedThemeIndex]
                                     .panelBorderColor,
                                 width: 2)),
@@ -69,7 +71,7 @@ class ActionChainFloatingActionButton extends StatelessWidget {
               ),
           style: ButtonStyle(
             overlayColor: WidgetStateProperty.resolveWith((states) =>
-                acTheme[SettingData.shared.selectedThemeIndex]
+                acThemeDataList[SettingData.shared.selectedThemeIndex]
                     .accentColor
                     .withOpacity(0.05)),
           ),

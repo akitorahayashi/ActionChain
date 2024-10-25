@@ -1,4 +1,4 @@
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,8 @@ class TipsCategoryBlock extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
-                        color: acTheme[SettingData.shared.selectedThemeIndex]
+                        color: acThemeDataList[
+                                SettingData.shared.selectedThemeIndex]
                             .accentColor
                             .withOpacity(0.8)),
                   ),
@@ -44,8 +45,9 @@ class TipsCategoryBlock extends StatelessWidget {
               child: Text(
                 headerForThisTips,
                 style: TextStyle(
-                    color: acTheme[SettingData.shared.selectedThemeIndex]
-                        .accentColor,
+                    color:
+                        acThemeDataList[SettingData.shared.selectedThemeIndex]
+                            .accentColor,
                     fontSize: 21,
                     fontWeight: FontWeight.bold),
               ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 Future<void> yesNoAlert(
@@ -13,7 +13,7 @@ Future<void> yesNoAlert(
       builder: (context) {
         return Dialog(
           backgroundColor:
-              acTheme[SettingData.shared.selectedThemeIndex].alertColor,
+              acThemeDataList[SettingData.shared.selectedThemeIndex].alertColor,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
             child: Column(
@@ -25,7 +25,8 @@ Future<void> yesNoAlert(
                   child: Text(
                     title,
                     style: TextStyle(
-                        color: acTheme[SettingData.shared.selectedThemeIndex]
+                        color: acThemeDataList[
+                                SettingData.shared.selectedThemeIndex]
                             .accentColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 20),

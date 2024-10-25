@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -26,7 +26,7 @@ class BottomThemePanel extends StatelessWidget {
           // グラデーションと丸角
           child: DecoratedBox(
             decoration: BoxDecoration(
-                gradient: acTheme[relevantThemeIndex].gradientOfNavBar,
+                gradient: acThemeDataList[relevantThemeIndex].gradientOfNavBar,
                 borderRadius: BorderRadius.circular(10)),
             // ガラス
             child: GlassContainer(
@@ -40,7 +40,7 @@ class BottomThemePanel extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Card(
                       // 色
-                      color: acTheme[relevantThemeIndex].panelColor,
+                      color: acThemeDataList[relevantThemeIndex].panelColor,
                       // 浮き具合
                       elevation: 2,
                       shape: RoundedRectangleBorder(
@@ -53,16 +53,18 @@ class BottomThemePanel extends StatelessWidget {
                                 const EdgeInsets.only(left: 18, right: 8.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color: acTheme[relevantThemeIndex].checkmarkColor,
+                              color: acThemeDataList[relevantThemeIndex]
+                                  .checkmarkColor,
                             ),
                           ),
                           Text(
-                            acTheme[SettingData.shared.selectedThemeIndex]
+                            acThemeDataList[
+                                    SettingData.shared.selectedThemeIndex]
                                 .themeName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color:
-                                    acTheme[relevantThemeIndex].checkmarkColor,
+                                color: acThemeDataList[relevantThemeIndex]
+                                    .checkmarkColor,
                                 fontSize: 20,
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.w800),

@@ -2,7 +2,7 @@ import 'package:action_chain/view/setting_page/my_page/tips_page/tips.dart';
 import 'package:action_chain/view/setting_page/my_page/tips_page/tips_category_card/button_to_docs.dart';
 import 'package:action_chain/view/setting_page/my_page/tips_page/tips_category_card/tips_category_block.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 class SelectTipsPanel extends StatefulWidget {
@@ -16,7 +16,8 @@ class _SelectTipsPanelState extends State<SelectTipsPanel> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: acTheme[SettingData.shared.selectedThemeIndex].myPagePanelColor,
+      color: acThemeDataList[SettingData.shared.selectedThemeIndex]
+          .myPagePanelColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [

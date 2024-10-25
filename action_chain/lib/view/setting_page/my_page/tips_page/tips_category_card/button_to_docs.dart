@@ -1,5 +1,5 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/functions/launch_my_url.dart';
 import 'package:flutter/material.dart';
 
@@ -24,8 +24,9 @@ class ButtonToDocs extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                    color: acTheme[SettingData.shared.selectedThemeIndex]
-                        .tipsCardBorderColor),
+                    color:
+                        acThemeDataList[SettingData.shared.selectedThemeIndex]
+                            .tipsCardBorderColor),
                 child: Card(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18)),
@@ -41,9 +42,9 @@ class ButtonToDocs extends StatelessWidget {
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 17,
-                              color:
-                                  acTheme[SettingData.shared.selectedThemeIndex]
-                                      .titleColorOfSettingPage,
+                              color: acThemeDataList[
+                                      SettingData.shared.selectedThemeIndex]
+                                  .titleColorOfSettingPage,
                             ),
                           ),
                         ),

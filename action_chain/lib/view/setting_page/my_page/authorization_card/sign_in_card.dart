@@ -1,4 +1,4 @@
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/functions/launch_my_url.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/user/ac_user.dart';
@@ -33,9 +33,10 @@ class _SignInCardState extends State<SignInCard> {
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: acTheme[SettingData.shared.selectedThemeIndex]
-                          .accentColor
-                          .withOpacity(0.8)),
+                      color:
+                          acThemeDataList[SettingData.shared.selectedThemeIndex]
+                              .accentColor
+                              .withOpacity(0.8)),
                 ),
               ),
             ),
@@ -48,8 +49,9 @@ class _SignInCardState extends State<SignInCard> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     letterSpacing: 1,
-                    color: acTheme[SettingData.shared.selectedThemeIndex]
-                        .accentColor),
+                    color:
+                        acThemeDataList[SettingData.shared.selectedThemeIndex]
+                            .accentColor),
               ),
             ),
             const Padding(
@@ -65,8 +67,9 @@ class _SignInCardState extends State<SignInCard> {
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color: acTheme[SettingData.shared.selectedThemeIndex]
-                        .accentColor),
+                    color:
+                        acThemeDataList[SettingData.shared.selectedThemeIndex]
+                            .accentColor),
               ),
             ),
             const Padding(
@@ -96,16 +99,16 @@ class _SignInCardState extends State<SignInCard> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color:
-                                  acTheme[SettingData.shared.selectedThemeIndex]
-                                      .accentColor
-                                      .withOpacity(0.84),
+                              color: acThemeDataList[
+                                      SettingData.shared.selectedThemeIndex]
+                                  .accentColor
+                                  .withOpacity(0.84),
                             ),
                           ),
                           Text(
                             "Sign in with Google",
                             style: TextStyle(
-                                color: acTheme[
+                                color: acThemeDataList[
                                         SettingData.shared.selectedThemeIndex]
                                     .accentColor
                                     .withOpacity(0.84),

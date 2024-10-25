@@ -1,5 +1,5 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 class ControllIconButton extends StatelessWidget {
@@ -25,21 +25,21 @@ class ControllIconButton extends StatelessWidget {
       child: Card(
         color: onPressed == null
             ? const Color.fromRGBO(200, 200, 200, 1)
-            : acTheme[SettingData.shared.selectedThemeIndex]
+            : acThemeDataList[SettingData.shared.selectedThemeIndex]
                 .borderColorOfControllIconButton,
         child: Card(
           // ループのため
           color: buttonIsColored == null
               ? null
               : (buttonIsColored!
-                  ? acTheme[SettingData.shared.selectedThemeIndex]
+                  ? acThemeDataList[SettingData.shared.selectedThemeIndex]
                       .coloredControllButtonColor
                   : null),
           child: InkWell(
             onTap: onPressed,
             splashColor: buttonIsColored != null
                 ? Colors.transparent
-                : acTheme[SettingData.shared.selectedThemeIndex]
+                : acThemeDataList[SettingData.shared.selectedThemeIndex]
                     .textColorOfControllIconButton
                     .withOpacity(0.12),
             highlightColor: Colors.transparent,
@@ -52,7 +52,7 @@ class ControllIconButton extends StatelessWidget {
                     iconData,
                     color: onPressed == null
                         ? const Color.fromRGBO(200, 200, 200, 1)
-                        : acTheme[SettingData.shared.selectedThemeIndex]
+                        : acThemeDataList[SettingData.shared.selectedThemeIndex]
                             .backupButtonTextColor,
                     size: iconSize ?? 28,
                   ),
@@ -62,7 +62,8 @@ class ControllIconButton extends StatelessWidget {
                   style: TextStyle(
                       color: onPressed == null
                           ? const Color.fromRGBO(200, 200, 200, 1)
-                          : acTheme[SettingData.shared.selectedThemeIndex]
+                          : acThemeDataList[
+                                  SettingData.shared.selectedThemeIndex]
                               .textColorOfControllIconButton,
                       fontWeight: FontWeight.w900,
                       fontSize: 13,

@@ -8,11 +8,11 @@ import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -110,7 +110,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
         children: [
           // 背景色
           Container(
-              color: acTheme[SettingData.shared.selectedThemeIndex]
+              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .backgroundColor),
           CustomScrollView(
             slivers: [
@@ -155,9 +155,9 @@ class _MakeChainPageState extends State<MakeChainPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                           child: DropdownButton(
-                              iconEnabledColor:
-                                  acTheme[SettingData.shared.selectedThemeIndex]
-                                      .accentColor,
+                              iconEnabledColor: acThemeDataList[
+                                      SettingData.shared.selectedThemeIndex]
+                                  .accentColor,
                               isExpanded: true,
                               hint: Text(
                                 _selectedChainCategoryId == null
@@ -188,7 +188,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             chainCategory.id ==
                                                 _selectedChainCategoryId
                                         ? TextStyle(
-                                            color: acTheme[SettingData
+                                            color: acThemeDataList[SettingData
                                                     .shared.selectedThemeIndex]
                                                 .accentColor,
                                             fontWeight: FontWeight.bold)
@@ -268,7 +268,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                 fontWeight: FontWeight.w800,
                                 fontSize: 24,
                                 letterSpacing: 0.8,
-                                color: acTheme[
+                                color: acThemeDataList[
                                         SettingData.shared.selectedThemeIndex]
                                     .backupButtonTextColor),
                           ),
@@ -369,7 +369,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                               .trim()
                                               .isEmpty
                                           ? Colors.black45
-                                          : acTheme[SettingData
+                                          : acThemeDataList[SettingData
                                                   .shared.selectedThemeIndex]
                                               .accentColor,
                                       size: 25,
@@ -521,7 +521,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                         color: _stepTitleInputController.text
                                                 .trim()
                                                 .isNotEmpty
-                                            ? acTheme[SettingData
+                                            ? acThemeDataList[SettingData
                                                     .shared.selectedThemeIndex]
                                                 .accentColor
                                             : Colors.black,

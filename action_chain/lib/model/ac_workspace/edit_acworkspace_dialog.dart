@@ -2,9 +2,9 @@ import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/alerts/simple_alert.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
     }
     return Dialog(
       backgroundColor:
-          acTheme[SettingData.shared.selectedThemeIndex].alertColor,
+          acThemeDataList[SettingData.shared.selectedThemeIndex].alertColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

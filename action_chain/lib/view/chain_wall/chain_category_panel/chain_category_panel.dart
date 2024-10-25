@@ -1,8 +1,8 @@
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/view/chain_wall/chain_category_panel/chain_card.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +31,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
         child: DecoratedBox(
           decoration: BoxDecoration(
               border: Border.all(
-                  color: acTheme[SettingData.shared.selectedThemeIndex]
+                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                       .panelBorderColor,
                   width: 20)),
           child: GestureDetector(
@@ -41,7 +41,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                 ? () {}
                 : null,
             child: Card(
-              color: acTheme[SettingData.shared.selectedThemeIndex]
+              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
                   .categoryPanelColorInCollection,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -68,7 +68,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.remove,
-                                  color: acTheme[
+                                  color: acThemeDataList[
                                           SettingData.shared.selectedThemeIndex]
                                       .accentColor,
                                   size: 19,
@@ -82,7 +82,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 child: Text(
                                   categoryOfThisCard.title,
                                   style: TextStyle(
-                                      color: acTheme[SettingData
+                                      color: acThemeDataList[SettingData
                                               .shared.selectedThemeIndex]
                                           .accentColor,
                                       fontWeight: FontWeight.w600,
@@ -104,7 +104,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.edit,
-                                  color: acTheme[
+                                  color: acThemeDataList[
                                           SettingData.shared.selectedThemeIndex]
                                       .accentColor,
                                   size: 17,

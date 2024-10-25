@@ -1,5 +1,5 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/constants/theme.dart';
+import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -27,7 +27,8 @@ Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
     isChecked ? thisIconData.checkedIcon : thisIconData.notCheckedIcon,
     color: iconColor ??
         (isChecked
-            ? acTheme[SettingData.shared.selectedThemeIndex].checkmarkColor
+            ? acThemeDataList[SettingData.shared.selectedThemeIndex]
+                .checkmarkColor
             : Colors.black.withOpacity(0.56)),
     size: iconSize ??
         (fontawesomeCategories.contains(SettingData.shared.defaultIconCategory)

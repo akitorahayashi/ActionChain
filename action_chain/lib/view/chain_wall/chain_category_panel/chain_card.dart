@@ -1,6 +1,6 @@
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/view/chain_wall/chain_detail_page.dart';
-import 'package:action_chain/model/ac_category.dart';
+import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:flutter/material.dart';
 
