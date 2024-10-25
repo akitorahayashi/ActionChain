@@ -10,21 +10,33 @@ import 'dart:convert';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
 class SettingData {
-  static SettingData shared = SettingData();
+  static SettingData shared = SettingData(
+      selectedThemeIndex: 0,
+      defaultIconCategory: "Default",
+      iconRarity: "Common",
+      defaultIconName: "box",
+      isFirstEntry: true,
+      canVibrate: false);
   // テーマ
-  int selectedThemeIndex = 0;
+  int selectedThemeIndex;
 
   // アイコン
-  String defaultIconCategory = "Default";
-  String iconRarity = "Common";
-  String defaultIconName = "box";
+  String defaultIconCategory;
+  String iconRarity;
+  String defaultIconName;
   // チュートリアル
-  bool isFirstEntry = true;
-
+  bool isFirstEntry;
   // バイブレーションできるかどうか
-  bool canVibrate = false;
+  bool canVibrate;
 
-  SettingData();
+  SettingData({
+    required this.selectedThemeIndex,
+    required this.defaultIconCategory,
+    required this.iconRarity,
+    required this.defaultIconName,
+    required this.isFirstEntry,
+    required this.canVibrate,
+  });
 
   Map<String, dynamic> toJson() {
     return {
@@ -39,16 +51,16 @@ class SettingData {
     };
   }
 
-  SettingData.fromJson(Map<String, dynamic> jsonData)
-      :
-        // テーマ
-        selectedThemeIndex = jsonData["selectedThemeIndex"] ?? 0,
-        // アイコン
-        defaultIconCategory = jsonData["defaultIconCategory"] ?? "Default",
-        iconRarity = jsonData["iconRarity"] ?? "Common",
-        defaultIconName = jsonData["defaultIconName"] ?? "box",
-        // チュートリアル
-        isFirstEntry = jsonData["isFirstEntry"];
+  factory SettingData.fromJson(Map<String, dynamic> jsonData) {
+    return SettingData(
+      selectedThemeIndex: jsonData["selectedThemeIndex"] ?? 0,
+      defaultIconCategory: jsonData["defaultIconCategory"] ?? "Default",
+      iconRarity: jsonData["iconRarity"] ?? "Common",
+      defaultIconName: jsonData["defaultIconName"] ?? "box",
+      isFirstEntry: jsonData["isFirstEntry"],
+      canVibrate: jsonData["canVibrate"] ?? false,
+    );
+  }
 
   // 設定を読み込む関数
   Future<void> readSettings() async {
