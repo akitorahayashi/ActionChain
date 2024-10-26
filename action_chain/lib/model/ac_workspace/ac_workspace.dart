@@ -268,7 +268,7 @@ class ACWorkspace {
   }
 
   // --- save ---
-  static Future<void> readWorkspaces() async {
+  // static Future<void> readWorkspaces() async {
     await ACPref().getPref.then((pref) {
       ACWorkspace.currentWorkspaceIndex =
           pref.getInt("currentWorkspaceIndex") ?? 0;

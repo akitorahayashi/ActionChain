@@ -134,46 +134,40 @@
 //     );
 //   }
 
-//   // ad unit id
+// //   // ad unit id
 //   static String editPageBannerAdUnitId({required bool isTestMode}) {
-//     if (Platform.isAndroid) {
-//       return isTestMode
-//           ? dotenv.env['ANDROID_EDIT_PAGE_BANNER_AD_UNIT_ID_TEST']!
-//           : dotenv.env['ANDROID_EDIT_PAGE_BANNER_AD_UNIT_ID']!;
-//     } else if (Platform.isIOS) {
-//       return isTestMode
-//           ? dotenv.env['IOS_EDIT_PAGE_BANNER_AD_UNIT_ID_TEST']!
-//           : dotenv.env['IOS_EDIT_PAGE_BANNER_AD_UNIT_ID']!;
+//     if (isTestMode) {
+//       return Platform.isIOS
+//           ? dotenv.env['IOS_BANNER_AD_UNIT_ID_TEST']!
+//           : dotenv.env['ANDROID_BANNER_AD_UNIT_ID_TEST']!;
 //     } else {
-//       throw UnsupportedError('Unsupported platform');
+//       return Platform.isIOS
+//           ? dotenv.env['IOS_BANNER_AD_UNIT_ID_TEST']!
+//           : dotenv.env['ANDROID_BANNER_AD_UNIT_ID_TEST']!;
 //     }
 //   }
 
 //   static String setFeaturesBannerAdUnitId({required bool isTestMode}) {
-//     if (Platform.isAndroid) {
-//       return isTestMode
-//           ? dotenv.env['ANDROID_SET_FEATURES_BANNER_AD_UNIT_ID_TEST']!
-//           : dotenv.env['ANDROID_SET_FEATURES_BANNER_AD_UNIT_ID']!;
-//     } else if (Platform.isIOS) {
-//       return isTestMode
-//           ? dotenv.env['IOS_SET_FEATURES_BANNER_AD_UNIT_ID_TEST']!
-//           : dotenv.env['IOS_SET_FEATURES_BANNER_AD_UNIT_ID']!;
+//     if (isTestMode) {
+//       return Platform.isIOS
+//           ? dotenv.env['IOS_BANNER_AD_UNIT_ID_TEST']!
+//           : dotenv.env['ANDROID_BANNER_AD_UNIT_ID_TEST']!;
 //     } else {
-//       throw UnsupportedError("Unsupported platform");
+//       return Platform.isIOS
+//           ? dotenv.env['IOS_BANNER_AD_UNIT_ID_TEST']!
+//           : dotenv.env['ANDROID_BANNER_AD_UNIT_ID_TEST']!;
 //     }
 //   }
 
 //   static String rewardedAdUnitId({required bool isTestMode}) {
-//     if (Platform.isAndroid) {
-//       return isTestMode
-//           ? dotenv.env['ANDROID_REWARDED_AD_UNIT_ID_TEST']!
-//           : dotenv.env['ANDROID_REWARDED_AD_UNIT_ID']!;
-//     } else if (Platform.isIOS) {
-//       return isTestMode
+//     if (isTestMode) {
+//       return Platform.isIOS
 //           ? dotenv.env['IOS_REWARDED_AD_UNIT_ID_TEST']!
-//           : dotenv.env['IOS_REWARDED_AD_UNIT_ID']!;
+//           : dotenv.env['ANDROID_REWARDED_AD_UNIT_ID_TEST']!;
 //     } else {
-//       throw UnsupportedError("Unsupported platform");
+//       return Platform.isIOS
+//           ? dotenv.env['IOS_REWARDED_AD_UNIT_ID_TEST']!
+//           : dotenv.env['ANDROID_REWARDED_AD_UNIT_ID_TEST']!;
 //     }
 //   }
 // }
