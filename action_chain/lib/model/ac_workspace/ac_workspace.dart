@@ -11,8 +11,6 @@ import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
 class ACWorkspace {
   static ACWorkspace currentWorkspace =
       acWorkspaces[ACWorkspace.currentWorkspaceIndex];
@@ -276,13 +274,12 @@ class ACWorkspace {
         acWorkspaces =
             (json.decode(pref.getString("acWorkspaces")!) as List<dynamic>)
                 .map((acworkspaceJsonData) {
-          return ACWorkspace.fromJson(
-              acworkspaceJsonData as Map<String, dynamic>);
+          return ACWorkspace.fromJson(acworkspaceJsonData);
         }).toList();
       }
-      if (pref.getString("currentChain") != null) {
-        ACWorkspace.runningActionChain =
-            ActionChain.fromJson(json.decode(pref.getString("currentChain")!));
+      if (pref.getString("runningActionChain") != null) {
+        ACWorkspace.runningActionChain = ActionChain.fromJson(
+            json.decode(pref.getString("runningActionChain")!));
       }
     });
   }
