@@ -3,6 +3,7 @@ import 'package:action_chain/components/ui/action_chain_bottom_navbar/action_cha
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/components/actodo_card.dart';
+import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/view/drawer_for_workspace/drawer_for_workspace.dart';
 import 'package:action_chain/view/make_chain_page/make_chain_page.dart';
@@ -48,6 +49,9 @@ class _HomePageState extends State<HomePage> {
     _selectedCategoryId = null;
     _oldCategoryId = null;
     _indexOfChain = null;
+    ACPref().getPref.then((pref) {
+      pref.remove("runningActionChain");
+    });
     ACWorkspace.saveCurrentChain();
   }
 
