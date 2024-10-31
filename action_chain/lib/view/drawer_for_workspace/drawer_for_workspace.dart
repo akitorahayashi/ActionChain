@@ -19,13 +19,12 @@ class DrawerForWorkspace extends StatefulWidget {
 class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Drawer(
       child: Stack(
         children: [
           // 背景色
-          Container(
-              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .backgroundColor),
+          Container(color: _acThemeData.backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -42,9 +41,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: acThemeDataList[
-                                SettingData.shared.selectedThemeIndex]
-                            .panelBorderColor),
+                        color: _acThemeData.panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -76,9 +73,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: acThemeDataList[
-                                SettingData.shared.selectedThemeIndex]
-                            .panelBorderColor),
+                        color: _acThemeData.panelBorderColor),
                     child: Card(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -143,9 +138,7 @@ class _DrawerForWorkspaceState extends State<DrawerForWorkspace> {
                                 },
                                 child: Icon(
                                   Icons.add,
-                                  color: acThemeDataList[
-                                          SettingData.shared.selectedThemeIndex]
-                                      .accentColor,
+                                  color: _acThemeData.accentColor,
                                 ),
                               ),
                             ),

@@ -23,6 +23,7 @@ class _IconCardState extends State<IconCard> {
       fontawesomeCategories.contains(widget.iconCategoryName);
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     final bool isFocused =
         widget.iconCategoryName == SettingData.shared.defaultIconCategory &&
             widget.selectedIconRarity == SettingData.shared.iconRarity &&
@@ -41,8 +42,7 @@ class _IconCardState extends State<IconCard> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           elevation: isFocused ? 0 : 3,
-          color:
-              acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
+          color: _acThemeData.panelColor,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Column(
@@ -60,8 +60,7 @@ class _IconCardState extends State<IconCard> {
                                 widget.selectedIconRarity]![widget.iconName]!
                             .notCheckedIcon,
                     color: isFocused
-                        ? acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .checkmarkColor
+                        ? _acThemeData.checkmarkColor
                         : Colors.black.withOpacity(0.5),
                     size: isFontawesomeCategories ? 17 : 20,
                   ),
@@ -72,9 +71,7 @@ class _IconCardState extends State<IconCard> {
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: isFocused
-                          ? acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .checkmarkColor
+                          ? _acThemeData.checkmarkColor
                           : Colors.black.withOpacity(0.5)),
                 )
               ],

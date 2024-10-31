@@ -1,12 +1,15 @@
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 final List<String> fontawesomeCategories = ["Default"];
 
-Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
+Widget getIcon(
+    {required bool isChecked,
+    required Color checkmarkColor,
+    Color? iconColor,
+    double? iconSize}) {
   // このカテゴリーで指定されたアイコンがない場合、デフォルトのものを使う
   IconForCheckBox thisIconData = (() {
     // 指定したアイコンがなければ、チェックボックスを使う
@@ -26,10 +29,7 @@ Widget getIcon({required bool isChecked, Color? iconColor, double? iconSize}) {
   return Icon(
     isChecked ? thisIconData.checkedIcon : thisIconData.notCheckedIcon,
     color: iconColor ??
-        (isChecked
-            ? acThemeDataList[SettingData.shared.selectedThemeIndex]
-                .checkmarkColor
-            : Colors.black.withOpacity(0.56)),
+        (isChecked ? checkmarkColor : Colors.black.withOpacity(0.56)),
     size: iconSize ??
         (fontawesomeCategories.contains(SettingData.shared.defaultIconCategory)
             ? 17

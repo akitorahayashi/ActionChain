@@ -1,8 +1,8 @@
-import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundOfCircularIndicatorPainter extends CustomPainter {
+  final Color circleBackgroundColor;
+  BackgroundOfCircularIndicatorPainter(this.circleBackgroundColor);
   @override
   void paint(Canvas canvas, Size size) {
     // Get the center of the canvas
@@ -10,8 +10,7 @@ class BackgroundOfCircularIndicatorPainter extends CustomPainter {
 
     final Paint brushForCircle = Paint()
       ..style = PaintingStyle.stroke
-      ..color = acThemeDataList[SettingData.shared.selectedThemeIndex]
-          .circleBackgroundColor
+      ..color = circleBackgroundColor
       ..strokeWidth = 30;
 
     canvas.drawCircle(

@@ -1,16 +1,18 @@
-import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
 class DoubleCard extends StatelessWidget {
   final Widget child;
-  const DoubleCard({Key? key, required this.child}) : super(key: key);
+  final Color doubleCardColor;
+  const DoubleCard(
+      {Key? key, required this.doubleCardColor, required this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-          .niceAppsCardColor,
+      color: doubleCardColor,
+      // color: acThemeDataList[SettingData.shared.selectedThemeIndex]
+      //     .niceAppsCardColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

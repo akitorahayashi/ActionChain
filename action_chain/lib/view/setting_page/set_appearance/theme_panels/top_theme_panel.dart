@@ -1,8 +1,6 @@
-import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/view/home_page/method_completion_indicator/background_of_circularindicator_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'dart:io';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,6 +11,7 @@ class TopThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
@@ -20,8 +19,7 @@ class TopThemePanel extends StatelessWidget {
         width: deviceWidth - 50,
         child: DecoratedBox(
           decoration: BoxDecoration(
-              gradient: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .gradientOfNavBar,
+              gradient: _acThemeData.gradientOfNavBar,
               borderRadius: BorderRadius.circular(10)),
           // ガラス
           child: GlassContainer(
@@ -33,8 +31,7 @@ class TopThemePanel extends StatelessWidget {
                 // カードを表示
                 child: Card(
                   // 色
-                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                      .panelColor,
+                  color: _acThemeData.panelColor,
                   // 浮き具合
                   elevation: 2,
                   shape: RoundedRectangleBorder(
@@ -51,7 +48,8 @@ class TopThemePanel extends StatelessWidget {
                             width: deviceWidth - 78,
                             height: deviceWidth - 78,
                             child: CustomPaint(
-                              painter: BackgroundOfCircularIndicatorPainter(),
+                              painter: BackgroundOfCircularIndicatorPainter(
+                                  _acThemeData.circleBackgroundColor),
                             ),
                           ),
                           // 中央の円
@@ -62,9 +60,7 @@ class TopThemePanel extends StatelessWidget {
                               width: deviceWidth - 145,
                               height: deviceWidth - 145,
                               child: CircularProgressIndicator(
-                                  color: acThemeDataList[
-                                          SettingData.shared.selectedThemeIndex]
-                                      .circleColor,
+                                  color: _acThemeData.circleColor,
                                   strokeWidth: 10,
                                   value: value),
                             ),
@@ -80,20 +76,14 @@ class TopThemePanel extends StatelessWidget {
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Icon(
                                       FontAwesomeIcons.solidSquareCheck,
-                                      color: acThemeDataList[SettingData
-                                              .shared.selectedThemeIndex]
-                                          .checkmarkColor,
+                                      color: _acThemeData.checkmarkColor,
                                       size: 22,
                                     ),
                                   ),
                                   Text(
-                                    acThemeDataList[SettingData
-                                            .shared.selectedThemeIndex]
-                                        .themeName,
+                                    _acThemeData.themeName,
                                     style: TextStyle(
-                                        color: acThemeDataList[SettingData
-                                                .shared.selectedThemeIndex]
-                                            .checkmarkColor,
+                                        color: _acThemeData.checkmarkColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 22),
                                   )

@@ -1,6 +1,5 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_icon/icon_block/icon_block.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +10,7 @@ class IconCategoryPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -25,9 +25,7 @@ class IconCategoryPanel extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.w800,
-                    color:
-                        acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .checkmarkColor),
+                    color: _acThemeData.checkmarkColor),
               ),
             ),
             // Super Rare, Rare

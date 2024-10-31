@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 
 class ActionChainFloatingActionButton extends StatelessWidget {
   final Function()? onPressed;
@@ -11,6 +10,7 @@ class ActionChainFloatingActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Container(
       width: 65,
       height: 65,
@@ -28,16 +28,12 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 4.0, top: 4),
                     child: Card(
-                      color:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .categoryPanelColorInCollection,
+                      color: _acThemeData.categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .panelBorderColor,
+                                color: _acThemeData.panelBorderColor,
                                 width: 2)),
                         child: const SizedBox(
                           width: 25,
@@ -49,16 +45,12 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(right: 4.0, bottom: 4),
                     child: Card(
-                      color:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .categoryPanelColorInCollection,
+                      color: _acThemeData.categoryPanelColorInCollection,
                       elevation: 0,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .panelBorderColor,
+                                color: _acThemeData.panelBorderColor,
                                 width: 2)),
                         child: const SizedBox(
                           width: 25,
@@ -70,10 +62,8 @@ class ActionChainFloatingActionButton extends StatelessWidget {
                 ],
               ),
           style: ButtonStyle(
-            overlayColor: WidgetStateProperty.resolveWith((states) =>
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .accentColor
-                    .withOpacity(0.05)),
+            overlayColor: WidgetStateProperty.resolveWith(
+                (states) => _acThemeData.accentColor.withOpacity(0.05)),
           ),
         ),
       ),

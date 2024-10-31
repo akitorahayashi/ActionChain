@@ -1,7 +1,6 @@
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/functions/launch_my_url.dart';
 import 'package:action_chain/model/user/setting_data.dart';
-import 'package:action_chain/model/user/ac_user.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +16,7 @@ class SignInCard extends StatefulWidget {
 class _SignInCardState extends State<SignInCard> {
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
@@ -33,10 +33,7 @@ class _SignInCardState extends State<SignInCard> {
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .accentColor
-                              .withOpacity(0.8)),
+                      color: _acThemeData.accentColor.withOpacity(0.8)),
                 ),
               ),
             ),
@@ -49,9 +46,7 @@ class _SignInCardState extends State<SignInCard> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     letterSpacing: 1,
-                    color:
-                        acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .accentColor),
+                    color: _acThemeData.accentColor),
               ),
             ),
             const Padding(
@@ -67,9 +62,7 @@ class _SignInCardState extends State<SignInCard> {
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontSize: 20,
-                    color:
-                        acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .accentColor),
+                    color: _acThemeData.accentColor),
               ),
             ),
             const Padding(
@@ -99,19 +92,14 @@ class _SignInCardState extends State<SignInCard> {
                             padding: const EdgeInsets.only(right: 12.0),
                             child: Icon(
                               FontAwesomeIcons.square,
-                              color: acThemeDataList[
-                                      SettingData.shared.selectedThemeIndex]
-                                  .accentColor
-                                  .withOpacity(0.84),
+                              color: _acThemeData.accentColor.withOpacity(0.84),
                             ),
                           ),
                           Text(
                             "Sign in with Google",
                             style: TextStyle(
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .accentColor
-                                    .withOpacity(0.84),
+                                color:
+                                    _acThemeData.accentColor.withOpacity(0.84),
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),

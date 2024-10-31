@@ -22,6 +22,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(
           5,
@@ -34,8 +35,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 70),
         child: Card(
-          color:
-              acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
+          color: _acThemeData.panelColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: ClipRRect(
@@ -68,12 +68,8 @@ class ChangeWorkspaceCard extends StatelessWidget {
                               SlidableAction(
                                 autoClose: true,
                                 spacing: 8,
-                                backgroundColor: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .panelColor,
-                                foregroundColor: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .accentColor,
+                                backgroundColor: _acThemeData.panelColor,
+                                foregroundColor: _acThemeData.accentColor,
                                 onPressed: (BuildContext context) {
                                   if (!isInList) {
                                     Navigator.pop(context);
@@ -95,12 +91,8 @@ class ChangeWorkspaceCard extends StatelessWidget {
                     SlidableAction(
                       autoClose: true,
                       spacing: 8,
-                      backgroundColor:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .panelColor,
-                      foregroundColor:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                      backgroundColor: _acThemeData.panelColor,
+                      foregroundColor: _acThemeData.accentColor,
                       onPressed: (BuildContext context) {
                         if (!isInList) {
                           Navigator.pop(context);
@@ -135,9 +127,7 @@ class ChangeWorkspaceCard extends StatelessWidget {
                                 : ""),
                         style: TextStyle(
                             fontWeight: FontWeight.w700,
-                            color: acThemeDataList[
-                                    SettingData.shared.selectedThemeIndex]
-                                .accentColor,
+                            color: _acThemeData.accentColor,
                             letterSpacing: 1)),
                   ),
                 ),

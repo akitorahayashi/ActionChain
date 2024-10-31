@@ -1,6 +1,5 @@
 import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/view/chain_wall/chain_category_panel/chain_category_panel.dart';
@@ -21,12 +20,11 @@ class SelectChainWall extends StatefulWidget {
 class _SelectChainWallState extends State<SelectChainWall> {
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Scaffold(
       body: Stack(children: [
         Container(
-          decoration: BoxDecoration(
-              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .backgroundColor),
+          decoration: BoxDecoration(color: _acThemeData.backgroundColor),
         ),
         CustomScrollView(
           slivers: [

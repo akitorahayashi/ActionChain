@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 
 Future<void> simpleAlert(
     {required BuildContext context,
@@ -11,9 +10,9 @@ Future<void> simpleAlert(
       context: context,
       barrierDismissible: false,
       builder: (context) {
+        final ACThemeData _acThemeData = ACTheme.of(context);
         return Dialog(
-          backgroundColor:
-              acThemeDataList[SettingData.shared.selectedThemeIndex].alertColor,
+          backgroundColor: _acThemeData.alertColor,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
             child: Padding(
@@ -27,9 +26,7 @@ Future<void> simpleAlert(
                     child: Text(
                       title,
                       style: TextStyle(
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                          color: _acThemeData.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),

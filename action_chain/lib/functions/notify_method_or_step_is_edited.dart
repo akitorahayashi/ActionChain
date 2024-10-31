@@ -1,5 +1,4 @@
 import 'package:action_chain/constants/icons_for_checkbox.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -8,11 +7,11 @@ void notifyActionMethodOrStepIsEditted({
   required String title,
   required bool isChecked,
 }) {
+  final ACThemeData _acThemeData = ACTheme.of(context);
   SnackBar snackBar = SnackBar(
     duration: const Duration(milliseconds: 900),
     behavior: SnackBarBehavior.floating,
-    backgroundColor:
-        acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
+    backgroundColor: _acThemeData.panelColor,
     content: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -27,7 +26,9 @@ void notifyActionMethodOrStepIsEditted({
                   height: 20,
                   child: Transform.scale(
                     scale: 1.2,
-                    child: getIcon(isChecked: isChecked),
+                    child: getIcon(
+                        isChecked: isChecked,
+                        checkmarkColor: _acThemeData.checkmarkColor),
                   ),
                 )),
             // toDoのタイトル

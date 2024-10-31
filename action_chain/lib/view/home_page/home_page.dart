@@ -10,7 +10,6 @@ import 'package:action_chain/view/make_chain_page/make_chain_page.dart';
 import 'package:action_chain/view/chain_wall/select_chain_wall.dart';
 import 'package:action_chain/view/setting_page/setting_page.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
@@ -202,6 +201,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Scaffold(
       key: homePageScaffoldKey,
       drawer:
@@ -209,9 +209,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           // 背景色
-          Container(
-              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .backgroundColor),
+          Container(color: _acThemeData.backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -535,16 +533,12 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Icon(
                           Icons.label_important,
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .categoryPanelColorInCollection,
+                          color: _acThemeData.categoryPanelColorInCollection,
                           size: 30,
                         ),
                         Icon(
                           Icons.label_important_outline,
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .panelBorderColor,
+                          color: _acThemeData.panelBorderColor,
                           size: 30,
                         ),
                       ],

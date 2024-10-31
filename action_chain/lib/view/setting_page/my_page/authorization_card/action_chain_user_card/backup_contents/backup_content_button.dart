@@ -15,21 +15,17 @@ class BackupContentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Card(
-      color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-          .backupButtonBorderColor,
+      color: _acThemeData.backupButtonBorderColor,
       child: SizedBox(
         width: 156,
         height: 70,
         child: Card(
           child: InkWell(
             highlightColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .backupButtonTextColor
-                    .withOpacity(0.05),
-            splashColor: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                .backupButtonTextColor
-                .withOpacity(0.1),
+                _acThemeData.backupButtonTextColor.withOpacity(0.05),
+            splashColor: _acThemeData.backupButtonTextColor.withOpacity(0.1),
             onTap: onPressed,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -38,17 +34,13 @@ class BackupContentButton extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 2.5),
                   child: Icon(
                     iconData,
-                    color:
-                        acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .backupButtonTextColor,
+                    color: _acThemeData.backupButtonTextColor,
                   ),
                 ),
                 Text(
                   buttonName,
                   style: TextStyle(
-                      color:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .backupButtonTextColor,
+                      color: _acThemeData.backupButtonTextColor,
                       fontWeight: FontWeight.w900,
                       fontSize: 20,
                       letterSpacing: 0.5),

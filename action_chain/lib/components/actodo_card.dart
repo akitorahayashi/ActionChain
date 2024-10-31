@@ -3,7 +3,6 @@ import 'package:action_chain/functions/notify_method_or_step_is_edited.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
@@ -108,14 +107,14 @@ class _ACToDoCardState extends State<ACToDoCard> {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     // 全体を囲むカード
     return GestureDetector(
       onTap:
           widget.disableTapGesture ? null : () => _toggleActionMethodCheckBox(),
       onLongPress: widget.actionMethodData.isChecked ? () {} : null,
       child: Card(
-        color:
-            acThemeDataList[SettingData.shared.selectedThemeIndex].panelColor,
+        color: _acThemeData.panelColor,
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Slidable(
@@ -130,12 +129,8 @@ class _ACToDoCardState extends State<ACToDoCard> {
                       SlidableAction(
                         // タップしたらクローズ
                         autoClose: true,
-                        backgroundColor: acThemeDataList[
-                                SettingData.shared.selectedThemeIndex]
-                            .panelColor,
-                        foregroundColor: acThemeDataList[
-                                SettingData.shared.selectedThemeIndex]
-                            .accentColor,
+                        backgroundColor: _acThemeData.panelColor,
+                        foregroundColor: _acThemeData.accentColor,
                         onPressed: (BuildContext context) async {
                           // タップしたらこれをremoveする
                           widget.actionMethods
@@ -156,12 +151,8 @@ class _ACToDoCardState extends State<ACToDoCard> {
                       autoClose: true,
                       flex: 10,
                       spacing: 8,
-                      backgroundColor:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .panelColor,
-                      foregroundColor:
-                          acThemeDataList[SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                      backgroundColor: _acThemeData.panelColor,
+                      foregroundColor: _acThemeData.accentColor,
                       onPressed: (BuildContext context) => widget.editAction!(),
                       icon: Icons.edit,
                       label: 'Edit',
@@ -186,7 +177,8 @@ class _ACToDoCardState extends State<ACToDoCard> {
                           child: Transform.scale(
                             scale: 1.2,
                             child: getIcon(
-                                isChecked: widget.actionMethodData.isChecked),
+                                isChecked: widget.actionMethodData.isChecked,
+                                checkmarkColor: _acThemeData.checkmarkColor),
                           )),
                       // toDoのタイトル
                       Expanded(
@@ -239,7 +231,9 @@ class _ACToDoCardState extends State<ACToDoCard> {
                                         child: Transform.scale(
                                           scale: 1.2,
                                           child: getIcon(
-                                              isChecked: stepData.isChecked),
+                                              isChecked: stepData.isChecked,
+                                              checkmarkColor:
+                                                  _acThemeData.checkmarkColor),
                                         ),
                                       ),
                                       // stepのタイトル

@@ -29,9 +29,9 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
       _workspaceNameInputController.text =
           acWorkspaces[widget.oldWorkspaceIndex!].name;
     }
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Dialog(
-      backgroundColor:
-          acThemeDataList[SettingData.shared.selectedThemeIndex].alertColor,
+      backgroundColor: _acThemeData.alertColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

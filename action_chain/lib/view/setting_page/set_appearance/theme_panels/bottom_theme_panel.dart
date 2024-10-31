@@ -12,6 +12,7 @@ class BottomThemePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     final double deviceWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -58,9 +59,7 @@ class BottomThemePanel extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            acThemeDataList[
-                                    SettingData.shared.selectedThemeIndex]
-                                .themeName,
+                            _acThemeData.themeName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: acThemeDataList[relevantThemeIndex]

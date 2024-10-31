@@ -7,7 +7,6 @@ import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 
@@ -105,13 +104,12 @@ class _MakeChainPageState extends State<MakeChainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Scaffold(
       body: Stack(
         children: [
           // 背景色
-          Container(
-              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .backgroundColor),
+          Container(color: _acThemeData.backgroundColor),
           CustomScrollView(
             slivers: [
               ActionChainSliverAppBar(
@@ -155,9 +153,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(30, 30, 30, 0),
                           child: DropdownButton(
-                              iconEnabledColor: acThemeDataList[
-                                      SettingData.shared.selectedThemeIndex]
-                                  .accentColor,
+                              iconEnabledColor: _acThemeData.accentColor,
                               isExpanded: true,
                               hint: Text(
                                 _selectedChainCategoryId == null
@@ -188,9 +184,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                             chainCategory.id ==
                                                 _selectedChainCategoryId
                                         ? TextStyle(
-                                            color: acThemeDataList[SettingData
-                                                    .shared.selectedThemeIndex]
-                                                .accentColor,
+                                            color: _acThemeData.accentColor,
                                             fontWeight: FontWeight.bold)
                                         : TextStyle(
                                             color:
@@ -268,9 +262,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                 fontWeight: FontWeight.w800,
                                 fontSize: 24,
                                 letterSpacing: 0.8,
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .backupButtonTextColor),
+                                color: _acThemeData.backupButtonTextColor),
                           ),
                         ),
                         // methodsを表示する
@@ -369,9 +361,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                               .trim()
                                               .isEmpty
                                           ? Colors.black45
-                                          : acThemeDataList[SettingData
-                                                  .shared.selectedThemeIndex]
-                                              .accentColor,
+                                          : _acThemeData.accentColor,
                                       size: 25,
                                     ),
                                     onPressed: _actionTitleInputController.text
@@ -521,9 +511,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                         color: _stepTitleInputController.text
                                                 .trim()
                                                 .isNotEmpty
-                                            ? acThemeDataList[SettingData
-                                                    .shared.selectedThemeIndex]
-                                                .accentColor
+                                            ? _acThemeData.accentColor
                                             : Colors.black,
                                         size: 25,
                                       ),

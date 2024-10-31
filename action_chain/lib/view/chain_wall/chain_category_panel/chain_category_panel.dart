@@ -24,16 +24,15 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
       ACWorkspace.currentWorkspace.chainCategories[widget.indexOfCategory];
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 3.0, left: 3, right: 3),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
         child: DecoratedBox(
           decoration: BoxDecoration(
-              border: Border.all(
-                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                      .panelBorderColor,
-                  width: 20)),
+              border:
+                  Border.all(color: _acThemeData.panelBorderColor, width: 20)),
           child: GestureDetector(
             onLongPress: ACWorkspace.currentWorkspace
                         .chainCategories[widget.indexOfCategory].id ==
@@ -41,8 +40,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                 ? () {}
                 : null,
             child: Card(
-              color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                  .categoryPanelColorInCollection,
+              color: _acThemeData.categoryPanelColorInCollection,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               child: Padding(
@@ -68,9 +66,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.remove,
-                                  color: acThemeDataList[
-                                          SettingData.shared.selectedThemeIndex]
-                                      .accentColor,
+                                  color: _acThemeData.accentColor,
                                   size: 19,
                                 ),
                               ),
@@ -82,9 +78,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 child: Text(
                                   categoryOfThisCard.title,
                                   style: TextStyle(
-                                      color: acThemeDataList[SettingData
-                                              .shared.selectedThemeIndex]
-                                          .accentColor,
+                                      color: _acThemeData.accentColor,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 1,
                                       fontSize: 16),
@@ -104,9 +98,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                 },
                                 child: Icon(
                                   Icons.edit,
-                                  color: acThemeDataList[
-                                          SettingData.shared.selectedThemeIndex]
-                                      .accentColor,
+                                  color: _acThemeData.accentColor,
                                   size: 17,
                                 ),
                               ),

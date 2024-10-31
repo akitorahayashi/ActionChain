@@ -13,9 +13,9 @@ class IconBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Card(
-      color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-          .myPagePanelColor,
+      color: _acThemeData.myPagePanelColor,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Padding(
         padding: const EdgeInsets.all(4.0),

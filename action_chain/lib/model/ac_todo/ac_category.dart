@@ -5,7 +5,6 @@ import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/external/ac_pref.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -39,10 +38,9 @@ class ACCategory {
         context: context,
         barrierDismissible: false,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return AlertDialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             content: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -135,10 +133,9 @@ class ACCategory {
         context: context,
         barrierDismissible: false,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return Dialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -150,9 +147,7 @@ class ACCategory {
                     child: Text(
                       addedCategoryName,
                       style: TextStyle(
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                          color: _acThemeData.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
@@ -191,10 +186,9 @@ class ACCategory {
         context: context,
         barrierDismissible: true,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return AlertDialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             title: Column(
               children: [
                 Padding(
@@ -258,10 +252,7 @@ class ACCategory {
                           },
                           child: Text(
                             "戻す",
-                            style: TextStyle(
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .accentColor),
+                            style: TextStyle(color: _acThemeData.accentColor),
                           ),
                         ),
                         // 完了ボタン
@@ -292,10 +283,7 @@ class ACCategory {
                           },
                           child: Text(
                             "完了",
-                            style: TextStyle(
-                                color: acThemeDataList[
-                                        SettingData.shared.selectedThemeIndex]
-                                    .accentColor),
+                            style: TextStyle(color: _acThemeData.accentColor),
                           ),
                         )
                       ],
@@ -315,10 +303,9 @@ class ACCategory {
         context: context,
         barrierDismissible: false,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return Dialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -341,9 +328,7 @@ class ACCategory {
                       ACWorkspace.currentWorkspace
                           .chainCategories[indexOfCategoryInCategories].title,
                       style: TextStyle(
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                          color: _acThemeData.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),

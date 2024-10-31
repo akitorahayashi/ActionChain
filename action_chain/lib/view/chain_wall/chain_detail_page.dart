@@ -5,7 +5,6 @@ import 'package:action_chain/components/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
@@ -50,13 +49,12 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Scaffold(
       body: Stack(
         children: [
           Container(
-            decoration: BoxDecoration(
-                color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .backgroundColor),
+            decoration: BoxDecoration(color: _acThemeData.backgroundColor),
           ),
           CustomScrollView(
             slivers: [

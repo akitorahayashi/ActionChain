@@ -11,6 +11,7 @@ class SetFeaturesCategoryColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Column(
@@ -24,8 +25,7 @@ class SetFeaturesCategoryColumn extends StatelessWidget {
                   fontSize: 21,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
-                  color: acThemeDataList[SettingData.shared.selectedThemeIndex]
-                      .titleColorOfSettingPage),
+                  color: _acThemeData.titleColorOfSettingPage),
             ),
           ),
           Column(

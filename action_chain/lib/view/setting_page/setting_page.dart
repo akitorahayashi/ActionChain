@@ -2,7 +2,6 @@ import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
 // import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_appearance_page.dart';
 import 'package:action_chain/view/setting_page/my_page/my_page.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +35,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return ProgressHUD(
       barrierEnabled: true,
       indicatorColor: Colors.white,
@@ -47,10 +47,7 @@ class _SettingPageState extends State<SettingPage> {
           children: [
             // 背景色
             Container(
-                decoration: BoxDecoration(
-                    color:
-                        acThemeDataList[SettingData.shared.selectedThemeIndex]
-                            .backgroundColor),
+                decoration: BoxDecoration(color: _acThemeData.backgroundColor),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height),
             NestedScrollView(
@@ -124,9 +121,7 @@ class _SettingPageState extends State<SettingPage> {
                                     return Icon(
                                       _iconDataOfSettingPageContents[index][0],
                                       color: index == _selectedPageIndex
-                                          ? acThemeDataList[SettingData
-                                                  .shared.selectedThemeIndex]
-                                              .accentColor
+                                          ? _acThemeData.accentColor
                                           : Colors.black45,
                                     );
                                   // } else {
@@ -181,10 +176,7 @@ class _SettingPageState extends State<SettingPage> {
                                             border: Border.all(
                                               width: 1.5,
                                               color: _selectedPageIndex == 2
-                                                  ? acThemeDataList[SettingData
-                                                          .shared
-                                                          .selectedThemeIndex]
-                                                      .accentColor
+                                                  ? _acThemeData.accentColor
                                                       .withOpacity(1)
                                                   : Colors.white
                                                       .withOpacity(.8),
@@ -199,9 +191,7 @@ class _SettingPageState extends State<SettingPage> {
                                     return Icon(
                                       _iconDataOfSettingPageContents[index][0],
                                       color: index == _selectedPageIndex
-                                          ? acThemeDataList[SettingData
-                                                  .shared.selectedThemeIndex]
-                                              .accentColor
+                                          ? _acThemeData.accentColor
                                           : Colors.black45,
                                     );
                                 }
@@ -212,9 +202,7 @@ class _SettingPageState extends State<SettingPage> {
                                   _iconDataOfSettingPageContents[index][1],
                                   style: TextStyle(
                                     color: index == _selectedPageIndex
-                                        ? acThemeDataList[SettingData
-                                                .shared.selectedThemeIndex]
-                                            .accentColor
+                                        ? _acThemeData.accentColor
                                         : Colors.black45,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,

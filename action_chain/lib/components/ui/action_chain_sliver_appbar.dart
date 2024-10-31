@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/model/user/setting_data.dart';
+import 'package:flutter/material.dart';
 
 class ActionChainSliverAppBar extends StatelessWidget {
   final double? titleFontSize;
@@ -25,6 +24,7 @@ class ActionChainSliverAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ACThemeData _acThemeData = ACTheme.of(context);
     return SliverAppBar(
       elevation: 5,
       expandedHeight: 110,
@@ -61,8 +61,7 @@ class ActionChainSliverAppBar extends StatelessWidget {
       // AppBarのデザイン
       flexibleSpace: Container(
         decoration: BoxDecoration(
-          gradient: acThemeDataList[SettingData.shared.selectedThemeIndex]
-              .gradientOfNavBar,
+          gradient: _acThemeData.gradientOfNavBar,
         ),
         child: FlexibleSpaceBar(
           centerTitle: true,

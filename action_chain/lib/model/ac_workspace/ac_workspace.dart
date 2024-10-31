@@ -92,10 +92,9 @@ class ACWorkspace {
         context: context,
         barrierDismissible: false,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return Dialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
               child: Column(
@@ -120,9 +119,7 @@ class ACWorkspace {
                         TextSpan(
                           text: newWorkspaceName,
                           style: TextStyle(
-                            color: acThemeDataList[
-                                    SettingData.shared.selectedThemeIndex]
-                                .accentColor,
+                            color: _acThemeData.accentColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -170,10 +167,9 @@ class ACWorkspace {
         context: context,
         barrierDismissible: false,
         builder: (context) {
+          final ACThemeData _acThemeData = ACTheme.of(context);
           return Dialog(
-            backgroundColor:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .alertColor,
+            backgroundColor: _acThemeData.alertColor,
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -195,9 +191,7 @@ class ACWorkspace {
                     child: Text(
                       willDeletedWorkspace.name,
                       style: TextStyle(
-                          color: acThemeDataList[
-                                  SettingData.shared.selectedThemeIndex]
-                              .accentColor,
+                          color: _acThemeData.accentColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
