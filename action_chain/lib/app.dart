@@ -14,32 +14,35 @@ class ActionChainApp extends StatefulWidget {
 class _ActionChainAppState extends State<ActionChainApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Action Chain",
-        theme: ThemeData(
-            primarySwatch:
-                acThemeDataList[SettingData.shared.selectedThemeIndex]
-                    .accentColor),
-        home: HomePage(key: homePageKey)
-        // FutureBuilder(
-        //   future: actionChainUser.initializeFirebase(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.hasError) {
-        //       // スプラッシュ画面を閉じる
-        //       FlutterNativeSplash.remove();
-        //       return const LoadingPage(
-        //         errorIsOccurred: true,
-        //       );
-        //     } else if (snapshot.hasData) {
-        //       return HomePage(key: homePageKey);
-        //     } else {
-        //       return const LoadingPage(
-        //         errorIsOccurred: false,
-        //       );
-        //     }
-        //   },
-        // ),
-        );
+    return ACTheme(
+      data: acThemeDataList[SettingData.shared.selectedThemeIndex],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: "Action Chain",
+          theme: ThemeData(
+              primarySwatch:
+                  acThemeDataList[SettingData.shared.selectedThemeIndex]
+                      .accentColor),
+          home: HomePage(key: homePageKey)
+          // FutureBuilder(
+          //   future: actionChainUser.initializeFirebase(),
+          //   builder: (context, snapshot) {
+          //     if (snapshot.hasError) {
+          //       // スプラッシュ画面を閉じる
+          //       FlutterNativeSplash.remove();
+          //       return const LoadingPage(
+          //         errorIsOccurred: true,
+          //       );
+          //     } else if (snapshot.hasData) {
+          //       return HomePage(key: homePageKey);
+          //     } else {
+          //       return const LoadingPage(
+          //         errorIsOccurred: false,
+          //       );
+          //     }
+          //   },
+          // ),
+          ),
+    );
   }
 }
