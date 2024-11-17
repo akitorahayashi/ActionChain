@@ -1,12 +1,11 @@
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_theme.dart';
-import 'package:action_chain/components/dialog/simple_alert.dart';
-import 'package:flutter/material.dart';
 
 class EditACWorkspaceDialog extends StatefulWidget {
   final int? oldWorkspaceIndex;
@@ -103,11 +102,10 @@ class _EditACWorkspaceDialogState extends State<EditACWorkspaceDialog> {
                         acWorkspaces.removeAt(widget.oldWorkspaceIndex!);
                         acWorkspaces.insert(
                             widget.oldWorkspaceIndex!, editedWorkspace);
-                        simpleAlert(
+                        ACSingleOptionDialog.show(
                             context: context,
                             title: "変更することに\n成功しました",
-                            message: null,
-                            buttonText: "OK");
+                            message: null);
                       }
                       drawerForWorkspaceKey.currentState?.setState(() {});
                       manageWorkspacePageKey.currentState?.setState(() {});

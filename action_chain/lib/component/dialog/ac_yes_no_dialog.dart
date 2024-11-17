@@ -8,7 +8,7 @@ class ACYesNoDialog extends StatelessWidget {
   const ACYesNoDialog({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
     required this.yesAction,
   });
 

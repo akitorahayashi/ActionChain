@@ -614,13 +614,13 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                       : () {
                                           if (widget.oldCategoryId == null) {
                                             // 新しく作成する
-                                            ActionChain.askToSaveChain(
+                                            ACChain.askToSaveChain(
                                                 context: context,
                                                 wantToKeep: false,
                                                 categoryId:
                                                     _selectedChainCategoryId ??
                                                         noneId,
-                                                selectedChain: ActionChain(
+                                                selectedChain: ACChain(
                                                   title:
                                                       _chainTitleInputController
                                                           .text,
@@ -641,7 +641,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                 yesAction: () {
                                                   Navigator.pop(context);
                                                   // 上書きする
-                                                  final ActionChain
+                                                  final ACChain
                                                       overwrittenChain =
                                                       ACWorkspace
                                                               .currentWorkspace
@@ -661,7 +661,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                       context: context,
                                                       title: "上書きすることに\n成功しました",
                                                       message: null);
-                                                  ActionChain.saveActionChains(
+                                                  ACChain.saveActionChains(
                                                       isSavedChains: true);
                                                 });
                                           }
@@ -680,13 +680,13 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                           _addedActionMethods.isEmpty)
                                       ? null
                                       : () {
-                                          ActionChain.askToSaveChain(
+                                          ACChain.askToSaveChain(
                                               context: context,
                                               wantToKeep: true,
                                               categoryId:
                                                   _selectedChainCategoryId ??
                                                       noneId,
-                                              selectedChain: ActionChain(
+                                              selectedChain: ACChain(
                                                   title:
                                                       _chainTitleInputController
                                                           .text,
@@ -705,7 +705,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                       ? null
                                       : () {
                                           ACWorkspace.runningActionChain =
-                                              ActionChain(
+                                              ACChain(
                                                   title:
                                                       _chainTitleInputController
                                                           .text,

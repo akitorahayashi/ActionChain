@@ -435,7 +435,7 @@ class _HomePageState extends State<HomePage> {
                                                   context: context,
                                                   title: "キープすることに\n成功しました",
                                                   message: null);
-                                              ActionChain.saveActionChains(
+                                              ACChain.saveActionChains(
                                                   isSavedChains: false);
                                             });
                                       },

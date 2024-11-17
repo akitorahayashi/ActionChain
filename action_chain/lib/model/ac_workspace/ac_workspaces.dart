@@ -9,7 +9,7 @@ List<ACWorkspace> acWorkspaces = [
     ACCategory(id: noneId, title: "なし")
   ], savedChains: {
     noneId: [
-      ActionChain(title: "帰ってからやること", actodos: [
+      ACChain(title: "帰ってからやること", actodos: [
         ACToDo(title: "ご飯を炊く", steps: []),
         ACToDo(title: "運動する", steps: [
           ACStep(title: "水筒"),
@@ -26,7 +26,7 @@ List<ACWorkspace> acWorkspaces = [
     ]
   }, keepedChains: {
     noneId: [
-      ActionChain(title: "明日の持ち物", actodos: [
+      ACChain(title: "明日の持ち物", actodos: [
         ACToDo(
             title: "筆記用具", steps: [ACStep(title: "メモ帳"), ACStep(title: "ペン")]),
         ACToDo(title: "水筒", steps: []),

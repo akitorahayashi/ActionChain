@@ -1,4 +1,4 @@
-import 'package:action_chain/components/dialog/simple_alert.dart';
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/edit_acworkspace_dialog.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
@@ -6,7 +6,6 @@ import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/external/ac_pref.dart';
-import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -17,12 +16,12 @@ class ACWorkspace {
   // workspace
   static int currentWorkspaceIndex = 0;
   // 現在実行中のActionChain
-  static ActionChain? runningActionChain;
+  static ACChain? runningActionChain;
 
   String name;
   List<ACCategory> chainCategories;
-  Map<String, List<ActionChain>> savedChains;
-  Map<String, List<ActionChain>> keepedChains;
+  Map<String, List<ACChain>> savedChains;
+  Map<String, List<ACChain>> keepedChains;
 
   ACWorkspace(
       {required this.name,
@@ -60,7 +59,7 @@ class ACWorkspace {
         (chainName, actionChains) {
           final createdActionChains = (actionChains as List<dynamic>)
               .map((jsonActionChainData) =>
-                  ActionChain.fromJson(jsonActionChainData))
+                  ACChain.fromJson(jsonActionChainData))
               .toList();
           return MapEntry(chainName, createdActionChains);
         },
@@ -69,7 +68,7 @@ class ACWorkspace {
         (chainName, actionChains) {
           final createdActionChains = (actionChains as List<dynamic>)
               .map((jsonActionChainData) =>
-                  ActionChain.fromJson(jsonActionChainData))
+                  ACChain.fromJson(jsonActionChainData))
               .toList();
           return MapEntry(chainName, createdActionChains);
         },
@@ -232,11 +231,10 @@ class ACWorkspace {
                               // このアラートを消して thank you アラートを表示する
                               Navigator.pop(context);
                               ACVibration.vibrate();
-                              simpleAlert(
+                              ACSingleOptionDialog.show(
                                   context: context,
-                                  title: "削除することに\n成功しました!",
-                                  message: null,
-                                  buttonText: "OK");
+                                  title: "削除することに\n成功しました！",
+                                  message: null);
                               // セーブする
                               ACWorkspace.saveACWorkspaces();
                             });
@@ -272,7 +270,7 @@ class ACWorkspace {
         }).toList();
       }
       if (pref.getString("runningActionChain") != null) {
-        ACWorkspace.runningActionChain = ActionChain.fromJson(
+        ACWorkspace.runningActionChain = ACChain.fromJson(
             json.decode(pref.getString("runningActionChain")!));
       }
     });

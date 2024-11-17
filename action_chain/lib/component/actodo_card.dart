@@ -64,7 +64,7 @@ class _ACToDoCardState extends State<ACToDoCard> {
     if (widget.isCurrentChain) {
       ACWorkspace.saveCurrentChain();
     } else if (widget.isInKeepedChain) {
-      ActionChain.saveActionChains(isSavedChains: false);
+      ACChain.saveActionChains(isSavedChains: false);
     }
   }
 
@@ -101,7 +101,7 @@ class _ACToDoCardState extends State<ACToDoCard> {
     if (widget.isCurrentChain) {
       ACWorkspace.saveCurrentChain();
     } else if (widget.isInKeepedChain) {
-      ActionChain.saveActionChains(isSavedChains: false);
+      ACChain.saveActionChains(isSavedChains: false);
     }
   }
 

@@ -7,13 +7,13 @@ class ACSingleOptionDialog extends StatelessWidget {
   ACSingleOptionDialog({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
   });
 
   static Future<void> show({
     required BuildContext context,
     required String title,
-    required String? message,
+    String? message,
   }) async {
     return showDialog(
         context: context,

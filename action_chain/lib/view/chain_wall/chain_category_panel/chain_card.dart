@@ -10,7 +10,7 @@ class ChainCard extends StatelessWidget {
   final bool isSavedChain;
   final ACCategory categoryOfThisChain;
   final int indexOfThisChainInChains;
-  final ActionChain chainOfThisCard;
+  final ACChain chainOfThisCard;
   const ChainCard({
     Key? key,
     required this.isSavedChain,
