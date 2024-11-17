@@ -1,4 +1,5 @@
-import 'package:action_chain/alerts/simple_alert.dart';
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
@@ -6,7 +7,6 @@ import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
 import 'package:action_chain/model/external/ac_pref.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
-import 'package:flutter/material.dart';
 import 'dart:convert';
 
 const String noneId = "---n";
@@ -104,8 +104,8 @@ class ACCategory {
                             selectChainWallKey.currentState?.setState(() {});
                             // 保存
                             ACCategory.saveChainCategoriesInCurrentWorkspace();
-                            ActionChain.saveActionChains(isSavedChains: true);
-                            ActionChain.saveActionChains(isSavedChains: false);
+                            ACChain.saveActionChains(isSavedChains: true);
+                            ACChain.saveActionChains(isSavedChains: false);
 
                             ACVibration.vibrate();
                             returnedCategoryId = newCategoryId;
@@ -273,12 +273,10 @@ class ACCategory {
 
                               ACVibration.vibrate();
                               Navigator.pop(context);
-                              // thank you アラート
-                              simpleAlert(
+                              ACSingleOptionDialog.show(
                                   context: context,
                                   title: "変更することに\n成功しました！",
-                                  message: null,
-                                  buttonText: "OK");
+                                  message: null);
                             }
                           },
                           child: Text(
@@ -370,15 +368,12 @@ class ACCategory {
                             selectChainWallKey.currentState?.setState(() {});
                             // セーブする
                             ACCategory.saveChainCategoriesInCurrentWorkspace();
-                            ActionChain.saveActionChains(isSavedChains: true);
-                            ActionChain.saveActionChains(isSavedChains: false);
+                            ACChain.saveActionChains(isSavedChains: true);
+                            ACChain.saveActionChains(isSavedChains: false);
 
                             ACVibration.vibrate();
-                            simpleAlert(
-                                context: context,
-                                title: "削除することに\n成功しました！",
-                                message: null,
-                                buttonText: "OK");
+                            ACSingleOptionDialog.show(
+                                context: context, title: "削除することに\n成功しました！");
                           },
                           child: const Text("削除"))
                     ],

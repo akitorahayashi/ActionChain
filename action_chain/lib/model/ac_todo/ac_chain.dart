@@ -1,5 +1,5 @@
-import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/alerts/simple_alert.dart';
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';
@@ -8,12 +8,12 @@ import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:flutter/material.dart';
 
-class ActionChain {
+class ACChain {
   String title;
   List<ACToDo> actodos;
 
   // コンストラクタ
-  ActionChain({required this.title, required this.actodos});
+  ACChain({required this.title, required this.actodos});
 
   Map<String, dynamic> toJson() {
     return {
@@ -24,7 +24,7 @@ class ActionChain {
     };
   }
 
-  ActionChain.fromJson(Map<String, dynamic> jsonData)
+  ACChain.fromJson(Map<String, dynamic> jsonData)
       : title = jsonData["title"],
         actodos = (jsonData["actodos"] as List<dynamic>).map((jsonAcToDoData) {
           return ACToDo.fromJson(jsonAcToDoData);
@@ -45,7 +45,7 @@ class ActionChain {
       }
     }
     if (isConducted) {
-      ActionChain.saveActionChains(isSavedChains: true);
+      ACChain.saveActionChains(isSavedChains: true);
     }
   }
 
@@ -59,17 +59,16 @@ class ActionChain {
     required int indexOfChain,
     required Function() removeKeepedChainAction,
   }) async {
-    yesNoAlert(
+    ACYesNoDialog.show(
         context: context,
         title: "このAction Chainを\n${wantToConduct ? "実行" : "編集"}しますか？",
         message: null,
         yesAction: () {
-          Navigator.pop(context);
           ACVibration.vibrate();
           // detail -> collection -> home
           Navigator.pop(context);
           ACWorkspace.runningActionChain =
-              ActionChain(title: chainName, actodos: actionMethods);
+              ACChain(title: chainName, actodos: actionMethods);
           removeKeepedChainAction();
           Future<void>.delayed(const Duration(milliseconds: 100))
               .then((value) => Navigator.pop(context, <String, dynamic>{
@@ -85,11 +84,11 @@ class ActionChain {
     required BuildContext context,
     required bool wantToKeep,
     required String categoryId,
-    required ActionChain selectedChain,
+    required ACChain selectedChain,
     // キープでホームに戻った時に編集モードを解除する関数
     required Function()? releaseEditModeAction,
   }) {
-    yesNoAlert(
+    ACYesNoDialog.show(
         context: context,
         title: wantToKeep ? "キープしますか？" : "保存しますか？",
         message:
@@ -103,24 +102,20 @@ class ActionChain {
             releaseEditModeAction!();
             // ホームに戻る
             Navigator.pop(context);
-            simpleAlert(
-                context: context,
-                title: "キープすることに\n成功しました",
-                message: null,
-                buttonText: "OK");
-            ActionChain.saveActionChains(isSavedChains: false);
+            ACSingleOptionDialog.show(
+                context: context, title: "キープすることに\n成功しました", message: null);
           } else {
-            ACWorkspace.currentWorkspace.savedChains[categoryId]!.add(
-                ActionChain(
-                    title: selectedChain.title,
-                    actodos: ACToDo.getNewMethods(
-                        selectedMethods: selectedChain.actodos)));
-            simpleAlert(
-                context: context,
-                title: "保村することに\n成功しました",
-                message: null,
-                buttonText: "OK");
-            ActionChain.saveActionChains(isSavedChains: true);
+            ACWorkspace.currentWorkspace.savedChains[categoryId]!.add(ACChain(
+                title: selectedChain.title,
+                actodos: ACToDo.getNewMethods(
+                    selectedMethods: selectedChain.actodos)));
+
+            ACSingleOptionDialog.show(
+              context: context,
+              title: "保村することに\n成功しました",
+              message: null,
+            );
+            ACChain.saveActionChains(isSavedChains: true);
           }
         });
   }
@@ -131,7 +126,7 @@ class ActionChain {
     required int indexOfOldChain,
     required bool isSavedChain,
   }) {
-    yesNoAlert(
+    ACYesNoDialog.show(
         context: context,
         title: "このAction Chainを\n削除しますか？",
         message: null,
@@ -142,19 +137,16 @@ class ActionChain {
           if (isSavedChain) {
             ACWorkspace.currentWorkspace.savedChains[categoryId]!
                 .removeAt(indexOfOldChain);
-            ActionChain.saveActionChains(isSavedChains: true);
+            ACChain.saveActionChains(isSavedChains: true);
           } else {
             ACWorkspace.currentWorkspace.keepedChains[categoryId]!
                 .removeAt(indexOfOldChain);
-            ActionChain.saveActionChains(isSavedChains: false);
+            ACChain.saveActionChains(isSavedChains: false);
           }
           selectChainWallKey.currentState?.setState(() {});
           ACVibration.vibrate();
-          simpleAlert(
-              context: context,
-              title: "削除することに\n成功しました",
-              message: null,
-              buttonText: "OK");
+          ACSingleOptionDialog.show(
+              context: context, title: "削除することに\n成功しました", message: null);
         });
   }
 

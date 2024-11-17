@@ -1,5 +1,4 @@
-import 'package:action_chain/alerts/simple_alert.dart';
-import 'package:action_chain/alerts/yes_no_alert.dart';
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
@@ -170,12 +169,10 @@ class SettingData {
                             setAppearancePageKey.currentState?.setState(() {});
                             actionChainAppKey.currentState?.setState(() {});
                             ACVibration.vibrate();
-                            // thank youアラート
-                            simpleAlert(
+                            ACSingleOptionDialog.show(
                                 context: context,
-                                title: "変更することに\n成功しました！",
-                                message: null,
-                                buttonText: "OK");
+                                title: "変更成功",
+                                message: "変更することに\n成功しました！");
                             SettingData.shared.saveSettings();
                             // } else {
                             //   simpleAlert(
@@ -206,36 +203,21 @@ class SettingData {
   }
 
   // チェックマークのアイコンを変える関数
-  Future<void> askToSetDefaultIcon(
+  void setDefaultIcon(
       {required BuildContext context,
       required String categoryNameOfThisIcon,
       required String selectedIconRarity,
       required String iconName}) {
-    return yesNoAlert(
-        context: context,
-        title: "アイコンの変更",
-        message: "チェックマークのアイコンを\n変更しますか?",
-        yesAction: () {
-          Navigator.pop(context);
-          // if (settingData.userLevel >= 10) {
-          SettingData.shared.defaultIconCategory = categoryNameOfThisIcon;
-          SettingData.shared.iconRarity = selectedIconRarity;
-          SettingData.shared.defaultIconName = iconName;
-          setAppearancePageKey.currentState?.setState(() {});
-          ACVibration.vibrate();
-          simpleAlert(
-              context: context,
-              title: "チェックマークのアイコンを変更しました",
-              message: null,
-              buttonText: "OK");
-          SettingData.shared.saveSettings();
-          // } else {
-          //   simpleAlert(
-          //       context: context,
-          //       title: "エラー",
-          //       message: "User Levelが10以上になるとアイコンを変更できるようになります",
-          //       buttonText: "OK");
-          // }
-        });
+    SettingData.shared.defaultIconCategory = categoryNameOfThisIcon;
+    SettingData.shared.iconRarity = selectedIconRarity;
+    SettingData.shared.defaultIconName = iconName;
+    setAppearancePageKey.currentState?.setState(() {});
+    ACVibration.vibrate();
+    ACSingleOptionDialog.show(
+      context: context,
+      title: "アイコンの変更",
+      message: "チェックマークのアイコンを\n変更しました",
+    );
+    SettingData.shared.saveSettings();
   }
 }

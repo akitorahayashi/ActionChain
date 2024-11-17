@@ -1,7 +1,7 @@
-import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/components/actodo_card.dart';
-import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/components/ui/controll_icon_button.dart';
+import 'package:action_chain/component/actodo_card.dart';
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
+import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
+import 'package:action_chain/component/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';
@@ -30,13 +30,13 @@ class ChainDetailPage extends StatefulWidget {
 }
 
 class _ChainDetailPageState extends State<ChainDetailPage> {
-  ActionChain get chainOfThisPage =>
+  ACChain get chainOfThisPage =>
       (widget.isSavedChain
               ? ACWorkspace.currentWorkspace.savedChains
               : ACWorkspace
                   .currentWorkspace.keepedChains)[widget.categoryOfThisChain.id]
           ?[widget.indexOfThisChainInChains] ??
-      ActionChain(title: "", actodos: []);
+      ACChain(title: "", actodos: []);
 
   bool get isComplited => (() {
         for (ACToDo method in chainOfThisPage.actodos) {
@@ -97,8 +97,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                             children: [
                               // 削除
                               ControllIconButton(
-                                  onPressed: () =>
-                                      ActionChain.askToDeleteThisChain(
+                                  onPressed: () => ACChain.askToDeleteThisChain(
                                         context: context,
                                         categoryId:
                                             widget.categoryOfThisChain.id,
@@ -112,34 +111,31 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                               // 編集
                               ControllIconButton(
                                   onPressed: () {
-                                    ActionChain
-                                        .askTojumpToHomePageToUseThisChain(
-                                            context: context,
-                                            chainName: chainOfThisPage.title,
-                                            actionMethods:
-                                                chainOfThisPage.actodos,
-                                            indexOfChain:
-                                                widget.indexOfThisChainInChains,
-                                            selectedCategoryId:
-                                                widget.categoryOfThisChain.id,
-                                            oldCategoryId: widget.isSavedChain
-                                                ? widget.categoryOfThisChain.id
-                                                : null,
-                                            wantToConduct: false,
-                                            // keepedなら削除
-                                            removeKeepedChainAction: () {
-                                              if (!widget.isSavedChain) {
-                                                ACWorkspace
-                                                    .currentWorkspace
-                                                    .keepedChains[widget
-                                                        .categoryOfThisChain
-                                                        .id]!
-                                                    .removeAt(widget
-                                                        .indexOfThisChainInChains);
-                                                ActionChain.saveActionChains(
-                                                    isSavedChains: false);
-                                              }
-                                            });
+                                    ACChain.askTojumpToHomePageToUseThisChain(
+                                        context: context,
+                                        chainName: chainOfThisPage.title,
+                                        actionMethods: chainOfThisPage.actodos,
+                                        indexOfChain:
+                                            widget.indexOfThisChainInChains,
+                                        selectedCategoryId:
+                                            widget.categoryOfThisChain.id,
+                                        oldCategoryId: widget.isSavedChain
+                                            ? widget.categoryOfThisChain.id
+                                            : null,
+                                        wantToConduct: false,
+                                        // keepedなら削除
+                                        removeKeepedChainAction: () {
+                                          if (!widget.isSavedChain) {
+                                            ACWorkspace
+                                                .currentWorkspace
+                                                .keepedChains[widget
+                                                    .categoryOfThisChain.id]!
+                                                .removeAt(widget
+                                                    .indexOfThisChainInChains);
+                                            ACChain.saveActionChains(
+                                                isSavedChains: false);
+                                          }
+                                        });
                                   },
                                   iconData: Icons.edit,
                                   textContent: "編集"),
@@ -153,49 +149,45 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                 // 実行ボタン
                                 firstChild: ControllIconButton(
                                     onPressed: () {
-                                      ActionChain
-                                          .askTojumpToHomePageToUseThisChain(
-                                              context: context,
-                                              chainName: chainOfThisPage.title,
-                                              actionMethods:
-                                                  chainOfThisPage.actodos,
-                                              selectedCategoryId:
-                                                  widget.categoryOfThisChain.id,
-                                              oldCategoryId: widget.isSavedChain
-                                                  ? widget
-                                                      .categoryOfThisChain.id
-                                                  : null,
-                                              indexOfChain: widget
-                                                  .indexOfThisChainInChains,
-                                              wantToConduct: true,
-                                              // keepedなら削除
-                                              removeKeepedChainAction: () {
-                                                if (!widget.isSavedChain) {
-                                                  ACWorkspace
-                                                      .currentWorkspace
-                                                      .keepedChains[widget
-                                                          .categoryOfThisChain
-                                                          .id]!
-                                                      .removeAt(widget
-                                                          .indexOfThisChainInChains);
-                                                  ActionChain.saveActionChains(
-                                                      isSavedChains: false);
-                                                }
-                                              });
+                                      ACChain.askTojumpToHomePageToUseThisChain(
+                                          context: context,
+                                          chainName: chainOfThisPage.title,
+                                          actionMethods:
+                                              chainOfThisPage.actodos,
+                                          selectedCategoryId:
+                                              widget.categoryOfThisChain.id,
+                                          oldCategoryId: widget.isSavedChain
+                                              ? widget.categoryOfThisChain.id
+                                              : null,
+                                          indexOfChain:
+                                              widget.indexOfThisChainInChains,
+                                          wantToConduct: true,
+                                          // keepedなら削除
+                                          removeKeepedChainAction: () {
+                                            if (!widget.isSavedChain) {
+                                              ACWorkspace
+                                                  .currentWorkspace
+                                                  .keepedChains[widget
+                                                      .categoryOfThisChain.id]!
+                                                  .removeAt(widget
+                                                      .indexOfThisChainInChains);
+                                              ACChain.saveActionChains(
+                                                  isSavedChains: false);
+                                            }
+                                          });
                                     },
                                     iconData: Icons.near_me,
                                     iconSize: 26,
                                     textContent: "実行"),
                                 // 完了ボタン
                                 secondChild: ControllIconButton(
-                                  onPressed: () => yesNoAlert(
+                                  onPressed: () => ACYesNoDialog.show(
                                       context: context,
                                       title: "このAction Chainを\n完了しますか？",
                                       message: null,
                                       yesAction: () {
                                         Navigator.pop(context);
                                         // 更新して消す
-                                        Navigator.pop(context);
                                         ACWorkspace
                                             .currentWorkspace
                                             .keepedChains[
@@ -209,14 +201,14 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                         // アラート
                                         ACVibration.vibrate();
                                         // 保存
-                                        ActionChain.saveActionChains(
+                                        ACChain.saveActionChains(
                                             isSavedChains: false);
                                         ACWorkspace.saveCurrentWorkspace(
                                             selectedWorkspaceIndex: ACWorkspace
                                                 .currentWorkspaceIndex,
                                             selectedWorkspace:
                                                 ACWorkspace.currentWorkspace);
-                                        ActionChain.saveActionChains(
+                                        ACChain.saveActionChains(
                                             isSavedChains: true);
                                       }),
                                   iconData: Icons.done,
@@ -257,7 +249,7 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                 chainOfThisPage.actodos
                                     .insert(newIndex, reorderedActionMethod);
                                 setState(() {});
-                                ActionChain.saveActionChains(
+                                ACChain.saveActionChains(
                                     isSavedChains: widget.isSavedChain);
                               },
                             ),

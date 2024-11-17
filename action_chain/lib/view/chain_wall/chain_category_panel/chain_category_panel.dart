@@ -134,8 +134,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                         ],
                         onReorder: ((oldIndex, newIndex) {
                           if (oldIndex != newIndex) {
-                            final ActionChain reorderedChain = (widget
-                                        .isSavedChain
+                            final ACChain reorderedChain = (widget.isSavedChain
                                     ? ACWorkspace.currentWorkspace.savedChains
                                     : ACWorkspace.currentWorkspace
                                         .keepedChains)[categoryOfThisCard.id]!
@@ -146,7 +145,7 @@ class _ChainCategoryPanelState extends State<ChainCategoryPanel> {
                                         .keepedChains)[categoryOfThisCard.id]!
                                 .insert(newIndex, reorderedChain);
                             setState(() {});
-                            ActionChain.saveActionChains(
+                            ACChain.saveActionChains(
                                 isSavedChains: widget.isSavedChain);
                           }
                         }))

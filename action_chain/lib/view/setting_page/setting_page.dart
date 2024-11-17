@@ -1,4 +1,4 @@
-import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
+import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
 // import 'package:action_chain/model/user/ac_user.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_appearance_page.dart';
 import 'package:action_chain/view/setting_page/my_page/my_page.dart';
