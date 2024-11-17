@@ -14,8 +14,6 @@ android/app/google-services.json
 android/local.properties
 
 # iOS
-ios/Runner.xcodeproj/
-ios/Runner.xcworkspace/
 ios/Runner/GoogleService-Info.plist
 ios/Flutter/Flutter.framework/
 ios/Flutter/Flutter.podspec
