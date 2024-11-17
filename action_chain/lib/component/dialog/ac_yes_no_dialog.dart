@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class ACYesNoDialog extends StatelessWidget {
   final String title;
   final String? message;
-  final VoidCallback? yesAction;
+  final VoidCallback yesAction;
   const ACYesNoDialog({
     super.key,
     required this.title,
@@ -16,7 +16,7 @@ class ACYesNoDialog extends StatelessWidget {
     required BuildContext context,
     required String title,
     required String? message,
-    VoidCallback? yesAction,
+    required VoidCallback yesAction,
   }) async {
     return showDialog(
         context: context,

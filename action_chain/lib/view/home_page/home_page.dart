@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
 import 'package:action_chain/component/ui/action_chain_bottom_navbar/action_chain_floating_action_button.dart';
 import 'package:action_chain/component/ui/action_chain_bottom_navbar/action_chain_bottom_navbar.dart';
 import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
@@ -14,11 +17,8 @@ import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
-import 'package:action_chain/components/dialog/yes_no_alert.dart';
-import 'package:action_chain/components/dialog/simple_alert.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/constants/global_keys.dart';
-import 'package:flutter/material.dart';
 
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -54,41 +54,29 @@ class _HomePageState extends State<HomePage> {
     ACWorkspace.saveCurrentChain();
   }
 
-  // このページの内容を初期化する関数(チェックマークを含む)
-  void _askToInitializeHomePageContent() {
-    // チェックを全て外す
-    yesNoAlert(
+  void initializeHomePageContent() {
+    Navigator.pop(context);
+    for (ACToDo actionMethod in ACWorkspace.runningActionChain!.actodos) {
+      actionMethod.isChecked = false;
+      if (actionMethod.steps.isNotEmpty) {
+        for (ACStep step in actionMethod.steps) {
+          step.isChecked = false;
+        }
+      }
+    }
+    homePageKey.currentState?.setState(() {});
+    ACVibration.vibrate();
+    ACWorkspace.saveCurrentChain();
+    ACYesNoDialog.show(
         context: context,
-        title: "チェックマークを\nすべて外しますか？",
+        title: "このAction Chainを\n初期化しますか？",
         message: null,
         yesAction: () {
           Navigator.pop(context);
-          for (ACToDo actionMethod in ACWorkspace.runningActionChain!.actodos) {
-            actionMethod.isChecked = false;
-            if (actionMethod.steps.isNotEmpty) {
-              for (ACStep step in actionMethod.steps) {
-                step.isChecked = false;
-              }
-            }
-          }
+          _initializeHomePageContent();
           homePageKey.currentState?.setState(() {});
-          ACVibration.vibrate();
-          ACWorkspace.saveCurrentChain();
-          yesNoAlert(
-              context: context,
-              title: "このページの内容を\n初期化しますか",
-              message: null,
-              yesAction: () {
-                Navigator.pop(context);
-                ACVibration.vibrate();
-                _initializeHomePageContent();
-                homePageKey.currentState?.setState(() {});
-                simpleAlert(
-                    context: context,
-                    title: "初期化することに\n成功しました",
-                    message: null,
-                    buttonText: "OK");
-              });
+          ACSingleOptionDialog.show(
+              context: context, title: "初期化することに\n成功しました", message: null);
         });
   }
 
@@ -150,33 +138,26 @@ class _HomePageState extends State<HomePage> {
     homePageKey.currentState?.setState(() {});
   }
 
-  Future<void> askToCompliteChain() {
-    return yesNoAlert(
-        context: context,
-        title: "このAction Chainを\n完了しますか？",
-        message: null,
-        yesAction: () {
-          Navigator.pop(context);
-          // 初期化
-          if (isLoopMode) {
-            // チェックマークを外す
-            for (ACToDo method in ACWorkspace.runningActionChain!.actodos) {
-              method.isChecked = false;
-              for (ACStep step in method.steps) {
-                step.isChecked = false;
-              }
-            }
-            ACWorkspace.saveCurrentChain();
-          } else {
-            _initializeHomePageContent();
-          }
-          homePageKey.currentState?.setState(() {});
-          ACVibration.vibrate();
-          // 保存
-          ACWorkspace.saveCurrentWorkspace(
-              selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
-              selectedWorkspace: ACWorkspace.currentWorkspace);
-        });
+  void compliteChain() {
+    // 初期化
+    if (isLoopMode) {
+      // チェックマークを外す
+      for (ACToDo method in ACWorkspace.runningActionChain!.actodos) {
+        method.isChecked = false;
+        for (ACStep step in method.steps) {
+          step.isChecked = false;
+        }
+      }
+      ACWorkspace.saveCurrentChain();
+    } else {
+      _initializeHomePageContent();
+    }
+    homePageKey.currentState?.setState(() {});
+    ACVibration.vibrate();
+    // 保存
+    ACWorkspace.saveCurrentWorkspace(
+        selectedWorkspaceIndex: ACWorkspace.currentWorkspaceIndex,
+        selectedWorkspace: ACWorkspace.currentWorkspace);
   }
 
   @override
@@ -218,7 +199,7 @@ class _HomePageState extends State<HomePage> {
                 leadingButtonOnPressed: () {
                   if (ACWorkspace.runningActionChain != null) {
                     // 現在のAction Chainが
-                    yesNoAlert(
+                    ACYesNoDialog.show(
                         context: context,
                         title: "本当によろしいですか？",
                         message: "実行中にWorkspaceの一覧を開くと実行中のAction Chainが削除されます",
@@ -377,7 +358,17 @@ class _HomePageState extends State<HomePage> {
                                           ? () => goToMakeChainPage()
                                           : (!isCompleted
                                               ? null
-                                              : () => askToCompliteChain()),
+                                              : () async {
+                                                  await ACYesNoDialog.show(
+                                                      context: context,
+                                                      title:
+                                                          "このAction Chainを\n完了しますか？",
+                                                      message: null,
+                                                      yesAction: () {
+                                                        Navigator.pop(context);
+                                                        compliteChain();
+                                                      });
+                                                }),
                                   iconData:
                                       ACWorkspace.runningActionChain == null
                                           ? Icons.add
@@ -395,10 +386,20 @@ class _HomePageState extends State<HomePage> {
                           children: [
                             // 初期化
                             ControllIconButton(
-                                onPressed: ACWorkspace.runningActionChain ==
-                                        null
-                                    ? null
-                                    : () => _askToInitializeHomePageContent(),
+                                onPressed:
+                                    ACWorkspace.runningActionChain == null
+                                        ? null
+                                        : () => {
+                                              ACYesNoDialog.show(
+                                                  context: context,
+                                                  title:
+                                                      "このAction Chainを\n初期化しますか？",
+                                                  message: null,
+                                                  yesAction: () {
+                                                    Navigator.pop(context);
+                                                    initializeHomePageContent();
+                                                  })
+                                            },
                                 iconData: Icons.clear,
                                 textContent: "初期化"),
                             // キープ
@@ -409,34 +410,35 @@ class _HomePageState extends State<HomePage> {
                                             .trim()
                                             .isNotEmpty)
                                     ? null
-                                    : () => yesNoAlert(
-                                        context: context,
-                                        title: "キープしますか？",
-                                        message:
-                                            "Action Chainをキープすることで簡単に呼び出して使えるようになります",
-                                        yesAction: () {
-                                          Navigator.pop(context);
-                                          ACVibration.vibrate();
-                                          ACWorkspace
-                                              .currentWorkspace
-                                              .keepedChains[
-                                                  _selectedCategoryId ??
-                                                      noneId]!
-                                              .add(ACWorkspace
-                                                  .runningActionChain!);
-                                          // 初期化
-                                          _initializeHomePageContent();
-                                          homePageKey.currentState
-                                              ?.setState(() {});
-                                          // アラート
-                                          simpleAlert(
-                                              context: context,
-                                              title: "キープすることに\n成功しました",
-                                              message: null,
-                                              buttonText: "OK");
-                                          ActionChain.saveActionChains(
-                                              isSavedChains: false);
-                                        }),
+                                    : () async {
+                                        await ACYesNoDialog.show(
+                                            context: context,
+                                            title: "キープしますか？",
+                                            message:
+                                                "Action Chainをキープすることで簡単に呼び出して使えるようになります",
+                                            yesAction: () {
+                                              Navigator.pop(context);
+                                              ACVibration.vibrate();
+                                              ACWorkspace
+                                                  .currentWorkspace
+                                                  .keepedChains[
+                                                      _selectedCategoryId ??
+                                                          noneId]!
+                                                  .add(ACWorkspace
+                                                      .runningActionChain!);
+                                              // 初期化
+                                              _initializeHomePageContent();
+                                              homePageKey.currentState
+                                                  ?.setState(() {});
+                                              // アラート
+                                              ACSingleOptionDialog.show(
+                                                  context: context,
+                                                  title: "キープすることに\n成功しました",
+                                                  message: null);
+                                              ActionChain.saveActionChains(
+                                                  isSavedChains: false);
+                                            });
+                                      },
                                 iconData: Icons.label_important,
                                 textContent: "キープ"),
                             // 編集

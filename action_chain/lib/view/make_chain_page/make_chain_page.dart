@@ -1,6 +1,4 @@
 import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
-import 'package:action_chain/components/dialog/simple_alert.dart';
-import 'package:action_chain/components/dialog/yes_no_alert.dart';
 import 'package:action_chain/component/actodo_card.dart';
 import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/component/ui/controll_icon_button.dart';
@@ -122,6 +120,10 @@ class _MakeChainPageState extends State<MakeChainPage> {
                     // 元のページに戻る
                     Navigator.pop(context);
                   } else {
+                    ACYesNoDialog.show(
+                        context: context,
+                        title: "本当に戻りますか?",
+                        message: "作成されたAction Chainが\n完全に削除されます",);
                     yesNoAlert(
                         context: context,
                         title: "本当に戻りますか?",
