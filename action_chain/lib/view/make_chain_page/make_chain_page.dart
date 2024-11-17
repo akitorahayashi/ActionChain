@@ -1,3 +1,4 @@
+import 'package:action_chain/component/dialog/ac_single_option_dialog.dart';
 import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
 import 'package:action_chain/component/actodo_card.dart';
 import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
@@ -121,10 +122,6 @@ class _MakeChainPageState extends State<MakeChainPage> {
                     Navigator.pop(context);
                   } else {
                     ACYesNoDialog.show(
-                        context: context,
-                        title: "本当に戻りますか?",
-                        message: "作成されたAction Chainが\n完全に削除されます",);
-                    yesNoAlert(
                         context: context,
                         title: "本当に戻りますか?",
                         message: "作成されたAction Chainが\n完全に削除されます",
@@ -551,52 +548,56 @@ class _MakeChainPageState extends State<MakeChainPage> {
 
                                     // 実際の処理
                                     if (widget.oldCategoryId != null) {
-                                      showDialog(context: context, builder: (context) {
-                                        return ACYesNoDialog(title: "編集モードを解除しますか？", message: "解除することで新たなSaved Chainを作成することができます", yesAction: yesAction)
-                                      });
-                                      yesNoAlert(
+                                      showDialog(
                                           context: context,
-                                          title: "編集モードを解除しますか？",
-                                          message:
-                                              "解除することで新たなSaved Chainを作成することができます",
-                                          yesAction: () {
-                                            Navigator.pop(context);
-                                            widget.oldCategoryId = null;
-                                            widget.indexOfChainInSavedChains =
-                                                null;
-                                            setState(() {});
-                                            // 作成した内容の削除
-                                            yesNoAlert(
-                                                context: context,
-                                                title:
-                                                    "このAction Chainを\n削除しますか？",
-                                                message: null,
+                                          builder: (context) {
+                                            return ACYesNoDialog(
+                                                title: "編集モードを解除しますか？",
+                                                message:
+                                                    "解除することで新たなSaved Chainを作成することができます",
                                                 yesAction: () {
                                                   Navigator.pop(context);
-                                                  initializeMakeChainPage();
-                                                  simpleAlert(
-                                                      context: context,
-                                                      title:
-                                                          "初期化することに\n成功しました！",
-                                                      message: null,
-                                                      buttonText: "thank you!");
+                                                  widget.oldCategoryId = null;
+                                                  widget.indexOfChainInSavedChains =
+                                                      null;
                                                   setState(() {});
+                                                  // 作成した内容の削除
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return ACYesNoDialog(
+                                                            title:
+                                                                "このAction Chainを\n削除しますか？",
+                                                            message: null,
+                                                            yesAction: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              initializeMakeChainPage();
+                                                              ACSingleOptionDialog.show(
+                                                                  context:
+                                                                      context,
+                                                                  title:
+                                                                      "初期化することに\n成功しました！",
+                                                                  message:
+                                                                      null);
+                                                              setState(() {});
+                                                            });
+                                                      });
                                                 });
                                           });
                                     } else {
                                       // 作成した内容の削除
-                                      yesNoAlert(
+                                      ACYesNoDialog.show(
                                           context: context,
-                                          title: "このページを\n初期化しますか？",
+                                          title: "このAction Chainを\n削除しますか？",
                                           message: null,
                                           yesAction: () {
                                             Navigator.pop(context);
                                             initializeMakeChainPage();
-                                            simpleAlert(
+                                            ACSingleOptionDialog.show(
                                                 context: context,
                                                 title: "初期化することに\n成功しました！",
-                                                message: null,
-                                                buttonText: "thank you!");
+                                                message: null);
                                             setState(() {});
                                           });
                                     }
@@ -632,7 +633,7 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                 });
                                           } else {
                                             // 上書きする
-                                            yesNoAlert(
+                                            ACYesNoDialog.show(
                                                 context: context,
                                                 title: "上書きしますか？",
                                                 message:
@@ -656,12 +657,10 @@ class _MakeChainPageState extends State<MakeChainPage> {
                                                         ACToDo.getNewMethods(
                                                             selectedMethods:
                                                                 _addedActionMethods);
-
-                                                  simpleAlert(
+                                                  ACSingleOptionDialog.show(
                                                       context: context,
                                                       title: "上書きすることに\n成功しました",
-                                                      message: null,
-                                                      buttonText: "OK");
+                                                      message: null);
                                                   ActionChain.saveActionChains(
                                                       isSavedChains: true);
                                                 });
