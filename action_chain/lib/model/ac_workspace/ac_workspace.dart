@@ -1,4 +1,4 @@
-import 'package:action_chain/alerts/simple_alert.dart';
+import 'package:action_chain/components/dialog/simple_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/edit_acworkspace_dialog.dart';
 import 'package:action_chain/model/ac_todo/ac_category.dart';

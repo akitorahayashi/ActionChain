@@ -1,7 +1,7 @@
-import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/components/actodo_card.dart';
-import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/components/ui/controll_icon_button.dart';
+import 'package:action_chain/components/dialog/yes_no_alert.dart';
+import 'package:action_chain/component/actodo_card.dart';
+import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
+import 'package:action_chain/component/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspace.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';

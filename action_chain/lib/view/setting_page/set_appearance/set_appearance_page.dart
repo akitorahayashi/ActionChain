@@ -4,7 +4,7 @@ import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/view/setting_page/set_appearance/set_icon/icon_category_panel.dart';
 import 'package:action_chain/view/setting_page/set_appearance/theme_panels/bottom_theme_panel.dart';
 import 'package:action_chain/view/setting_page/set_appearance/theme_panels/top_theme_panel.dart';
-import 'package:action_chain/components/ui/panel_with_title.dart';
+import 'package:action_chain/component/ui/panel_with_title.dart';
 import 'package:flutter/material.dart';
 import 'package:action_chain/model/user/setting_data.dart';
 import 'package:action_chain/model/ac_theme.dart';

@@ -1,8 +1,9 @@
-import 'package:action_chain/alerts/simple_alert.dart';
-import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/components/actodo_card.dart';
-import 'package:action_chain/components/ui/action_chain_sliver_appbar.dart';
-import 'package:action_chain/components/ui/controll_icon_button.dart';
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
+import 'package:action_chain/components/dialog/simple_alert.dart';
+import 'package:action_chain/components/dialog/yes_no_alert.dart';
+import 'package:action_chain/component/actodo_card.dart';
+import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
+import 'package:action_chain/component/ui/controll_icon_button.dart';
 import 'package:action_chain/model/ac_todo/ac_chain.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
@@ -548,6 +549,9 @@ class _MakeChainPageState extends State<MakeChainPage> {
 
                                     // 実際の処理
                                     if (widget.oldCategoryId != null) {
+                                      showDialog(context: context, builder: (context) {
+                                        return ACYesNoDialog(title: "編集モードを解除しますか？", message: "解除することで新たなSaved Chainを作成することができます", yesAction: yesAction)
+                                      });
                                       yesNoAlert(
                                           context: context,
                                           title: "編集モードを解除しますか？",

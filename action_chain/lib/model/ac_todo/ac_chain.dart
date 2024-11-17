@@ -1,5 +1,5 @@
-import 'package:action_chain/alerts/yes_no_alert.dart';
-import 'package:action_chain/alerts/simple_alert.dart';
+import 'package:action_chain/components/dialog/yes_no_alert.dart';
+import 'package:action_chain/components/dialog/simple_alert.dart';
 import 'package:action_chain/model/ac_todo/ac_todo.dart';
 import 'package:action_chain/model/ac_todo/ac_step.dart';
 import 'package:action_chain/model/ac_workspace/ac_workspaces.dart';

@@ -1,5 +1,5 @@
-import 'package:action_chain/alerts/simple_alert.dart';
-import 'package:action_chain/alerts/yes_no_alert.dart';
+import 'package:action_chain/components/dialog/simple_alert.dart';
+import 'package:action_chain/components/dialog/yes_no_alert.dart';
 import 'package:action_chain/constants/global_keys.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/external/ac_vibration.dart';

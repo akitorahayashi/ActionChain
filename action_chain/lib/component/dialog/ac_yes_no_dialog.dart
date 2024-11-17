@@ -12,6 +12,20 @@ class ACYesNoDialog extends StatelessWidget {
     required this.yesAction,
   });
 
+  static Future<void> show({
+    required BuildContext context,
+    required String title,
+    required String? message,
+    VoidCallback? yesAction,
+  }) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return ACYesNoDialog(
+              title: title, message: message, yesAction: yesAction);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     final ACThemeData acThemeData = ACTheme.of(context);

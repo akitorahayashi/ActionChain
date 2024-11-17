@@ -1,5 +1,5 @@
-import 'package:action_chain/model/ac_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:action_chain/model/ac_theme.dart';
 
 class ACSingleOptionDialog extends StatelessWidget {
   final String title;
@@ -9,6 +9,18 @@ class ACSingleOptionDialog extends StatelessWidget {
     required this.title,
     required this.message,
   });
+
+  static Future<void> show({
+    required BuildContext context,
+    required String title,
+    required String? message,
+  }) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return ACSingleOptionDialog(title: title, message: message);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
