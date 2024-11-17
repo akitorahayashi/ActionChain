@@ -1,5 +1,5 @@
-import 'package:action_chain/components/dialog/yes_no_alert.dart';
 import 'package:action_chain/component/actodo_card.dart';
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
 import 'package:action_chain/component/ui/action_chain_sliver_appbar.dart';
 import 'package:action_chain/component/ui/controll_icon_button.dart';
 import 'package:action_chain/constants/global_keys.dart';
@@ -188,14 +188,13 @@ class _ChainDetailPageState extends State<ChainDetailPage> {
                                     textContent: "実行"),
                                 // 完了ボタン
                                 secondChild: ControllIconButton(
-                                  onPressed: () => yesNoAlert(
+                                  onPressed: () => ACYesNoDialog.show(
                                       context: context,
                                       title: "このAction Chainを\n完了しますか？",
                                       message: null,
                                       yesAction: () {
                                         Navigator.pop(context);
                                         // 更新して消す
-                                        Navigator.pop(context);
                                         ACWorkspace
                                             .currentWorkspace
                                             .keepedChains[

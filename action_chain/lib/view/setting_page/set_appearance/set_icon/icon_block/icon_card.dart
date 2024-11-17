@@ -1,3 +1,4 @@
+import 'package:action_chain/component/dialog/ac_yes_no_dialog.dart';
 import 'package:action_chain/constants/icons_for_checkbox.dart';
 import 'package:action_chain/model/ac_theme.dart';
 import 'package:action_chain/model/user/setting_data.dart';
@@ -33,11 +34,20 @@ class _IconCardState extends State<IconCard> {
       child: GestureDetector(
         onTap: isFocused
             ? null
-            : () => SettingData.shared.askToSetDefaultIcon(
-                context: context,
-                categoryNameOfThisIcon: widget.iconCategoryName,
-                selectedIconRarity: widget.selectedIconRarity,
-                iconName: widget.iconName),
+            : () async {
+                ACYesNoDialog.show(
+                    context: context,
+                    title: "アイコンの変更",
+                    message: "チェックマークのアイコンを\n変更しますか?",
+                    yesAction: () {
+                      Navigator.pop(context);
+                    });
+                SettingData.shared.setDefaultIcon(
+                    context: context,
+                    categoryNameOfThisIcon: widget.iconCategoryName,
+                    selectedIconRarity: widget.selectedIconRarity,
+                    iconName: widget.iconName);
+              },
         child: Card(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
